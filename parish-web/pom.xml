@@ -5,7 +5,7 @@
   <artifactId>parish-web</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>parish-web Maven Webapp</name>
+  <name>parish-web</name>
   <url>http://maven.apache.org</url>
   <parent>
 	<groupId>com.coop.parish</groupId>
@@ -13,11 +13,40 @@
    <version>1.0-SNAPSHOT</version>
   </parent>
   <dependencies>
+  <!--  parish core dependency , web needs core to operate -->
 	<dependency>
 		<groupId>com.coop.parish.core</groupId>
 		<artifactId>parish-core</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</dependency>
+	<!-- Struts 2 dependency. Version information is supplied from properties section -->
+	<dependency>
+	    <groupId>org.apache.struts</groupId>
+	    <artifactId>struts2-core</artifactId>
+	    <version>${struts.version}</version>
+    </dependency>
+    <!-- test ng plugin for test -->
+    <dependency>
+		  <groupId>org.apache.struts</groupId>
+		  <artifactId>struts2-junit-plugin</artifactId>
+		  <version>${struts.version}</version>
+		  <scope>test</scope>
+	</dependency>
+	<!-- mock dependencies for testing -->
+	<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
   </dependencies>
   <build>
     <finalName>parish</finalName>
