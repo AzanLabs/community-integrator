@@ -4,6 +4,7 @@
 
 <web-app>
   <display-name>Parish-Management</display-name> 
+
   <filter>
         <filter-name>struts2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
@@ -13,4 +14,14 @@
         <filter-name>struts2</filter-name>
         <url-pattern>/*</url-pattern>
   </filter-mapping>
+  
+  <!-- These context listeners listen for when the application starts up
+  and then configure the Spring beans. -->
+  <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <listener>
+  	<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
 </web-app>

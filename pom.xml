@@ -1,38 +1,57 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
+  <!-- identity information for this artifact -->
   <groupId>com.coop.parish</groupId>
   <artifactId>parish</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>parish-web Maven Webapp</name>
+  <name>parish</name>
   <url>http://maven.apache.org</url>
+  
+  <!-- sub modules which belong to this project -->
   <modules>
 	<module>parish-data</module>
 	<module>parish-core</module>
 	<module>parish-web</module>
   </modules>
-  <!-- properties section  -->
+  
+  <!-- properties section -->
   <properties>
   	   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
        <struts.version>2.3.20</struts.version>
        <log4j.version>1.2.17</log4j.version>
+       <spring.version>3.0.5.RELEASE</spring.version>
   </properties>
+  
+  <!-- common dependencies shared by all modules -->
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+     	<groupId>junit</groupId>
+      	<artifactId>junit</artifactId>
+      	<version>3.8.1</version>
+      	<scope>test</scope>
     </dependency>
+    
     <!--  log 4j dependency , needed for logging for all modules . so added to parent pom -->
     <dependency>
-       <groupId>log4j</groupId>
-       <artifactId>log4j</artifactId>
-       <version>${log4j.version}</version>
+      	<groupId>log4j</groupId>
+      	<artifactId>log4j</artifactId>
+       	<version>${log4j.version}</version>
     </dependency>
+    
+    <!-- spring dependency, which is needed for dependency injection -->
+    <dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-context</artifactId>
+  		<version>${spring.version}</version>
+	</dependency>
+
   </dependencies>
+  
+  <!-- build section -->
   <build>
-    <finalName>parish</finalName>
+   		<finalName>parish</finalName>
   </build>
 </project>

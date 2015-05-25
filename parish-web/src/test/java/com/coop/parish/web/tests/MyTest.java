@@ -1,27 +1,17 @@
 package com.coop.parish.web.tests;
 
-import org.apache.struts2.StrutsTestCase;
-import org.junit.Test;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import com.coop.parish.web.actions.HomeAction;
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionProxy;
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.StrutsTestCase;
+import org.apache.struts2.util.StrutsUtil;
+import org.junit.Test;
 
 public class MyTest extends StrutsTestCase{
 	
 	@Test
-	public void testIt() throws Exception{
-	
-		request.setParameter("homeModal.msg", "haioo");
-		request.setParameter("id", "1001");
-		
-		ActionProxy actionProxy = getActionProxy("/test/home.action");
-		HomeAction action =  (HomeAction)actionProxy.getAction();
-		action.id = "1001";
-		String result = action.execute();
-		//System.out.println("is injcted"+action.getHomeModal().getMsg());
- 		assertEquals("success", result);	
+	public void testLogin(){
+		HttpSession session = request.getSession();
+		System.out.println(session.getServletContext().hashCode());
 	}
-
 }

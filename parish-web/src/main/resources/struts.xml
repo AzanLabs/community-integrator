@@ -4,10 +4,15 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
     <struts>
     	<constant name="struts.devMode" value="true"></constant>
-    	<!--  <constant name="struts.objectFactory" value="spring"/> -->
-    	<package name="test" namespace="/test" extends="struts-default">
-    		<action name="home" class="com.coop.parish.web.actions.HomeAction" method="execute">
+    	<!-- <constant name="struts.objectFactory" value="spring"/> -->
+    	<package name="/" extends="struts-default">
+    		
+    		<action name="index">
+    			<result>/index.jsp</result>
+    		</action>
+    		<action name="login" class="com.coop.parish.web.actions.LoginAction" method="execute">
     			<result name="success">/success.jsp</result>
     		</action>
+    			
     	</package>
     </struts>

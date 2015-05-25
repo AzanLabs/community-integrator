@@ -1,18 +1,61 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
+  <!-- artifact identity, will have same version as parent -->
   <groupId>com.coop.parish.data</groupId>
   <artifactId>parish-data</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
   <name>parish-data</name>
   <url>http://maven.apache.org</url>
+  
+  <!-- parent project -->
   <parent>
 	<groupId>com.coop.parish</groupId>
     <artifactId>parish</artifactId>
 	<version>1.0-SNAPSHOT</version>
   </parent>
+  <properties>
+  	<hibernate.version>4.3.8.Final</hibernate.version>
+  </properties>
+  <!-- Dependencies for this project -->
   <dependencies>
-
+  	<!-- <dependency>
+		<groupId>javax.persistence</groupId>
+		<artifactId>persistence-api</artifactId>
+		<version>1.0.2</version>
+	</dependency> -->
+	
+  	<!-- hibernate dependency -->
+  	<dependency>
+  		<groupId>org.hibernate</groupId>
+  		<artifactId>hibernate-entitymanager</artifactId>
+  		<version>${hibernate.version}</version>
+  		<!-- <exclusions>
+  			<exclusion>
+  				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
+  			</exclusion>
+  		</exclusions> -->
+  	</dependency>
+  	<dependency>
+  		<groupId>org.hibernate</groupId>
+  		<artifactId>hibernate-core</artifactId>
+  		<version>${hibernate.version}</version>
+  	</dependency>
+  	
+  	<!-- For connection pooling -->
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-c3p0</artifactId>
+		<version>${hibernate.version}</version>
+	</dependency>
+	
+	<!-- mysql connector -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.31</version>
+	</dependency>
   </dependencies>
 </project>
