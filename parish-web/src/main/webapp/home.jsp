@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	success
+	Hi we wre at home
 </body>
 </html>

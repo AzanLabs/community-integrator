@@ -1,15 +1,11 @@
 package com.coop.parish.web.beans;
 
-import java.util.Date;
-
 public class UserBean {
 	
 	private int id;
-	private String name;
-	private String eMail;
+	private String identifier;
 	private String password;
-	private Date dob;
-	private Integer pincode;
+	private String type;
 	
 	public int getId() {
 		return id;
@@ -17,17 +13,11 @@ public class UserBean {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getIdentifier() {
+		return identifier;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String geteMail() {
-		return eMail;
-	}
-	public void seteMail(String eMail) {
-		this.eMail = eMail;
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 	public String getPassword() {
 		return password;
@@ -35,17 +25,10 @@ public class UserBean {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Date getDob() {
-		return dob;
+	public String getType() {
+		return type;
 	}
-	public void setDob(Date dob) {
-		this.dob = dob;
+	public void setType(String type) {
+		this.type = type;
 	}
-	public Integer getPincode() {
-		return pincode;
-	}
-	public void setPincode(Integer pincode) {
-		this.pincode = pincode;
-	}
-	
 }

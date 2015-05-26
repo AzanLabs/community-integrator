@@ -1,8 +1,11 @@
 package com.coop.parish.data.modal;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class Client {
 
@@ -13,16 +16,11 @@ public class Client {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa-test");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		for(int i = 0 ; i < 100; i++){
 			usr = new User();
-			usr.setName("sankar");
-			usr.setPwd("admin");
-			em.persist(usr);
-			if(i % 50 == 0){
-				em.flush();
-				em.clear();
-			}
-		}
+			String queryStmt = "select usr from User as usr";
+			Query query = em.createQuery(queryStmt);
+			List<User> users = query.getResultList();
+			System.out.println("users "+users.get(0).getIdentifier());
 		em.getTransaction().commit();
 		em.close();
 		emf.close();

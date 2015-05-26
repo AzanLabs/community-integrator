@@ -1,8 +1,8 @@
 package com.coop.parish.core;
 
-import com.coop.parish.core.service.UserService;
+import com.coop.parish.core.service.LoginService;
 
 public interface Locator {
 	
-	public UserService getUserService();
+	public LoginService getLoginService();
 }
