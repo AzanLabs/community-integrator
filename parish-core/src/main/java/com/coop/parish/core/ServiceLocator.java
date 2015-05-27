@@ -4,6 +4,9 @@ import com.coop.parish.core.service.LoginService;
 import com.coop.parish.core.service.LoginServiceImpl;
 import com.coop.parish.data.TransactionManager;
 
+/**
+ * 
+ */
 public class ServiceLocator implements Locator{
 	
 	private static Locator serviceLocator = null;
@@ -23,6 +26,4 @@ public class ServiceLocator implements Locator{
 		return service;
 	}
 	
-	
-
 }
