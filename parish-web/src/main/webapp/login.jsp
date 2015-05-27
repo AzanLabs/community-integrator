@@ -8,7 +8,7 @@
 </head>
 <body>
 	<form action = "./loginAction" method="POST" name="loginform">
-		<input name="userBean.idenfifier" type="text"/>
+		<input name="userBean.identifier" type="text"/>
 		<input name="userBean.password" type="text"/>
 		<input type="submit" value="submit"/>
 	</form>
