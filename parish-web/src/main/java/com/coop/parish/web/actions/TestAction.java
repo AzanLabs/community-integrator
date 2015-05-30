@@ -21,5 +21,13 @@ public class TestAction extends ActionSupport{
 	public void setChurchBean(ChurchBean churchBean) {
 		this.churchBean = churchBean;
 	}
+	
+	public void validate(){
+		System.out.println("here");
+		if(churchBean.getName() == null){
+			super.addFieldError("name", "error here null");
+		}
+	}
+	
 
 }
