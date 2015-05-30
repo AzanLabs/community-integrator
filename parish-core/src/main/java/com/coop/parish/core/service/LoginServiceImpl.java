@@ -17,6 +17,7 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService{
 		User returnObj = null;
 		String queryStmt = "select usr from User usr where usr.identifier = :identifier and usr.password = :password";
 		Query query = em.createQuery(queryStmt);
+		em.getTransaction();
 		query.setParameter("identifier", user.getIdentifier());
 		query.setParameter("password", user.getPassword());
 		try{
