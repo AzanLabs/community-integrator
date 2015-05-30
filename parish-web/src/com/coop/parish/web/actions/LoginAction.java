@@ -1,7 +1,9 @@
 package com.coop.parish.web.actions;
 
 import java.util.Map;
+
 import org.apache.struts2.interceptor.SessionAware;
+
 import com.coop.parish.core.ServiceLocator;
 import com.coop.parish.core.service.LoginService;
 import com.coop.parish.data.modal.User;
