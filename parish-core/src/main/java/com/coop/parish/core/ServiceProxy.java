@@ -27,7 +27,6 @@ public class ServiceProxy implements InvocationHandler{
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		Object result;
-		EntityTransaction tx = null;
 		System.out.println("invoking method "+method.getName());
 		try{
 			BaseService bs  = (BaseService)obj;

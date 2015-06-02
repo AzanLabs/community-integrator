@@ -1,33 +1,22 @@
 package com.coop.parish.data;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-
+/**
+ * a singleton factory class which maintains the entity manager factory
+ * 
+ */
 public class TransactionManager {
-	
+	//single emtity manager factory for the whole application
 	private static EntityManagerFactory emf = null;
-	private EntityManager em = null;
 	
-	public TransactionManager(){
+	private TransactionManager(){}
+	
+	//lazy loads the emf when needed, only one emf instanc is created for the whole application
+	public static EntityManagerFactory getEMF(){
 		if(emf == null){
 			emf = Persistence.createEntityManagerFactory("jpa-test");
-			
 		}
-	}
-	
-	public EntityManager getEntityManager(){
-		return emf.createEntityManager();
-	}
-	
-	public void close(){
-		if(em != null){
-			em.flush();
-			em.close();
-		}
-		if(emf != null){
-			emf.close();
-		}
+		return emf; 
 	}
 }

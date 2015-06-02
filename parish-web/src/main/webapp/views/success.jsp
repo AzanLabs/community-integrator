@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<%@page isELIgnored="false" %>
+${requestScope.church}
 </body>
 </html>

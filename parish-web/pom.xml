@@ -25,21 +25,6 @@
 		<version>1.0-SNAPSHOT</version>
 	</dependency>
 	
-	<!-- Struts 2 dependency. Version information is supplied from parent properties section -->
-	<dependency>
-	    <groupId>org.apache.struts</groupId>
-	    <artifactId>struts2-core</artifactId>
-	    <version>${struts.version}</version>
-    </dependency>
-    
-    <!-- junit plugin, needed to test struts -->
-    <dependency>
-		<groupId>org.apache.struts</groupId>
-		<artifactId>struts2-junit-plugin</artifactId>
-		<version>${struts.version}</version>
-		<scope>test</scope>
-	</dependency>
-	
 	<!-- mock dependencies for testing -->
 	<dependency>
 		<groupId>javax.servlet</groupId>
@@ -64,6 +49,26 @@
 		<version>2.3</version>
 	</dependency>
 	
+	<!-- bean utils to convert modal to bean and vice versa-->
+	<dependency>
+		<groupId>commons-beanutils</groupId>
+		<artifactId>commons-beanutils</artifactId>
+		<version>1.9.2</version>
+	</dependency>
+	
+	<!-- jstl dependency -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+	</dependency>
+	
+	<!-- struts json plugin needed to convert result to json format -->
+	<dependency>
+       <groupId>org.apache.struts</groupId>
+       <artifactId>struts2-json-plugin</artifactId>
+       <version>${struts.version}</version>
+    </dependency>
   </dependencies>
   
   <!-- build section -->

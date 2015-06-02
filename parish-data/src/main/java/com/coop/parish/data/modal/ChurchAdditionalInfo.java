@@ -7,43 +7,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name="church_add_info")
+//@Table(name="church_add_info")
 @Embeddable
 public class ChurchAdditionalInfo 
 {
-	@Column(name="church_intro")
-	private String introduction;
-	@Column(name="church_history")
-	private String history;
-	@Column(name="church_famous_for")
-	private String famousFor;
-	@Column(name="church_mission")
-	private String mission;
-	
-	public String getIntroduction() {
-		return introduction;
+	@Column(name="church_info")
+	private String info;
+
+	public String getInfo() {
+		return info;
 	}
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
-	public String getHistory() {
-		return history;
-	}
-	public void setHistory(String history) {
-		this.history = history;
-	}
-	public String getFamousFor() {
-		return famousFor;
-	}
-	public void setFamousFor(String famousFor) {
-		this.famousFor = famousFor;
-	}
-	public String getMission() {
-		return mission;
-	}
-	public void setMission(String mission) {
-		this.mission = mission;
-	}
-	
 	
 }

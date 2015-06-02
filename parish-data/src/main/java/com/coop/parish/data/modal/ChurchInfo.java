@@ -15,7 +15,7 @@ public class ChurchInfo
 	@GeneratedValue
 	@Column(name="church_id")
 	private int id;
-	@Column(name="church_name")
+	@Column(name="church_name", nullable=false)
 	private String name;
 	@Embedded
 	private Address address;
@@ -24,10 +24,13 @@ public class ChurchInfo
 	@Column(name="church_telephone_no")
 	private String telephoneNumber;
 	@Column(name="church_mobile")
-	private String mobile;
+	private Long mobileNo;
 	@Column(name="church_email_id")
 	private String emailId;
-	
+	/**
+	 * TODO : need to map
+	 */
+	private ChurchAdditionalInfo additionalInfo;
 	public int getId() {
 		return id;
 	}
@@ -52,18 +55,28 @@ public class ChurchInfo
 	public void setTelephoneNumber(String telephoneNumber) {
 		this.telephoneNumber = telephoneNumber;
 	}
-	public String getMobile() {
-		return mobile;
+	public Long getMobileNo() {
+		return mobileNo;
 	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setMobileNo(Long mobile) {
+		this.mobileNo = mobile;
 	}
 	public String getEmailId() {
 		return emailId;
 	}
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	
-	
+	public ChurchAdditionalInfo getAdditionalInfo() {
+		return additionalInfo;
+	}
+	public void setAdditionalInfo(ChurchAdditionalInfo additionalInfo) {
+		this.additionalInfo = additionalInfo;
+	}
 }

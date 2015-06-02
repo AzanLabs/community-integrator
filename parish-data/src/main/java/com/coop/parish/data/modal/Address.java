@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name="church_info")
+//@Table(name="church_info")
 @Embeddable
 public class Address 
 {
@@ -20,13 +20,20 @@ public class Address
 	@Column(name="church_taluk")
 	private String taluk;
 	@Column(name="church_district")
-	private Integer district;
+	private String district;
 	@Column(name="church_state")
-	private Integer state;
+	private String state;
 	@Column(name="church_country")
-	private Integer country;
+	private String country;
 	@Column(name="church_pincode")
 	private Integer pincode;
+	
+	public Integer getPincode() {
+		return pincode;
+	}
+	public void setPincode(Integer pincode) {
+		this.pincode = pincode;
+	}
 	public String getDoorNo() {
 		return doorNo;
 	}
@@ -51,31 +58,22 @@ public class Address
 	public void setTaluk(String taluk) {
 		this.taluk = taluk;
 	}
-	public Integer getDistrict() {
+	public String getDistrict() {
 		return district;
 	}
-	public void setDistrict(Integer district) {
+	public void setDistrict(String district) {
 		this.district = district;
 	}
-	public Integer getState() {
+	public String getState() {
 		return state;
 	}
-	public void setState(Integer state) {
+	public void setState(String state) {
 		this.state = state;
 	}
-	public Integer getCountry() {
+	public String getCountry() {
 		return country;
 	}
-	public void setCountry(Integer country) {
+	public void setCountry(String country) {
 		this.country = country;
-	}
-	public Integer getPicode() {
-		return pincode;
-	}
-	public void setPicode(Integer picode) {
-		this.pincode = picode;
-	}
-	
-	
-	
+	}	
 }

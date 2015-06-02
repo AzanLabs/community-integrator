@@ -5,7 +5,7 @@
     <struts>
     	<constant name="struts.devMode" value="true"></constant>
     	<!-- <constant name="struts.objectFactory" value="spring"/> -->
-    	<package name="/" extends="struts-default">
+    	<package name="/" extends="json-default">
     		<interceptors>
                 <interceptor class="com.coop.parish.web.interceptor.LoginInterceptor" name="loginInterceptor">
                 </interceptor>
@@ -15,7 +15,7 @@
                 </interceptor-stack>
         	</interceptors>
 			
-			<action name="index">
+			<!--  <action name="index">
 				<result>/login.jsp</result>
 			</action>
 			
@@ -28,10 +28,19 @@
 				 <interceptor-ref name="loginStack" />
 				 <result name="login">/login.jsp</result>
 				 <result name="success">/home.jsp</result>
-			</action> 
+			</action> --> 
+			<action name="savechurch_form">
+				<result name="success">/views/savechurch.jsp</result>
+			</action>
 			
-			<action name="test" class="com.coop.parish.web.actions.TestAction" method="execute">
-				<result name="success">/test.jsp</result>
-			</action>   			
+			<action name="savechurch" class="com.coop.parish.web.actions.ChurchAction" method="saveChurch">
+				<result name="input" type="json">
+					<param name="statusCode">300</param>
+					<param name="root">fieldErrors</param>
+					<param name="wrapPrefix"><![CDATA[{"errors" :]]></param>
+					<param name="wrapSuffix"><![CDATA[}]]></param>
+				</result>
+				<result name="success">/views/success.jsp</result>
+			</action>  			
     	</package>
     </struts>
