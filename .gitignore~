@@ -1,6 +1,0 @@
-#fiels to be excluded from source code
-*.class
-target/
-.project
-.classpath
-/.settings/
