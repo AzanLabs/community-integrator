@@ -4,9 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import com.coop.parish.core.service.BaseService;
 
 public class ServiceProxy implements InvocationHandler{

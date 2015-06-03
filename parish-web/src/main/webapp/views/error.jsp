@@ -7,11 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h2>Success Page</h2>
 <%@page isELIgnored="false" %>
-${requestScope.churchBean}
+<h2>Error Page</h2>
+${requestScope.actionErrors}
 <br/>
 <br/>
-${requestScope.id}
+${requestScope.fieldErrors}
 </body>
 </html>

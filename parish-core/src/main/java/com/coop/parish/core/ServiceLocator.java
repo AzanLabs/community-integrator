@@ -7,6 +7,8 @@ import com.coop.parish.core.service.ChurchService;
 import com.coop.parish.core.service.ChurchServiceImpl;
 import com.coop.parish.core.service.LoginService;
 import com.coop.parish.core.service.LoginServiceImpl;
+import com.coop.parish.core.service.PriestService;
+import com.coop.parish.core.service.PriestServiceImpl;
 import com.coop.parish.data.TransactionManager;
 
 /**
@@ -17,7 +19,6 @@ public class ServiceLocator implements Locator{
 	//single service locator for the whole application 
 	private static Locator serviceLocator = null;
 	private static EntityManagerFactory emf= null;
-	private EntityManager em = null;
 	
 	//lazy loading the service locator
 	public static Locator instance() {
@@ -52,6 +53,19 @@ public class ServiceLocator implements Locator{
 	
 	public ChurchService getChurchService(EntityManager em) {
 		return new ChurchServiceImpl(em);
+	}
+
+
+	public PriestService getPriestService() {
+		EntityManager em = emf.createEntityManager();
+		PriestService service = new PriestServiceImpl(em);
+		service = (PriestService)ServiceProxy.newInstance(service);
+		return service;
+	}
+
+
+	public PriestService getPriestService(EntityManager em) {
+		return new PriestServiceImpl(em);
 	}
 	
 	

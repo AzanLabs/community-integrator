@@ -2,13 +2,11 @@ package com.coop.parish.core.beans;
 
 import java.io.Serializable;
 
-import com.coop.parish.data.modal.Address;
-import com.coop.parish.data.modal.ChurchInfo;
+import com.coop.parish.data.modal.Church;
+import com.coop.parish.data.modal.ChurchAdditionalInfo;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
-import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
 public class ChurchBean implements Serializable
 {
@@ -23,38 +21,97 @@ public class ChurchBean implements Serializable
 	private String state;
 	private String country;
 	private Integer pincode;
-	private String diocese;
-	private String telephoneNo;
+	private Long telephoneNo;
 	private Long mobileNo;
 	private String emailId;
-	private ChurchAdditionalInfoBean churchInfo;
+	private String diocese;
+	private String additionalInfo;
 	
-	public ChurchBean(){
-		
+	public ChurchBean(){}
+	
+	public ChurchBean(int id){
+		this.id = id;
 	}
+	
+	public ChurchBean(Church church){
+		if(church != null){
+			this.setId(church.getId());
+			this.setName(church.getName());
+			
+			this.setDoorNo(church.getDoorNo());
+			this.setStreet(church.getStreet());
+			this.setVillage(church.getVillage());
+			this.setTaluk(church.getTaluk());
+			this.setDistrict(church.getDistrict());
+			this.setState(church.getState());
+			this.setCountry(church.getCountry());
+			this.setPincode(church.getPincode());
+			
+			this.setTelephoneNo(church.getTelephoneNo());
+			this.setMobileNo(church.getMobileNo());
+			this.setEmailId(church.getEmailId());
+			this.setDiocese(church.getDiocese());
+			if(church.getAdditionalInfo() != null){
+				this.setAdditionalInfo(church.getAdditionalInfo().getInfo());
+			}
+		}
+	}
+	
+	public Church toBO(){
+		Church church = null;
+		if(this != null){
+			church = new Church();
+			church.setId(this.getId());
+			church.setName(this.getName());
+			
+			church.setDoorNo(this.getDoorNo());
+			church.setStreet(this.getStreet());
+			church.setVillage(this.getVillage());
+			church.setTaluk(this.getTaluk());
+			church.setDistrict(this.getDistrict());
+			church.setState(this.getState());
+			church.setCountry(this.getCountry());
+			church.setPincode(this.getPincode());
+			
+			church.setTelephoneNo(this.getTelephoneNo());
+			church.setMobileNo(this.getMobileNo());
+			church.setEmailId(this.getEmailId());
+			church.setDiocese(this.getDiocese());
+			
+			ChurchAdditionalInfo info = null;
+			if(this.additionalInfo != null){
+				info = new ChurchAdditionalInfo();
+				info.setInfo(this.getAdditionalInfo());	
+			}
+			church.setAdditionalInfo(info);
+		}
+		return church;
+	}
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	@RequiredStringValidator(key="bean.field.required", messageParams={"Church Name"}, message="")
 	public String getName() {
 		return name;
 	}
-	
 	public void setName(String name) {
 		this.name = name;
 	}
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Door Number"})
+	
+	@RequiredStringValidator(key="bean.field.required", messageParams={"Door Number"}, message="")
 	public String getDoorNo() {
 		return doorNo;
 	}
 	public void setDoorNo(String doorNo) {
 		this.doorNo = doorNo;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Street"})
+
+	@RequiredStringValidator(key="bean.field.required", messageParams={"Street"}, message="")
 	public String getStreet() {
 		return street;
 	}
@@ -62,7 +119,7 @@ public class ChurchBean implements Serializable
 		this.street = street;
 	}
 	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Town / Village"})
+	@RequiredStringValidator(key="bean.field.required", messageParams={"Village/Town"}, message="")
 	public String getVillage() {
 		return village;
 	}
@@ -70,6 +127,7 @@ public class ChurchBean implements Serializable
 		this.village = village;
 	}
 	
+	@RequiredStringValidator(key="bean.field.required", messageParams={"Taluk"}, message="")
 	public String getTaluk() {
 		return taluk;
 	}
@@ -77,7 +135,7 @@ public class ChurchBean implements Serializable
 		this.taluk = taluk;
 	}
 	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"District"})
+	@RequiredStringValidator(key="bean.field.required", messageParams={"District"}, message="")
 	public String getDistrict() {
 		return district;
 	}
@@ -85,7 +143,7 @@ public class ChurchBean implements Serializable
 		this.district = district;
 	}
 	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"State"})
+	@RequiredStringValidator(key="bean.field.required", messageParams={"State"}, message="")
 	public String getState() {
 		return state;
 	}
@@ -93,7 +151,7 @@ public class ChurchBean implements Serializable
 		this.state = state;
 	}
 	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Country"})
+	@RequiredStringValidator(key="bean.field.required", messageParams={"Country"}, message="")
 	public String getCountry() {
 		return country;
 	}
@@ -101,8 +159,7 @@ public class ChurchBean implements Serializable
 		this.country = country;
 	}
 	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"pincode"})
-	@IntRangeFieldValidator(key="bean.field.number.invalid", min="000000", max="999999", messageParams={"pincode"})
+	@RequiredFieldValidator(key="bean.field.required", messageParams={"Pincode"}, message="")
 	public Integer getPincode() {
 		return pincode;
 	}
@@ -110,31 +167,24 @@ public class ChurchBean implements Serializable
 		this.pincode = pincode;
 	}
 	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Diocese"})
-	public String getDiocese() {
-		return diocese;
-	}
-	public void setDiocese(String diocese) {
-		this.diocese = diocese;
-	}
-	
-	public String getTelephoneNumber() {
+	@RequiredFieldValidator(key="bean.field.required", messageParams={"Telephone Number"}, message="")
+	public Long getTelephoneNo() {
 		return telephoneNo;
 	}
-	public void setTelephoneNumber(String telephoneNumber) {
-		this.telephoneNo = telephoneNumber;
+	public void setTelephoneNo(Long telephoneNo) {
+		this.telephoneNo = telephoneNo;
 	}
 	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"Mobile Number"})
+	@RequiredFieldValidator(key="bean.field.required", messageParams={"Mobile Number"}, message="")
 	public Long getMobileNo() {
 		return mobileNo;
 	}
-	public void setMobileNo(Long mobile) {
-		this.mobileNo = mobile;
+	public void setMobileNo(Long mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Email Id"})
-	@EmailValidator(key="bean.field.email.invalid", messageParams={"Email Id"})
+	@RequiredFieldValidator(key="bean.field.required", messageParams={"Email"}, message="")
+	@EmailValidator(key="bean.email.invalid", messageParams={"Email Id"})
 	public String getEmailId() {
 		return emailId;
 	}
@@ -142,44 +192,19 @@ public class ChurchBean implements Serializable
 		this.emailId = emailId;
 	}
 	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"Church Info"})
-	@VisitorFieldValidator
-	public ChurchAdditionalInfoBean getChurchInfo() {
-		return churchInfo;
+	@RequiredStringValidator(key="bean.field.required", messageParams={"Diocese"}, message="")
+	public String getDiocese() {
+		return diocese;
 	}
-	public void setChurchInfo(ChurchAdditionalInfoBean churchAddInfo) {
-		this.churchInfo = churchAddInfo;
+	public void setDiocese(String diocese) {
+		this.diocese = diocese;
 	}
 	
-	public ChurchInfo toBO(){
-		ChurchInfo church = null;
-		if(this != null){
-			church = new ChurchInfo();
-			church.setId(this.getId());
-			church.setName(this.name);
-			
-			Address address = new Address();
-			address.setDoorNo(this.doorNo);
-			address.setStreet(this.street);
-			address.setVillage(this.village);
-			address.setTaluk(this.taluk);
-			address.setDistrict(this.district);
-			address.setState(this.state);
-			address.setCountry(this.country);
-			address.setPincode(this.pincode);
-			
-			church.setAddress(address);
-			church.setDiocese(this.diocese);
-			church.setTelephoneNumber(this.telephoneNo);
-			church.setMobileNo(this.mobileNo);
-			church.setEmailId(this.emailId);
-			
-			if(this.churchInfo != null){
-				church.setAdditionalInfo(this.churchInfo.toBO());
-			}else{
-				church.setAdditionalInfo(null);
-			}			
-		}
-		return church;
+	@RequiredStringValidator(key="bean.field.required", messageParams={"Church Info"}, message="")
+	public String getAdditionalInfo() {
+		return additionalInfo;
+	}
+	public void setAdditionalInfo(String additionalInfo) {
+		this.additionalInfo = additionalInfo;
 	}
 }

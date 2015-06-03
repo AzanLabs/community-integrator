@@ -7,30 +7,29 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="church_add_info")
-public class ChurchAdditionalInfo 
-{
-	@Id
-	@Column(name="church_id")
-	@GeneratedValue
-	private int churchId;
+@Table(name="priest_add_info")
+public class PriestAdditionalInfo {
 	
-	@Column(name="church_info")
+	@Id
+	@GeneratedValue
+	@Column(name="priest_id")
+	private int id;
+	
+	@Column(name="priest_info")
 	private String info;
 
-	public int getChurchId() {
-		return churchId;
+	public int getId() {
+		return id;
 	}
-
-	public void setChurchId(int churchId) {
-		this.churchId = churchId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getInfo() {
 		return info;
 	}
-
 	public void setInfo(String info) {
 		this.info = info;
 	}
+	
 }

@@ -41,6 +41,37 @@
 					<param name="wrapSuffix"><![CDATA[}]]></param>
 				</result>
 				<result name="success">/views/success.jsp</result>
-			</action>  			
+				<result name="error">/views/error.jsp</result>
+			</action>  
+			<action name="getchurch" class="com.coop.parish.web.actions.ChurchAction" method="getMyChurch">
+				<result name="input" type="json">
+					<param name="statusCode">300</param>
+					<param name="root">fieldErrors</param>
+					<param name="wrapPrefix"><![CDATA[{"errors" :]]></param>
+					<param name="wrapSuffix"><![CDATA[}]]></param>
+				</result>
+				<result name="success">/views/success.jsp</result>
+				<result name="error">/views/error.jsp</result>
+			</action>
+			<action name="editchurch" class="com.coop.parish.web.actions.ChurchAction" method="editChurch">
+				<result name="input" type="json">
+					<param name="statusCode">300</param>
+					<param name="root">fieldErrors</param>
+					<param name="wrapPrefix"><![CDATA[{"errors" :]]></param>
+					<param name="wrapSuffix"><![CDATA[}]]></param>
+				</result>
+				<result name="success">/views/success.jsp</result>
+				<result name="error">/views/error.jsp</result>
+			</action>
+			<action name="deletechurch" class="com.coop.parish.web.actions.ChurchAction" method="disableChurch">
+				<result name="input" type="json">
+					<param name="statusCode">300</param>
+					<param name="root">fieldErrors</param>
+					<param name="wrapPrefix"><![CDATA[{"errors" :]]></param>
+					<param name="wrapSuffix"><![CDATA[}]]></param>
+				</result>
+				<result name="success">/views/success.jsp</result>
+				<result name="error">/views/error.jsp</result>
+			</action>	
     	</package>
     </struts>
