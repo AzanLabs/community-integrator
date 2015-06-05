@@ -7,8 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -17,7 +20,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
-@DynamicUpdate(true)
+//@DynamicUpdate(true)
 @Table(name="church_info")
 public class Church 
 {
@@ -68,13 +71,16 @@ public class Church
 	@Column(name="church_is_active")
 	private boolean isActive;
 
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, optional=true)
-	@PrimaryKeyJoinColumn
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, optional=false, mappedBy="church",targetEntity=ChurchAdditionalInfo.class)
 	private ChurchAdditionalInfo additionalInfo;
 	
 	@OneToMany(fetch=FetchType.LAZY)
-	@JoinColumn(name="church_id", referencedColumnName="church_id")
+	@JoinColumn(name="church_id")
 	private List<Priest> priests;
+	
+	@OneToMany(fetch=FetchType.LAZY)
+	@JoinColumn(name="church_id")
+	private List<Event> events;
 	
 	public int getId() {
 		return id;
@@ -83,7 +89,7 @@ public class Church
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -202,6 +208,7 @@ public class Church
 
 	public void setAdditionalInfo(ChurchAdditionalInfo additionalInfo) {
 		this.additionalInfo = additionalInfo;
+		additionalInfo.setChurch(this);
 	}
 	
 	public List<Priest> getPriests() {
@@ -212,4 +219,11 @@ public class Church
 		this.priests = priests;
 	}
 	
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
 }

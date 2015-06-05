@@ -1,15 +1,17 @@
 package com.coop.parish.core.beans;
 
-import java.io.Serializable;
+import java.util.List;
 
 import com.coop.parish.data.modal.Church;
 import com.coop.parish.data.modal.ChurchAdditionalInfo;
+import com.coop.parish.data.modal.Event;
+import com.coop.parish.data.modal.Priest;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
-public class ChurchBean implements Serializable
-{
+public class EChurchBean {
+	
 	private static final long serialVersionUID = -1730684388548572967L;
 	private int id;
 	private String name;
@@ -26,14 +28,16 @@ public class ChurchBean implements Serializable
 	private String emailId;
 	private String diocese;
 	private String additionalInfo;
+	private List<Priest> priests;
+	private List<Event> events;
 	
-	public ChurchBean(){}
+	public EChurchBean(){}
 	
-	public ChurchBean(int id){
+	public EChurchBean(int id){
 		this.id = id;
 	}
 	
-	public ChurchBean(Church church){
+	public EChurchBean(Church church){
 		if(church != null){
 			this.setId(church.getId());
 			this.setName(church.getName());
@@ -51,7 +55,16 @@ public class ChurchBean implements Serializable
 			this.setMobileNo(church.getMobileNo());
 			this.setEmailId(church.getEmailId());
 			this.setDiocese(church.getDiocese());
-			this.setAdditionalInfo(church.getAdditionalInfo().getInfo());
+			if(church.getAdditionalInfo() != null){
+				this.setAdditionalInfo(church.getAdditionalInfo().getInfo());
+			}
+			if(!church.getPriests().isEmpty()){
+				this.setPriests(church.getPriests());
+			}
+			if(!church.getEvents().isEmpty()){
+				this.setEvents(church.getEvents());
+			}
+			
 		}
 	}
 	
@@ -76,8 +89,11 @@ public class ChurchBean implements Serializable
 			church.setEmailId(this.getEmailId());
 			church.setDiocese(this.getDiocese());
 			
-			ChurchAdditionalInfo info = new ChurchAdditionalInfo();
-			info.setInfo(this.getAdditionalInfo());	
+			ChurchAdditionalInfo info = null;
+			if(this.additionalInfo != null){
+				info = new ChurchAdditionalInfo();
+				info.setInfo(this.getAdditionalInfo());	
+			}
 			church.setAdditionalInfo(info);
 		}
 		return church;
@@ -202,4 +218,20 @@ public class ChurchBean implements Serializable
 	public void setAdditionalInfo(String additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
+	public List<Priest> getPriests() {
+		return priests;
+	}
+
+	public void setPriests(List<Priest> priests) {
+		this.priests = priests;
+	}
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+	
 }

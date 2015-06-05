@@ -3,9 +3,11 @@ package com.coop.parish.core.service;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
 import com.coop.parish.core.beans.PriestBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
+import com.coop.parish.data.modal.Church;
 import com.coop.parish.data.modal.Priest;
 
 public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
@@ -34,11 +36,11 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		Query query = em.createQuery(str);
 		query.setParameter("id", id);
 		query.setParameter("isActive", true);
-		Object obj =  query.getSingleResult();
-		if(obj == null){
+		try{
+			priest =  (Priest)query.getSingleResult();
+		}catch(NoResultException e){
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
-		priest = (Priest)obj;
 		return new PriestBean(priest);
 	}
 

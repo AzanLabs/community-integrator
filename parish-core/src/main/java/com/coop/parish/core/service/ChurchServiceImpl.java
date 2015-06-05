@@ -5,6 +5,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.coop.parish.core.beans.ChurchBean;
+import com.coop.parish.core.beans.EChurchBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.data.modal.Church;
@@ -35,11 +36,11 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		Query query = em.createQuery(str);
 		query.setParameter("id", id);
 		query.setParameter("isActive", true);
-		Object obj =  query.getSingleResult();
-		if(obj == null){
+		try{
+			church =  (Church)query.getSingleResult();
+		}catch(NoResultException e){
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
-		church = (Church)obj;
 		return new ChurchBean(church);
 	}
 
@@ -84,6 +85,22 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
 		return true;
-	
+	}
+
+	public EChurchBean getEntireChurch(int id) throws Exception {
+		Church church = null;
+		if(id <= 0){
+			throw new ParishException(Constants.NO_SUCH_OBJECT);
+		}
+		String str = "Select c from Church as c where c.id=:id and c.isActive=:isActive";
+		Query query = em.createQuery(str);
+		query.setParameter("id", id);
+		query.setParameter("isActive", true);
+		Object obj =  query.getSingleResult();
+		if(obj == null){
+			throw new ParishException(Constants.NO_SUCH_OBJECT);
+		}
+		church = (Church)obj;
+		return new EChurchBean(church);
 	}
 }

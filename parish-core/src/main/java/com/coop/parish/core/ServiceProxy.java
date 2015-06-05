@@ -1,10 +1,12 @@
 package com.coop.parish.core;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.core.service.BaseService;
 
 public class ServiceProxy implements InvocationHandler{
@@ -25,23 +27,22 @@ public class ServiceProxy implements InvocationHandler{
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		Object result;
+		EntityTransaction tx = null;
 		System.out.println("invoking method "+method.getName());
 		try{
 			BaseService bs  = (BaseService)obj;
 			em = bs.getEm();
-			System.out.println("entity manager"+em);
-			em.getTransaction().begin();
+			tx = em.getTransaction();
+			tx.begin();
 			result = method.invoke(obj, args);
-			em.getTransaction().commit();
-		}catch(InvocationTargetException e){
-			em.getTransaction().rollback();
-			System.out.println("exception");
+			tx.commit();
+		}
+		catch(Exception e){
+			tx.rollback();
 			e.printStackTrace();
-			throw new Exception(e.getMessage());
-		}catch(Exception e){
-			em.getTransaction().rollback();
-			System.out.println("exception");
-			e.printStackTrace();
+			if(e.getCause() instanceof ParishException){
+				throw new ParishException(e.getCause().getMessage());
+			}
 			throw new Exception(e.getMessage());
 		}finally{
 			if(em != null){

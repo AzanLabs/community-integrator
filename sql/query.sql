@@ -28,10 +28,13 @@ create table if not exists church_info(
 	church_is_active boolean NOT NULL
 );
 
-create table if not exists church_add_info(
-	church_id int PRIMARY KEY AUTO_INCREMENT,
-	church_info varchar(1024)
+create table if not exists church_add_info(		
+	id int PRIMARY KEY AUTO_INCREMENT,	
+	church_id int,
+	church_info varchar(1024),
+	CONSTRAINT fk_church FOREIGN KEY(church_id) REFERENCES church_info(church_id)
 );
+
 
 create table if not exists priest_info(
 	priest_id int PRIMARY KEY AUTO_INCREMENT,
@@ -60,6 +63,20 @@ create table if not exists priest_info(
 );
 
 create table if not exists priest_add_info(
-	priest_id int PRIMARY KEY AUTO_INCREMENT,
-	priest_info varchar(1024)
+	id int PRIMARY KEY AUTO_INCREMENT,	
+	priest_id int NOT NULL,	
+	priest_info varchar(1024),
+	CONSTRAINT fk_priest FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id)
+);
+
+
+create table if not exists church_events(
+	event_id int PRIMARY KEY AUTO_INCREMENT,
+	event_name varchar(300) NOT NULL,
+	event_date_time timestamp NOT NULL,
+	event_description varchar(300) NOT NULL,	
+	event_details varchar(1024) NOT NULL,
+	event_is_active boolean NOT NULL,
+	church_id int NOT NULL,	
+	CONSTRAINT fk_event FOREIGN KEY(church_id) REFERENCES church_info(church_id)
 );

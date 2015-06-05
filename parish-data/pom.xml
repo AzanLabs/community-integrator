@@ -31,12 +31,6 @@
   		<groupId>org.hibernate</groupId>
   		<artifactId>hibernate-entitymanager</artifactId>
   		<version>${hibernate.version}</version>
-  		<!-- <exclusions>
-  			<exclusion>
-  				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.1-api</artifactId>
-  			</exclusion>
-  		</exclusions> -->
   	</dependency>
   	<dependency>
   		<groupId>org.hibernate</groupId>

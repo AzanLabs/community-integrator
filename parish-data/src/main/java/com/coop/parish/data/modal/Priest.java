@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -87,8 +88,7 @@ public class Priest {
 	@Column(name="church_id")
 	private int churchId;
 	
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="priest", targetEntity=PriestAdditionalInfo.class, optional=false)
 	private PriestAdditionalInfo additionalInfo;
 	
 	public int getId() {
@@ -222,6 +222,7 @@ public class Priest {
 	}
 	public void setAdditionalInfo(PriestAdditionalInfo additionalInfo) {
 		this.additionalInfo = additionalInfo;
+		additionalInfo.setPriest(this);
 	}
 	public int getChurchId() {
 		return churchId;

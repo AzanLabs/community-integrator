@@ -38,7 +38,7 @@ public class AppTest{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		service = ServiceLocator.instance().getChurchService();
+		/*service = ServiceLocator.instance().getChurchService();
 		int id = 0;
 		try {
 			id = service.deleteChurch(6);
@@ -47,6 +47,6 @@ public class AppTest{
 			e.printStackTrace();
 		}
 		System.out.println(churchBean.getId());
-		System.out.println(String.valueOf(id));
+		System.out.println(String.valueOf(id));*/
 	}
 }

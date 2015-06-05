@@ -1,34 +1,61 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="jspincludes.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script type="text/javascript">
-$.ready(function(){ 
-	var church = $("#submit");
-	church.on('click', function(event){
-		event.preventDefault(); 
-		var church={}; 
-		$.ajax({ url : './savechurch',
-				data : church,
-				success : function(resp) {console.log(resp); },
-				error : function(resp) { console.log(resp);}
-		});
-	});
-});
-</script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<jsp:include page="staticincludes.html"></jsp:include>
 </head>
 <body>
-	<form id="church_form" action="./savechurch" method="POST">
-    Name : <input name="church.name" type="text"/><br/>
-    DoorNo : <input name="church.doorNo" type="text"/><br/>
-    Street : <input name="church.street" type="text"/><br/>
-    Village : <input name="church.village" type="text"/><br/>
-	<input type="submit" value="submit" id="submit"/>
-</form>
+	<div class="container">
+	<form id="church-form" name="church-form" method="POST" action="savechurch" class="form-horizontal">
+		<div class="form-group">
+			<label for="churchBean.name" class="control-label col-sm-2">Church Name</label>
+			<div class="col-sm-8">
+				<input name="churchBean.name" id="churchBean.name" type="text" class="form-control"/>
+			</div>
+		</div>
+		<div class="form-group">
+        	<label class="col-sm-2 control-label">Address</label>
+            <div class="col-sm-8">
+              <div class="form-inline">
+                <div class="form-group no-margin">
+                  <input id="churchBean.doorNo" name="churchBean.doorNo" class="form-control" type="text" placeholder="Door No"/>
+                </div>
+                <div class="form-group no-margin">
+                  <input id="churchBean.street" name="churchBean.street" class="form-control" type="text" placeholder="Street"/>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="form-group">
+			<label for="churchBean.village" class="control-label col-sm-2">Village / Town</label>
+			<div class="col-sm-8">
+				<input name="churchBean.village" id="churchBean.village" type="text" class="form-control"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="churchBean.name" class="control-label col-sm-2">Church Name</label>
+			<div class="col-sm-8">
+				<input name="churchBean.name" id="churchBean.name" type="text" class="form-control"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="churchBean.name" class="control-label col-sm-2">Church Name</label>
+			<div class="col-sm-8">
+				<input name="churchBean.name" id="churchBean.name" type="text" class="form-control"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="churchBean.name" class="control-label col-sm-2">Church Name</label>
+			<div class="col-sm-8">
+				<input name="churchBean.name" id="churchBean.name" type="text" class="form-control"/>
+			</div>
+		</div>
+      	<div class="form-group">
+      		<input type="submit" name="submit" value="submit"/>
+      	</div>
+	</form>
+	</div>
 </body>
 </html>

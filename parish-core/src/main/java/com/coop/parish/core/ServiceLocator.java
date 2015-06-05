@@ -5,6 +5,8 @@ import javax.persistence.EntityManagerFactory;
 
 import com.coop.parish.core.service.ChurchService;
 import com.coop.parish.core.service.ChurchServiceImpl;
+import com.coop.parish.core.service.EventService;
+import com.coop.parish.core.service.EventServiceImpl;
 import com.coop.parish.core.service.LoginService;
 import com.coop.parish.core.service.LoginServiceImpl;
 import com.coop.parish.core.service.PriestService;
@@ -55,7 +57,6 @@ public class ServiceLocator implements Locator{
 		return new ChurchServiceImpl(em);
 	}
 
-
 	public PriestService getPriestService() {
 		EntityManager em = emf.createEntityManager();
 		PriestService service = new PriestServiceImpl(em);
@@ -63,9 +64,20 @@ public class ServiceLocator implements Locator{
 		return service;
 	}
 
-
 	public PriestService getPriestService(EntityManager em) {
 		return new PriestServiceImpl(em);
+	}
+
+	public EventService getEventService() {
+		EntityManager em = emf.createEntityManager();
+		EventService service = new EventServiceImpl(em);
+		service = (EventService)ServiceProxy.newInstance(service);
+		return service;
+	}
+
+
+	public EventService getEventService(EntityManager em) {
+		return new EventServiceImpl(em);
 	}
 	
 	
