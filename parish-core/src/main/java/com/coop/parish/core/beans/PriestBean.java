@@ -31,7 +31,7 @@ public class PriestBean {
 	private String diocese;
 	private String addditionalPosition;
 	private String additionalInfo;
-	private int church_id;
+	private int churchId;
 	
 	public PriestBean(){}
 	
@@ -277,9 +277,9 @@ public class PriestBean {
 	
 	@RequiredFieldValidator(key="bean.field.required", messageParams={"not_working"}, message="")
 	public int getChurch_id() {
-		return church_id;
+		return churchId;
 	}
 	public void setChurch_id(int church_id) {
-		this.church_id = church_id;
+		this.churchId = church_id;
 	}
 }
