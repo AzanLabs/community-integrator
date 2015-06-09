@@ -1,7 +1,5 @@
 <%@ include file="../includes/jspIncludes.jsp" %>
-<c:if test="${empty sessionScope.isSet or sessionScope.isSet eq 'NO'}">
-	<c:redirect url=""></c:redirect>
-</c:if>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +7,6 @@
 <title>View Church</title>
 </head>
 <body>
-	
+	Name : ${requestScope.churchBean.name}
 </body>
 </html>

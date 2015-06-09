@@ -67,9 +67,10 @@ public class HomeAction extends ActionSupport implements CookiesAware, SessionAw
 	
 	private void setChurchIdFromRequest() throws ParishException{
 		if(WebUtils.isUserLoggedIn(session)){
-			System.out.println(session.get("user"));
-			UserBean  user = (UserBean)session.get("user");
-			churchId = user.getBelongsTo();
+			if(session.get("churchId") != null){
+				this.churchId = Integer.valueOf(session.get("churchId").toString());
+				System.out.println("churchId" +churchId);
+			}
 		}
 		if(WebUtils.isPreferenceSet(cookies)){
 			this.churchId = Integer.valueOf(cookies.get("churchId"));

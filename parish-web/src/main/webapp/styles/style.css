@@ -46,6 +46,12 @@ fieldset > label{
 }
 /*ends*/
 
+#login-form{
+	width : 350px;	
+}
+.center{
+	margin : 0 auto;
+}
 .border{
 	border : lightgrey 1px solid;
 }

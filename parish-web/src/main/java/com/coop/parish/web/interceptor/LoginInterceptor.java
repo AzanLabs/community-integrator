@@ -2,6 +2,7 @@ package com.coop.parish.web.interceptor;
 
 import java.util.Map;
 
+import com.coop.parish.web.utils.WebUtils;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -18,7 +19,7 @@ public class LoginInterceptor extends AbstractInterceptor{
 			return Action.LOGIN;
 		}
 		String userRole = null;
-		if(session.containsKey("userRole")){
+		if(WebUtils.isUserLoggedIn(session)){
 			userRole = (String)((session.get("userRole") != null)?session.get("userRole"):"");
 			if("C".equals(userRole)){//userLogged in already
 				return invocation.invoke();

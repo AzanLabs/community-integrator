@@ -7,7 +7,8 @@
 <jsp:include page="../includes/staticIncludes.jsp"></jsp:include>
 </head>
 <body>
-	This jsp contains the Preference selection dropdown form
+	This page contains filter to select church preference
+	<a href="./pageLogin">Login Link</a>
 	<form name="preferences-form" id="preferences-form" method="POST" action="" class="form-horizontal container">
 		<div class="form-group">
 			<label for="state" class="col-sm-2 control-label">State</label>

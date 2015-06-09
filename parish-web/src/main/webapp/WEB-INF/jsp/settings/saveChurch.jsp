@@ -76,6 +76,12 @@
 		<fieldset>
 		<label>Contact Info</label>
 		<div class="form-group">
+			<label for="churchBean.telephoneNo" class="control-label col-sm-2 mandatory">Mobile Number</label>
+			<div class="col-sm-8">
+				<input name="churchBean.telephoneNo" id="churchBean.telephoneNo" type="text" class="form-control"/>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="churchBean.mobileNo" class="control-label col-sm-2 mandatory">Mobile Number</label>
 			<div class="col-sm-8">
 				<input name="churchBean.mobileNo" id="churchBean.mobileNo" type="text" class="form-control"/>

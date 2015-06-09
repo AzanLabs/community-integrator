@@ -25,7 +25,10 @@
         			<param name="wrapPrefix"><![CDATA["errors" : {]]></param>
         			<param name="wrapSuffix"><![CDATA[}]]></param>	
         		</result>
-        		<result name="login" type="redirect">pageLogin</result>
+        		<result name="login" type="redirectAction">
+        			<param name="actionName">pageLogin</param>
+            		<param name="namespace">/</param>
+        		</result>
         	</global-results>
     	</package>
     	
@@ -42,7 +45,10 @@
 			
     		<action name="actionLogin" class="com.coop.parish.web.actions.LoginAction" method="login">
     			<result name="success" type="redirect">actionHome</result>
-    			<result name="setup" type="redirect">pageFirstSteps</result>
+    			<result name="setup" type="redirectAction">
+    				<param name="actionName">pageFirstSteps</param>
+            		<param name="namespace">/church</param>
+    			</result>
     		</action>
     		
     		<action name="actionLogout" class="com.coop.parish.web.actions.LoginAction" method="logout">
@@ -58,7 +64,7 @@
     	<package name="protected_actions" namespace="/church" extends="parish-default">
     	
 			<default-interceptor-ref name="loginStack"></default-interceptor-ref>
-			
+			<default-action-ref name=""></default-action-ref>
 			<!-- pages section -->
 			<action name="pageChurchForm">
 				<result>/WEB-INF/jsp/settings/saveChurch.jsp</result>

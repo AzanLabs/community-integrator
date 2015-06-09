@@ -36,6 +36,7 @@ public class LoginAction extends ActionSupport implements SessionAware{
 			session.put("user", user);
 			if(user.getBelongsTo() != null){
 				session.put("isSet", "YES");
+				session.put("churchId",user.getBelongsTo());
 				return Action.SUCCESS;
 			}else{
 				session.put("isSet", "NO");

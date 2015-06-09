@@ -47,7 +47,7 @@
 	
 	<!-- tab panel starts -->
 	<div id="firststeps-tabs" class="container">
-		<div id="firststeps-church" class="tab active hidden">
+		<div id="firststeps-church" class="tab active">
 			<c:import url="./saveChurch.jsp"></c:import>
 		</div>
 		<div id="firststeps-priest" class="tab hidden">

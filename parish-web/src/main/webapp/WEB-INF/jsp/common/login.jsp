@@ -11,15 +11,15 @@
 </head>
 <body>
 	<!-- Login Form -->
-	<form id="login-form" name="login-form" action="./actionLogin" method="POST" class="form-horizontal">
+	<form id="login-form" name="login-form" action="./actionLogin" method="POST" class="form-horizontal center text-center">
 		<div class="form-group">
-			<label for="userBean.identifier" class="control-label col-sm-2">Event Name</label>
+			<label for="userBean.identifier" class="control-label col-sm-2">UserId</label>
 			<div class="col-sm-8">
 				<input name="identifier" id="identifier" type="text" class="form-control"/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="password" class="control-label col-sm-2">Event Name</label>
+			<label for="password" class="control-label col-sm-2">Password</label>
 			<div class="col-sm-8">
 				<input name="password" id="password" type="text" class="form-control"/>
 			</div>

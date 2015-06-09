@@ -12,8 +12,10 @@
 <jsp:include page="../includes/staticIncludes.jsp"></jsp:include>
 </head>
 <body>
-	homepage is logged in
-	${requestScope.isLoggedIn}
-	<p>hey u r logged in</p>
+	homepage Yet to implement
+	is logged in : ${requestScope.isLoggedIn}<br>
+	<c:if test="${requestScope.isLoggedIn}">
+		<p>hey u r logged in</p>
+	</c:if>
 </body>
 </html>
