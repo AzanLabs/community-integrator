@@ -12,12 +12,19 @@ public class LoginInterceptor extends AbstractInterceptor{
 
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
+		
 		Map<String, Object> session = invocation.getInvocationContext().getSession();
-		if((Boolean) session.get("isLoggedIn")){
-			return invocation.invoke();
-		}else{
+		if(session.isEmpty()){
 			return Action.LOGIN;
 		}
+		String userRole = null;
+		if(session.containsKey("userRole")){
+			userRole = (String)((session.get("userRole") != null)?session.get("userRole"):"");
+			if("C".equals(userRole)){//userLogged in already
+				return invocation.invoke();
+			}
+		}
+		return Action.LOGIN;
 	}
 
 }

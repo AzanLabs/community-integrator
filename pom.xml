@@ -40,13 +40,6 @@
       	<artifactId>log4j</artifactId>
        	<version>${log4j.version}</version>
     </dependency>
-    
-    <!-- spring dependency, which is needed for dependency injection -->
-    <dependency>
-  		<groupId>org.springframework</groupId>
-  		<artifactId>spring-context</artifactId>
-  		<version>${spring.version}</version>
-	</dependency>
 	
 	<!-- Struts 2 dependency. Version information is supplied from properties section -->
 	<dependency>
@@ -55,14 +48,6 @@
 	    <version>${struts.version}</version>
     </dependency>
     
-    <!-- junit plugin, needed to test struts -->
-    <dependency>
-		<groupId>org.apache.struts</groupId>
-		<artifactId>struts2-junit-plugin</artifactId>
-		<version>${struts.version}</version>
-		<scope>test</scope>
-	</dependency>
-	
   </dependencies>
   
   <!-- build section -->

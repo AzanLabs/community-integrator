@@ -8,7 +8,7 @@ create table user(
 	user_is_active boolean NOT NULL,
 	belongs_to int
 );
-insert into user (user_identifier, user_password, user_role,user_is_active) values('admin', 'admin', 'C', true);
+insert into user (user_identifier, user_password, user_role) values('admin', 'admin', 'C');
 
 
 create table if not exists church_info(

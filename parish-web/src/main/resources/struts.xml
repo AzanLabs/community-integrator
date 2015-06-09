@@ -5,73 +5,79 @@
     <struts>
     	<constant name="struts.devMode" value="true"></constant>
     	<!-- <constant name="struts.objectFactory" value="spring"/> -->
-    	<package name="/" extends="json-default">
+    	<package name="parish-default" extends="struts-default, json-default">
     		<interceptors>
                 <interceptor class="com.coop.parish.web.interceptor.LoginInterceptor" name="loginInterceptor">
                 </interceptor>
                 <interceptor-stack name="loginStack">
-                        <interceptor-ref name="loginInterceptor" />
-                        <interceptor-ref name="defaultStack" />
+                	<interceptor-ref name="loginInterceptor" />
+                	<interceptor-ref name="defaultStack" />
                 </interceptor-stack>
         	</interceptors>
-			
-			<!--  <action name="index">
-				<result>/login.jsp</result>
+        	<global-results>
+        		<result name="input" type="json">
+        			<param name="root">fieldErrors</param>
+        			<param name="wrapPrefix"><![CDATA["errors" : {]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+        		</result>
+        		<result name="error" type="json">
+        			<param name="root">actionErrors</param>
+        			<param name="wrapPrefix"><![CDATA["errors" : {]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+        		</result>
+        		<result name="login" type="redirect">pageLogin</result>
+        	</global-results>
+    	</package>
+    	
+    	<package name="common" namespace="/" extends="parish-default">
+    		<default-action-ref name="index"></default-action-ref>
+    		<action name="index" class="com.coop.parish.web.actions.InitAction" method="init">
+        		<result name="input">/WEB-INF/jsp/common/preferences.jsp</result>
+        		<result name="success" type="redirect">actionHome</result>
+        	</action>
+        	
+			<action name="pageLogin">
+				<result>/WEB-INF/jsp/common/login.jsp</result>
 			</action>
 			
-    		<action name="loginAction" class="com.coop.parish.web.actions.LoginAction" method="execute">
-    			<result name="success" type="redirect">home</result>
-    			<result name="login">/login.jsp</result>
+    		<action name="actionLogin" class="com.coop.parish.web.actions.LoginAction" method="login">
+    			<result name="success" type="redirect">actionHome</result>
+    			<result name="setup" type="redirect">pageFirstSteps</result>
     		</action>
+    		
+    		<action name="actionLogout" class="com.coop.parish.web.actions.LoginAction" method="logout">
+    			<result name="success" type="redirect">actionHome</result>
+    		</action>
+    		
+    		<action name="actionHome" class="com.coop.parish.web.actions.HomeAction" method="execute">
+    			<result name="success">/WEB-INF/jsp/common/home.jsp</result>
+    		</action>
+		</package>
+    	
+    	<!-- protected actions which will be only accessible to logged in users -->
+    	<package name="protected_actions" namespace="/church" extends="parish-default">
+    	
+			<default-interceptor-ref name="loginStack"></default-interceptor-ref>
 			
-			<action name="home">
-				 <interceptor-ref name="loginStack" />
-				 <result name="login">/login.jsp</result>
-				 <result name="success">/home.jsp</result>
-			</action> --> 
-			<action name="savechurch_form">
-				<result name="success">/views/savechurch.jsp</result>
+			<!-- pages section -->
+			<action name="pageChurchForm">
+				<result>/WEB-INF/jsp/settings/saveChurch.jsp</result>
 			</action>
+			<action name="pageFirstSteps">
+				<result>/WEB-INF/jsp/settings/firstSteps.jsp</result>
+			</action>
+			<action name="pagePriestForm">
+				<result>/WEB-INF/jsp/views/settings/savePriest.jsp</result>
+			</action>
+			<action name="pageEventsForm">
+				<result>/WEB-INF/jsp/settings/saveEvents.jsp</result>
+			</action>
+			<!-- pages ends -->
 			
-			<action name="savechurch" class="com.coop.parish.web.actions.ChurchAction" method="saveChurch">
-				<result name="input" type="json">
-					<param name="statusCode">300</param>
-					<param name="root">fieldErrors</param>
-					<param name="wrapPrefix"><![CDATA[{"errors" :]]></param>
-					<param name="wrapSuffix"><![CDATA[}]]></param>
-				</result>
-				<result name="success">/views/success.jsp</result>
-				<result name="error">/views/error.jsp</result>
-			</action>  
-			<action name="getchurch" class="com.coop.parish.web.actions.ChurchAction" method="getMyChurch">
-				<result name="input" type="json">
-					<param name="statusCode">300</param>
-					<param name="root">fieldErrors</param>
-					<param name="wrapPrefix"><![CDATA[{"errors" :]]></param>
-					<param name="wrapSuffix"><![CDATA[}]]></param>
-				</result>
-				<result name="success">/views/success.jsp</result>
-				<result name="error">/views/error.jsp</result>
+			
+			<action name="actionSaveChurch" class="com.coop.parish.web.actions.ChurchAction" method="saveChurch">
+				<result name="success">/WEB-INF/jsp/settings/viewChurch.jsp</result>
 			</action>
-			<action name="editchurch" class="com.coop.parish.web.actions.ChurchAction" method="editChurch">
-				<result name="input" type="json">
-					<param name="statusCode">300</param>
-					<param name="root">fieldErrors</param>
-					<param name="wrapPrefix"><![CDATA[{"errors" :]]></param>
-					<param name="wrapSuffix"><![CDATA[}]]></param>
-				</result>
-				<result name="success">/views/success.jsp</result>
-				<result name="error">/views/error.jsp</result>
-			</action>
-			<action name="deletechurch" class="com.coop.parish.web.actions.ChurchAction" method="disableChurch">
-				<result name="input" type="json">
-					<param name="statusCode">300</param>
-					<param name="root">fieldErrors</param>
-					<param name="wrapPrefix"><![CDATA[{"errors" :]]></param>
-					<param name="wrapSuffix"><![CDATA[}]]></param>
-				</result>
-				<result name="success">/views/success.jsp</result>
-				<result name="error">/views/error.jsp</result>
-			</action>	
+			<!-- action ends -->
     	</package>
     </struts>

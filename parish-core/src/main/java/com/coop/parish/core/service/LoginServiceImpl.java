@@ -4,6 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import com.coop.parish.core.beans.UserBean;
+import com.coop.parish.core.constants.Constants;
+import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.data.modal.User;
 
 public class LoginServiceImpl extends BaseServiceImpl implements LoginService{
@@ -12,20 +15,18 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService{
 		super(em);
 	}
 
-	public User getUser(User user) {
-		
-		User returnObj = null;
-		String queryStmt = "select usr from User usr where usr.identifier = :identifier and usr.password = :password";
+	public UserBean isUserPresent(String identifier) throws ParishException {
+		User user = null;
+		String queryStmt = "select usr from User usr where usr.identifier = :identifier and usr.isActive = :isActive";
 		Query query = em.createQuery(queryStmt);
-		em.getTransaction();
-		query.setParameter("identifier", user.getIdentifier());
-		query.setParameter("password", user.getPassword());
+		query.setParameter("identifier", identifier);
+		query.setParameter("isActive", true);
 		try{
-		returnObj = (User) query.getSingleResult();
+			user = (User)query.getSingleResult();
 		}catch(NoResultException e){
-			e.printStackTrace();
+			throw new ParishException(Constants.AUTHENTICATION_FAILED);
 		}
-		return returnObj;
+		return new UserBean(user);
 	}
 	
 	
