@@ -33,7 +33,7 @@ public class AppTest{
 		
 		ChurchBean churchBean = new ChurchBean(church);
 		try {
-			churchBean = service.saveChurch(churchBean);
+			//churchBean = service.saveChurch(churchBean);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

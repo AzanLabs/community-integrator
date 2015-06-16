@@ -1,16 +1,19 @@
 package com.coop.parish.web.tests;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.StrutsTestCase;
-//import org.junit.Test;
+import org.junit.Test;
 
+import com.coop.parish.core.beans.PriestBean;
+import com.coop.parish.web.actions.GetAllPriestAction;
 import com.coop.parish.web.actions.LoginAction;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionProxy;
 
-public class ActionTest /*extends StrutsTestCase*/{
+public class ActionTest extends StrutsTestCase{
 	
 	Map<String, Object> session = new HashMap<String, Object>();
 	Map<String, String> cookies = new HashMap<String, String>();
@@ -30,4 +33,14 @@ public class ActionTest /*extends StrutsTestCase*/{
 		System.out.println(action.getFieldErrors().toString());
 	}*/
 	
+	@Test
+	public void testGetAllPriests(){
+		ActionProxy proxy = getActionProxy("church/actionGetAllPriestByChurch");
+		assertNotNull(proxy);
+		GetAllPriestAction action = (GetAllPriestAction)proxy.getAction();
+		session.put("churchId", null);
+		action.setSession(session);
+		String result = action.getAllPriestByChurch();
+		System.out.println(action.getPriests().isEmpty());
+	}
 }

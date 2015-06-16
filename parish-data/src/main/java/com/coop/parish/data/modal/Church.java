@@ -4,20 +4,15 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 //@DynamicUpdate(true)
@@ -68,11 +63,14 @@ public class Church
 	@Column(name="church_diocese")
 	private String diocese;
 	
-	@Column(name="church_is_active")
+	@Column(name="is_active")
 	private boolean isActive;
 
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, optional=false, mappedBy="church",targetEntity=ChurchAdditionalInfo.class)
 	private ChurchAdditionalInfo additionalInfo;
+	
+	@Column(name="parish_id")
+	private Integer parishId;
 	
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(name="church_id")
@@ -82,6 +80,9 @@ public class Church
 	@JoinColumn(name="church_id")
 	private List<Event> events;
 	
+	@Embedded
+	private Audit audit;
+
 	public int getId() {
 		return id;
 	}
@@ -89,7 +90,7 @@ public class Church
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -158,6 +159,14 @@ public class Church
 		return pincode;
 	}
 
+	public Integer getParishId() {
+		return parishId;
+	}
+
+	public void setParishId(Integer parishId) {
+		this.parishId = parishId;
+	}
+
 	public void setPincode(Integer pincode) {
 		this.pincode = pincode;
 	}
@@ -193,7 +202,7 @@ public class Church
 	public void setDiocese(String diocese) {
 		this.diocese = diocese;
 	}
-	
+
 	public boolean isActive() {
 		return isActive;
 	}
@@ -201,7 +210,7 @@ public class Church
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+
 	public ChurchAdditionalInfo getAdditionalInfo() {
 		return additionalInfo;
 	}
@@ -210,7 +219,7 @@ public class Church
 		this.additionalInfo = additionalInfo;
 		additionalInfo.setChurch(this);
 	}
-	
+
 	public List<Priest> getPriests() {
 		return priests;
 	}
@@ -218,12 +227,20 @@ public class Church
 	public void setPriests(List<Priest> priests) {
 		this.priests = priests;
 	}
-	
+
 	public List<Event> getEvents() {
 		return events;
 	}
 
 	public void setEvents(List<Event> events) {
 		this.events = events;
+	}
+
+	public Audit getAudit() {
+		return audit;
+	}
+
+	public void setAudit(Audit audit) {
+		this.audit = audit;
 	}
 }

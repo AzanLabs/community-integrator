@@ -3,6 +3,7 @@ package com.coop.parish.data.modal;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,14 +30,25 @@ public class Event {
 	@Column(name="event_details")
 	private String details;
 	
-	@Column(name="event_is_active")
+	@Column(name="is_active")
 	private boolean isActive;
 	
 	@Column(name="church_id")
 	private int churchId;
-
+	
+	@Embedded
+	private Audit audit;
+	
 	public int getId() {
 		return id;
+	}
+
+	public Audit getAudit() {
+		return audit;
+	}
+
+	public void setAudit(Audit audit) {
+		this.audit = audit;
 	}
 
 	public void setId(int id) {

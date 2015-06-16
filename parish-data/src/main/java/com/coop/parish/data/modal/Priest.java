@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -79,7 +80,7 @@ public class Priest {
 	@Column(name="priest_diocese")
 	private String diocese;
 	
-	@Column(name="priest_is_active")
+	@Column(name="is_active")
 	private boolean isActive;
 	
 	@Column(name="priest_additional_position")
@@ -88,11 +89,23 @@ public class Priest {
 	@Column(name="church_id")
 	private int churchId;
 	
+	@Column(name="priest_image")
+	private String image;
+	
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="priest", targetEntity=PriestAdditionalInfo.class, optional=false)
 	private PriestAdditionalInfo additionalInfo;
 	
+	@Embedded
+	private Audit audit;
+	
 	public int getId() {
 		return id;
+	}
+	public Audit getAudit() {
+		return audit;
+	}
+	public void setAudit(Audit audit) {
+		this.audit = audit;
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -229,6 +242,12 @@ public class Priest {
 	}
 	public void setChurchId(int churchId) {
 		this.churchId = churchId;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 }
 

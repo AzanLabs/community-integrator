@@ -25,26 +25,44 @@ public class LoginAction extends ActionSupport implements SessionAware{
 	
 	public String login(){
 		System.out.println("iden:"+this.getIdentifier());
-		if(WebUtils.isUserLoggedIn(session)){
-			return Action.SUCCESS;
-		}
-		//authentication and authorization
-		if(this.identifier.equals(user.getIdentifier()) && 
-				this.password.equalsIgnoreCase(user.getPassword())){
-			//correct credentials
-			session.put("userRole", user.getRole());
-			session.put("user", user);
-			if(user.getBelongsTo() != null){
-				session.put("isSet", "YES");
-				session.put("churchId",user.getBelongsTo());
-				return Action.SUCCESS;
-			}else{
-				session.put("isSet", "NO");
-				return "setup";
+		try{
+			Integer weightage = null;
+			boolean isSet = false;
+			if(WebUtils.isUserLoggedIn(session)){
+				weightage = Integer.valueOf(session.get("roleWeight").toString());
+				isSet = "YES".equals(String.valueOf(session.get("isSet")));
+				return WebUtils.getResultString(weightage, isSet);
 			}
+			//authentication and authorization
+			else if(this.identifier.equals(user.getIdentifier()) && this.password.equalsIgnoreCase(user.getPassword())){
+				weightage = WebUtils.getWeightage(user.getRole());
+				//TODO : add user related details (address, name etc)
+				session.put("userId", user.getId());
+				session.put("userRole", user.getRole());
+				session.put("parishId", user.getParishId());
+				session.put("churchId", user.getChurchId());
+				session.put("roleWeight", weightage);
+				
+				//is church web site set or not , redirect based on it
+				if(user.getChurchId() != null){
+					isSet = true;
+					session.put("isSet", "YES");
+				}else{
+					session.put("isSet", "NO");
+				}
+				return WebUtils.getResultString(weightage, isSet);
+			}
+			addActionError("Incorrect Password");
+			return Action.ERROR;
+		}catch(ParishException e){
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			return Action.ERROR;
+		}catch(Exception e){
+			e.printStackTrace();
+			addActionError("Unexcepted error");
+			return Action.ERROR;
 		}
-		addActionError("Incorrect Password");
-		return Action.ERROR;
 	}
 	
 	@SkipValidation
@@ -60,8 +78,8 @@ public class LoginAction extends ActionSupport implements SessionAware{
 			service = ServiceLocator.instance().getLoginService();
 			user = service.isUserPresent(this.getIdentifier());
 		} catch (ParishException e) {
-			addFieldError("identifier", "user id doesn't exists");
 			e.printStackTrace();
+			addFieldError("identifier", "user id doesn't exists");
 		}
 	}
 	
@@ -82,6 +100,5 @@ public class LoginAction extends ActionSupport implements SessionAware{
 
 	public void setSession(Map<String, Object> session) {
 		this.session  = session;
-	}
-	
+	}	
 }

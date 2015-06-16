@@ -32,7 +32,7 @@ public class ChurchAction extends ActionSupport implements SessionAware {
 		logger.debug("Entering into Method : "+className +" > save church");
 		try{
 			service = ServiceLocator.instance().getChurchService();
-			churchBean = service.saveChurch(churchBean);
+			churchBean = service.saveChurch(churchBean, session);
 			if(WebUtils.isUserLoggedIn(session)){
 				session.put("churchId", churchBean.getId());
 				session.put("isSet", "YES");

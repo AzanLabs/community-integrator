@@ -5,6 +5,11 @@
              
 	<persistence-unit name="jpa-test" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>com.coop.parish.data.modal.Parish</class>
+		<class>com.coop.parish.data.modal.Church</class>
+		<class>com.coop.parish.data.modal.ChurchAdditionalInfo</class>
+		<class>com.coop.parish.data.modal.Priest</class>
+		<class>com.coop.parish.data.modal.PriestAdditionalInfo</class>
 		<class>com.coop.parish.data.modal.User</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/test" />

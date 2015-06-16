@@ -9,7 +9,9 @@ public class UserBean {
 	private String identifier;
 	private String password;
 	private String role;
-	private Integer belongsTo;
+	private Integer churchId;
+	private Integer parishId;
+	private boolean isActive;
 	
 	public UserBean(){}
 	
@@ -23,7 +25,9 @@ public class UserBean {
 			this.setIdentifier(user.getIdentifier());
 			this.setPassword(user.getPassword());
 			this.setRole(user.getRole());
-			this.setBelongsTo(user.getBelongsTo());
+			this.setChurchId(user.getChurchId());
+			this.setParishId(user.getParishId());
+			this.setActive(user.isActive());
 		}
 	}
 	
@@ -33,7 +37,9 @@ public class UserBean {
 		user.setIdentifier(this.getIdentifier());
 		user.setPassword(this.getPassword());
 		user.setRole(this.getRole());
-		user.setBelongsTo(this.getBelongsTo());
+		user.setChurchId(this.getChurchId());
+		user.setParishId(this.getParishId());
+		user.setActive(this.isActive());
 		return user;
 	}
 	
@@ -66,12 +72,29 @@ public class UserBean {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
-	public Integer getBelongsTo() {
-		return belongsTo;
+
+	public Integer getChurchId() {
+		return churchId;
 	}
 
-	public void setBelongsTo(Integer belongsTo) {
-		this.belongsTo = belongsTo;
+	public void setChurchId(Integer churchId) {
+		this.churchId = churchId;
 	}
+
+	public Integer getParishId() {
+		return parishId;
+	}
+
+	public void setParishId(Integer parishId) {
+		this.parishId = parishId;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	
 }

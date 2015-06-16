@@ -1,5 +1,7 @@
 package com.coop.parish.web.actions;
 
+import java.io.File;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -21,6 +23,9 @@ public class PriestAction extends ActionSupport{
 	private PriestBean priestBean; //priest bean which will be auto populated from request
 	private int id; //priest_id needed for read and delete action
 	private PriestService service = null; //common service needed to communicate
+	private File file;
+	private String type;
+	private String fileName;
 	
 	public String savePriest(){
 		logger.debug("Entering into Method : "+className +" > save priest");
@@ -98,10 +103,22 @@ public class PriestAction extends ActionSupport{
 		return Action.SUCCESS;
 	}
 	
+	
 	public void validate(){
 		//custom validation method
 	}
 	
+	public void setUpload(File file){
+		this.file = file;
+	}
+	
+	public void setUploadFileName(String fileName){
+		this.fileName = fileName;
+	}
+	
+	public void setUploadContentType(String type){
+		this.type = type;
+	}
 	public PriestBean getPriestBean() {
 		return priestBean;
 	}

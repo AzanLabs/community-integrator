@@ -1,30 +1,24 @@
 package com.coop.parish.core.service;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
+import org.hibernate.mapping.Map;
 
 import com.coop.parish.core.beans.ChurchBean;
 import com.coop.parish.core.beans.EChurchBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
+import com.coop.parish.data.modal.Audit;
 import com.coop.parish.data.modal.Church;
 
 public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 
 	public ChurchServiceImpl(EntityManager em) {
 		super(em);
-	}
-
-	public ChurchBean saveChurch(ChurchBean churchBean) throws Exception {
-		Church church = null;
-		if(churchBean == null){
-			throw new NullPointerException(Constants.PARAM_NULL_MSG);
-		}
-		church  = churchBean.toBO();
-		church.setActive(true);
-		em.persist(church);
-		return new ChurchBean(church);		
 	}
 
 	public ChurchBean getChurchById(int id) throws Exception {
@@ -102,5 +96,26 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		}
 		church = (Church)obj;
 		return new EChurchBean(church);
+	}
+
+	public ChurchBean saveChurch(ChurchBean churchBean,
+			java.util.Map<String, Object> session) throws Exception {
+		Church church = null;
+		if(churchBean == null){
+			throw new NullPointerException(Constants.PARAM_NULL_MSG);
+		}
+		church  = churchBean.toBO();
+		church.setParishId(Integer.valueOf(session.get("parishId").toString()));
+		
+		Audit audit = new Audit();
+		audit.setCreatedBy(Integer.valueOf(session.get("userId").toString()));
+		audit.setCreatedOn(new Date());
+		audit.setLastModifiedBy(Integer.valueOf(session.get("userId").toString()));
+		audit.setLastModifiedOn(new Date());
+		
+		church.setAudit(audit);
+		church.setActive(true);
+		em.persist(church);
+		return new ChurchBean(church);		
 	}
 }

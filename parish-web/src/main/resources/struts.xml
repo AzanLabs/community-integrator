@@ -16,13 +16,15 @@
         	</interceptors>
         	<global-results>
         		<result name="input" type="json">
+        			<param name="statusCode">400</param>
         			<param name="root">fieldErrors</param>
-        			<param name="wrapPrefix"><![CDATA["errors" : {]]></param>
+        			<param name="wrapPrefix"><![CDATA[{"errors" : ]]></param>
         			<param name="wrapSuffix"><![CDATA[}]]></param>	
         		</result>
         		<result name="error" type="json">
+        			<param name="statusCode">400</param>
         			<param name="root">actionErrors</param>
-        			<param name="wrapPrefix"><![CDATA["errors" : {]]></param>
+        			<param name="wrapPrefix"><![CDATA[{"errors" : ]]></param>
         			<param name="wrapSuffix"><![CDATA[}]]></param>	
         		</result>
         		<result name="login" type="redirectAction">
@@ -35,8 +37,24 @@
     	<package name="common" namespace="/" extends="parish-default">
     		<default-action-ref name="index"></default-action-ref>
     		<action name="index" class="com.coop.parish.web.actions.InitAction" method="init">
-        		<result name="input">/WEB-INF/jsp/common/preferences.jsp</result>
-        		<result name="success" type="redirect">actionHome</result>
+        		<result name="admin" type="redirectAction">
+    				<param name="actionName">pageHome</param>
+            		<param name="namespace">/platform</param>
+    			</result>
+    			<result name="padmin" type="redirectAction">
+    				<param name="actionName">pageHome</param>
+            		<param name="namespace">/parish</param>
+    			</result>
+    			<result name="home" type="redirectAction">
+    				<param name="actionName">actionHome</param>
+            		<param name="namespace">/church</param>
+    			</result>
+    			<result name="setup" type="redirectAction">
+    				<param name="actionName">pageFirstSteps</param>
+            		<param name="namespace">/church</param>
+    			</result>
+        		<result name="preferences">/WEB-INF/jsp/common/preferences.jsp</result>
+        		<result name="phome" type="redirect">actionHome</result>
         	</action>
         	
 			<action name="pageLogin">
@@ -44,15 +62,22 @@
 			</action>
 			
     		<action name="actionLogin" class="com.coop.parish.web.actions.LoginAction" method="login">
-    			<result name="success" type="redirect">actionHome</result>
+    			<result name="admin" type="redirectAction">
+    				<param name="actionName">pageHome</param>
+            		<param name="namespace">/platform</param>
+    			</result>
+    			<result name="padmin" type="redirectAction">
+    				<param name="actionName">pageHome</param>
+            		<param name="namespace">/parish</param>
+    			</result>
+    			<result name="home" type="redirectAction">
+    				<param name="actionName">actionHome</param>
+            		<param name="namespace">/church</param>
+    			</result>
     			<result name="setup" type="redirectAction">
     				<param name="actionName">pageFirstSteps</param>
             		<param name="namespace">/church</param>
     			</result>
-    		</action>
-    		
-    		<action name="actionLogout" class="com.coop.parish.web.actions.LoginAction" method="logout">
-    			<result name="success" type="redirect">actionHome</result>
     		</action>
     		
     		<action name="actionHome" class="com.coop.parish.web.actions.HomeAction" method="execute">
@@ -61,7 +86,7 @@
 		</package>
     	
     	<!-- protected actions which will be only accessible to logged in users -->
-    	<package name="protected_actions" namespace="/church" extends="parish-default">
+    	<package name="church" namespace="/church" extends="parish-default">
     	
 			<default-interceptor-ref name="loginStack"></default-interceptor-ref>
 			<default-action-ref name=""></default-action-ref>
@@ -78,12 +103,53 @@
 			<action name="pageEventsForm">
 				<result>/WEB-INF/jsp/settings/saveEvents.jsp</result>
 			</action>
+			<action name="pageSettings">
+				<result>/WEB-INF/jsp/settings/settings.jsp</result>
+			</action>
+			<action name="pagePriestPanel">
+				<result>/WEB-INF/jsp/settings/priestPanel.jsp</result>
+			</action>
 			<!-- pages ends -->
 			
+			<action name="actionLogout" class="com.coop.parish.web.actions.LoginAction" method="logout">
+    			<result name="success" type="redirect">actionHome</result>
+    		</action>
+    		
+			<action name="actionHome" class="com.coop.parish.web.actions.HomeAction" method="execute">
+    			<result name="success">/WEB-INF/jsp/common/home.jsp</result>
+    		</action>
+    		
+    		<action name="actionGetAllPriestByChurch" class="com.coop.parish.web.actions.GetAllPriestAction" method="getAllPriestByChurch">
+    			<result name="success" type="json">
+    				<param name="root">priests</param>
+        			<param name="wrapPrefix"><![CDATA[{"priests" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+    			</result>
+    		</action>
+    		
+			<action name="actionFStepsSaveChurch" class="com.coop.parish.web.actions.ChurchAction" method="saveChurch">
+				<result name="success" type="redirect">actionHome</result>
+			</action>
+			
+			<action name="actionUploadFiles" class="com.coop.parish.web.actions.UploadAction" method="execute">
+				<result name="success">/WEB-INF/jsp/settings/success.jsp</result>
+			</action>
 			
 			<action name="actionSaveChurch" class="com.coop.parish.web.actions.ChurchAction" method="saveChurch">
 				<result name="success">/WEB-INF/jsp/settings/viewChurch.jsp</result>
 			</action>
 			<!-- action ends -->
+    	</package>
+    	
+    	<package name="parish" namespace="/parish" extends="parish-default">
+    		<action name="pageHome">
+    			<result>/WEB-INF/jsp/settings/comingSoon.jsp</result>
+    		</action>
+    	</package>
+    	
+    	<package name="platform" namespace="/platform" extends="parish-default">
+    		<action name="pageHome">
+    			<result>/WEB-INF/jsp/settings/comingSoon.jsp</result>
+    		</action>
     	</package>
     </struts>

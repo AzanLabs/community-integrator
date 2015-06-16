@@ -1,6 +1,7 @@
 package com.coop.parish.data.modal;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +15,7 @@ public class User {
 	@GeneratedValue
 	@Column(name="user_id")
 	private int id;
-	
+
 	@Column(name="user_identifier")
 	private String identifier;
 	
@@ -24,11 +25,17 @@ public class User {
 	@Column(name="user_role")
 	private String role;
 	
-	@Column(name="user_is_active")
+	@Column(name="parish_id")
+	private Integer parishId;
+	
+	@Column(name="church_id")
+	private Integer churchId;
+	
+	@Column(name="is_active")
 	private boolean isActive;
 	
-	@Column(name="belongs_to")
-	private Integer belongsTo;
+	@Embedded
+	private Audit audit;
 
 	public int getId() {
 		return id;
@@ -37,7 +44,7 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -62,6 +69,22 @@ public class User {
 		this.role = role;
 	}
 
+	public Integer getParishId() {
+		return parishId;
+	}
+
+	public void setParishId(Integer parishId) {
+		this.parishId = parishId;
+	}
+
+	public Integer getChurchId() {
+		return churchId;
+	}
+
+	public void setChurchId(Integer churchId) {
+		this.churchId = churchId;
+	}
+
 	public boolean isActive() {
 		return isActive;
 	}
@@ -70,12 +93,12 @@ public class User {
 		this.isActive = isActive;
 	}
 
-	public Integer getBelongsTo() {
-		return belongsTo;
+	public Audit getAudit() {
+		return audit;
 	}
 
-	public void setBelongsTo(Integer belongsTo) {
-		this.belongsTo = belongsTo;
+	public void setAudit(Audit audit) {
+		this.audit = audit;
 	}
-	
+		
 }

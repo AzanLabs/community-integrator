@@ -9,5 +9,9 @@ $.ready(function(){
 		console.log('church saved going to perform ajax actions');
 	}
 	
-	EventBus.listen('firststeps-church-saved',firstStepsChurchSaved, this);
+	function settingsChurchSaved(event, arg){
+		console.log("inside settings church saved");
+	}
+	EventBus.listen('church-saved', settingsChurchSaved, this);
+	EventBus.listen('church-saved',firstStepsChurchSaved, this);
 });

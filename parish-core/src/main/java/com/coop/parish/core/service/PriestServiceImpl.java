@@ -1,5 +1,8 @@
 package com.coop.parish.core.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -86,6 +89,25 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		}
 		return true;
 	
+	}
+
+	public List<PriestBean> getAllPriest(int churchId) throws ParishException {
+		List<Priest> priests = null;
+		List<PriestBean> priestBeans = new ArrayList<PriestBean>();
+		if(churchId <= 0){
+			throw new ParishException(Constants.NO_SUCH_OBJECT);
+		}
+		Query q = em.createQuery("select p from priest p where churchId = :churchId and isActive = :isActive");
+		q.setParameter("churchId", churchId);
+		q.setParameter("isActive", true);
+		priests = q.getResultList();
+		//convert to priest bean
+		if(priests != null){
+			for(Priest p : priests){
+				priestBeans.add(new PriestBean(p));
+			}
+		}
+		return priestBeans;
 	}
 
 }

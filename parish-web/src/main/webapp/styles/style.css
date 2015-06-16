@@ -1,3 +1,12 @@
+/**global commons*/
+body{
+	font-family : monospace;
+	fontsize : 12px;
+}
+a{
+	background-color : unset;
+}
+
 /*bootstrap form general style override */
 .no-margin{
   margin-left : 0 !important;
@@ -7,8 +16,9 @@
 .form-header{
   color : #08C;
   font-family : monospace;
+  padding-left : 15px;
 }
-form{
+form, .firststeps-submit-panel{
   font-family : monospace;
   color : grey;
 }
@@ -44,7 +54,56 @@ fieldset > label{
 	left:-11px;
 	top:-11px;
 }
-/*ends*/
+.optional:after{
+	content : ' (Optional)';
+	font-weight : normal;
+	color : #999999;
+}
+.info{
+	font-size : 12px;
+	color : grey;
+}
+#firststeps-church{
+	max-width : 800px;
+	margin : 0 auto;
+}
+.form-horizontal  button.submit{
+	margin-right : 20px;
+}
+/** first  steps styles ends **/
+.overlay{
+	z-index : 1001;
+	display : none;
+	width : 100%;
+	height : 100%;
+	background-color : grey;
+	opacity : 0.6;
+	position : fixed;
+}
+/**settings starts**/
+.settings > li a{
+  color : #222;
+}
+.settings > li a:before{
+  margin-right : 7px;
+  font-size : 20px;
+}
+
+.settings > li a:hover{
+  background-color : #f5f5f5;
+}
+
+.settings > li a.active{
+  color : #08C;
+  background-color : #D9EDF7;
+}
+
+.settings .nav-panel{
+  background-color : #fcfcfc;
+  display : none;
+}
+/** settings ends**/
+
 
 #login-form{
 	width : 350px;	

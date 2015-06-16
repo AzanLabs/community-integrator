@@ -47,7 +47,7 @@ public class ServiceTest {
 		ChurchBean churchBean = new ChurchBean(church);
 		ChurchService service = ServiceLocator.instance().getChurchService();
 		try {
-			churchBean = service.saveChurch(churchBean);
+			//churchBean = service.saveChurch(churchBean);
 		} catch (Exception e) {
 			System.out.println("exception catched");
 			e.printStackTrace();

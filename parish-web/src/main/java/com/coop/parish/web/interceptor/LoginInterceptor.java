@@ -20,10 +20,7 @@ public class LoginInterceptor extends AbstractInterceptor{
 		}
 		String userRole = null;
 		if(WebUtils.isUserLoggedIn(session)){
-			userRole = (String)((session.get("userRole") != null)?session.get("userRole"):"");
-			if("C".equals(userRole)){//userLogged in already
-				return invocation.invoke();
-			}
+			return invocation.invoke();
 		}
 		return Action.LOGIN;
 	}
