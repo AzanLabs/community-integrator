@@ -11,6 +11,8 @@ import com.coop.parish.core.service.LoginService;
 import com.coop.parish.core.service.LoginServiceImpl;
 import com.coop.parish.core.service.PriestService;
 import com.coop.parish.core.service.PriestServiceImpl;
+import com.coop.parish.core.service.UserService;
+import com.coop.parish.core.service.UserServiceImpl;
 import com.coop.parish.data.TransactionManager;
 
 /**
@@ -75,9 +77,19 @@ public class ServiceLocator implements Locator{
 		return service;
 	}
 
-
 	public EventService getEventService(EntityManager em) {
 		return new EventServiceImpl(em);
+	}
+
+	public UserService getUserService() {
+		EntityManager em = emf.createEntityManager();
+		UserService service = new UserServiceImpl(em);
+		service = (UserService)ServiceProxy.newInstance(service);
+		return service;
+	}
+
+	public UserService getUserService(EntityManager em) {
+		return new UserServiceImpl(em);
 	}
 	
 	

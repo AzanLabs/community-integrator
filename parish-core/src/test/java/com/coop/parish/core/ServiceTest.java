@@ -78,7 +78,7 @@ public class ServiceTest {
 		
 		EventService service = ServiceLocator.instance().getEventService();
 		try {
-			bean = service.saveEvent(bean);
+			//bean = service.saveEvent(bean);
 		} catch (Exception e) {
 			System.out.println("exception catched");
 			e.printStackTrace();

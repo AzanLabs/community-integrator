@@ -26,7 +26,7 @@ public class InitAction extends ActionSupport implements SessionAware, CookiesAw
 		try{
 			if(WebUtils.isUserLoggedIn(session)){
 				//get the role and isset and redirect accordingly
-				Integer roleWeight = WebUtils.getWeightage(session.get("roleWeight").toString());
+				Integer roleWeight = Integer.valueOf(session.get("roleWeight").toString());
 				boolean isSet = "YES".equals(String.valueOf(session.get("isSet")));
 				return WebUtils.getResultString(roleWeight, isSet);
 			}
@@ -37,10 +37,6 @@ public class InitAction extends ActionSupport implements SessionAware, CookiesAw
 			}
 			//redirect to preferences page if preferences not set
 			return "preferences";
-		}catch(ParishException e){
-			e.printStackTrace();
-			addActionError(e.getMessage());
-			return Action.ERROR;
 		}catch(Exception e){
 			e.printStackTrace();
 			addActionError("Unexcepted error");

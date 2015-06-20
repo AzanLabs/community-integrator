@@ -80,7 +80,7 @@ create table if not exists church_add_info(
 create table if not exists priest_info(
 	priest_id int PRIMARY KEY AUTO_INCREMENT,
 	priest_name varchar(255) NOT NULL,
-	priest_dob date NOT NULL,
+	priest_dob date,
 	priest_education varchar(200) NOT NULL,
 	priest_specialization varchar(200) NOT NULL,
 	priest_birth_place varchar(200) NOT NULL,
@@ -99,7 +99,6 @@ create table if not exists priest_info(
 	priest_diocese varchar(100) NOT NULL,
 	priest_additional_position varchar(255),
 	church_id int NOT NULL,
-	priest_image varchar(255),
 	is_active boolean,
 	created_on timestamp NOT NULL,
 	created_by int NOT NULL,
@@ -119,7 +118,7 @@ create table if not exists priest_add_info(
 create table if not exists church_events(
 	event_id int PRIMARY KEY AUTO_INCREMENT,
 	event_name varchar(300) NOT NULL,
-	event_date_time timestamp NOT NULL,
+	event_date_time timestamp,
 	event_description varchar(300) NOT NULL,	
 	event_details varchar(1024) NOT NULL,
 	is_active boolean NOT NULL,

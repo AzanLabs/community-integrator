@@ -18,7 +18,6 @@ public class LoginInterceptor extends AbstractInterceptor{
 		if(session.isEmpty()){
 			return Action.LOGIN;
 		}
-		String userRole = null;
 		if(WebUtils.isUserLoggedIn(session)){
 			return invocation.invoke();
 		}

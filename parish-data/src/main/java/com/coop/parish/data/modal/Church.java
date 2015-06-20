@@ -78,7 +78,7 @@ public class Church
 	
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(name="church_id")
-	private List<Event> events;
+	private List<Event> event;
 	
 	@Embedded
 	private Audit audit;
@@ -229,11 +229,11 @@ public class Church
 	}
 
 	public List<Event> getEvents() {
-		return events;
+		return event;
 	}
 
-	public void setEvents(List<Event> events) {
-		this.events = events;
+	public void setEvents(List<Event> event) {
+		this.event = event;
 	}
 
 	public Audit getAudit() {

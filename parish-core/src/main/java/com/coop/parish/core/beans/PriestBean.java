@@ -122,7 +122,7 @@ public class PriestBean {
 		this.name = name;
 	}
 	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"not_working"}, message="")
+	//@RequiredFieldValidator(key="bean.field.required", messageParams={"not_working"}, message="")
 	public Date getDob() {
 		return dob;
 	}

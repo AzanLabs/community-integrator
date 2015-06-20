@@ -37,10 +37,7 @@ public class LoginAction extends ActionSupport implements SessionAware{
 			else if(this.identifier.equals(user.getIdentifier()) && this.password.equalsIgnoreCase(user.getPassword())){
 				weightage = WebUtils.getWeightage(user.getRole());
 				//TODO : add user related details (address, name etc)
-				session.put("userId", user.getId());
-				session.put("userRole", user.getRole());
-				session.put("parishId", user.getParishId());
-				session.put("churchId", user.getChurchId());
+				session.put("user", user);
 				session.put("roleWeight", weightage);
 				
 				//is church web site set or not , redirect based on it

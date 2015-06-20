@@ -98,7 +98,7 @@
 				<result>/WEB-INF/jsp/settings/firstSteps.jsp</result>
 			</action>
 			<action name="pagePriestForm">
-				<result>/WEB-INF/jsp/views/settings/savePriest.jsp</result>
+				<result>/WEB-INF/jsp/settings/savePriest.jsp</result>
 			</action>
 			<action name="pageEventsForm">
 				<result>/WEB-INF/jsp/settings/saveEvents.jsp</result>
@@ -108,6 +108,18 @@
 			</action>
 			<action name="pagePriestPanel">
 				<result>/WEB-INF/jsp/settings/priestPanel.jsp</result>
+			</action>
+			<action name="pageViewPriest">
+				<result>/WEB-INF/jsp/settings/viewPriest.jsp</result>
+			</action>
+			<action name="pageChurchPanel">
+				<result>/WEB-INF/jsp/settings/churchPanel.jsp</result>
+			</action>
+			<action name="pageEventsPanel">
+				<result>/WEB-INF/jsp/settings/eventsPanel.jsp</result>
+			</action>
+			<action name="pageViewEvent">
+				<result>/WEB-INF/jsp/settings/viewEvent.jsp</result>
 			</action>
 			<!-- pages ends -->
 			
@@ -127,6 +139,14 @@
     			</result>
     		</action>
     		
+    		<action name="actionAllEvents" class="com.coop.parish.web.actions.GetAllEventsAction" method="getAllEventsOfChurch">
+    			<result name="success" type="json">
+    				<param name="root">events</param>
+        			<param name="wrapPrefix"><![CDATA[{"events" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+    			</result>
+    		</action>
+    		
 			<action name="actionFStepsSaveChurch" class="com.coop.parish.web.actions.ChurchAction" method="saveChurch">
 				<result name="success" type="redirect">actionHome</result>
 			</action>
@@ -137,6 +157,21 @@
 			
 			<action name="actionSaveChurch" class="com.coop.parish.web.actions.ChurchAction" method="saveChurch">
 				<result name="success">/WEB-INF/jsp/settings/viewChurch.jsp</result>
+			</action>
+			
+			<action name="actionSaveEvents" class="com.coop.parish.web.actions.EventsAction" method="saveEvent">
+				<result name="success">/WEB-INF/jsp/settings/viewEvent.jsp</result>
+			</action>
+			
+			<action name="actionSavePriest" class="com.coop.parish.web.actions.SavePriestAction" method="save">
+				<result name="success">/WEB-INF/jsp/settings/viewChurch.jsp</result>
+			</action>
+			
+			<action name="actionDeleteEvent" class="com.coop.parish.web.actions.EventsAction" method="disableEvent">
+				<result name="success" type="json">
+					<param name="statusCode">200</param>
+					<param name="root">id</param>
+				</result>
 			</action>
 			<!-- action ends -->
     	</package>

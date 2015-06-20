@@ -1,16 +1,23 @@
 package com.coop.parish.core.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
 import com.coop.parish.core.beans.PriestBean;
+import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
-import com.coop.parish.data.modal.Church;
+import com.coop.parish.data.modal.Audit;
 import com.coop.parish.data.modal.Priest;
 
 public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
@@ -19,14 +26,24 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		super(em);
 	}
 
-	public PriestBean savePriest(PriestBean priestBean) throws Exception {
+	public PriestBean savePriest(PriestBean priestBean, UserBean user, File file, String fileName) throws Exception {
 		Priest priest = null;
 		if(priestBean == null){
 			throw new NullPointerException(Constants.PARAM_NULL_MSG);
 		}
 		priest  = priestBean.toBO();
 		priest.setActive(true);
+		priest.setChurchId(user.getChurchId());
+		
+		Audit audit = new Audit();
+		audit.setCreatedBy(user.getId());
+		audit.setCreatedOn(new Date());
+		audit.setLastModifiedBy(user.getId());
+		audit.setLastModifiedOn(new Date());
+		priest.setAudit(audit);
+		
 		em.persist(priest);
+		this.uploadPriestAvathar(user, priest.getId(), file, fileName);
 		return new PriestBean(priest);	
 	}
 
@@ -108,6 +125,24 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 			}
 		}
 		return priestBeans;
+	}
+	
+	private void uploadPriestAvathar(UserBean user, Integer priestId, File file, String fileName) throws ParishException, IOException{
+		Integer parishId = user.getParishId();
+		Integer churchId = user.getChurchId();
+		if(parishId == null || churchId == null || file == null){
+			throw new ParishException("Invalid Request");
+		}
+		StringBuilder builder = new StringBuilder("/home/sankar/parish/");
+		builder.append(parishId).append("/").append(churchId).append("/priests");
+		String path = builder.toString();
+		File f = new File(path);
+		System.out.println("path"+FilenameUtils.getExtension(file.getPath()));
+		if(!f.exists()){
+			f.mkdirs();
+		}
+		path = path+"/"+String.valueOf(priestId)+"."+FilenameUtils.getExtension(fileName);
+		FileUtils.copyFile(file, new File(path));
 	}
 
 }

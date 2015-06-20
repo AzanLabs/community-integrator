@@ -2,6 +2,7 @@ package com.coop.parish.web.utils;
 
 import java.util.Map;
 
+import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.exceptions.ParishException;
 
 public class WebUtils {
@@ -12,9 +13,9 @@ public class WebUtils {
 			return flag;
 		}
 		
-		if(session.containsKey("userRole")){
-			String userRole = (String)((session.get("userRole") != null)?session.get("userRole"):"");
-			if(!userRole.isEmpty()){//userLogged in already
+		if(session.containsKey("user")){
+			UserBean user = (UserBean)session.get("user"); 
+			if(!user.getRole().isEmpty()){
 				flag = true;
 			}
 		}
@@ -27,7 +28,7 @@ public class WebUtils {
 			return flag;
 		}
 		if(cookies.containsKey("churchId")){
-			String churchId = (String)((cookies.get("userRole") != null)?cookies.get("userRole"):"");
+			String churchId = (String)((cookies.get("churchId") != null)?cookies.get("churchId"):"");
 			if(!churchId.isEmpty()){//preference already set
 				flag = true;
 			}

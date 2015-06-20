@@ -29,7 +29,7 @@ public class PriestAction extends ActionSupport{
 	
 	public String savePriest(){
 		logger.debug("Entering into Method : "+className +" > save priest");
-		try{
+		/*try{
 			service = ServiceLocator.instance().getPriestService();
 			priestBean = service.savePriest(priestBean);
 		} catch (ParishException e) {
@@ -42,7 +42,7 @@ public class PriestAction extends ActionSupport{
 			logger.error("Error during saving priest", e);
 			addActionError("Contact Sys Admin");
 			return Action.ERROR;
-		}
+		}*/
 		return Action.SUCCESS;
 	}
 	

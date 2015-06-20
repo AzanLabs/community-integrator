@@ -8,12 +8,12 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 public class EventBean {
 	
-	private int id;
+	private Integer id;
 	private String name;
 	private Date eventDate;
 	private String description;
 	private String details;
-	private int churchId;
+	private Integer churchId;
 	
 	public EventBean(){}
 	
@@ -43,10 +43,10 @@ public class EventBean {
 		return event;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -58,7 +58,7 @@ public class EventBean {
 		this.name = name;
 	}
 	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"N"}, message="")
+	//@RequiredFieldValidator(key="bean.field.required", messageParams={"N"}, message="")
 	public Date getEventDate() {
 		return eventDate;
 	}
@@ -82,11 +82,10 @@ public class EventBean {
 		this.details = details;
 	}
 	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"N"}, message="")
-	public int getChurchId() {
+	public Integer getChurchId() {
 		return churchId;
 	}
-	public void setChurchId(int churchId) {
+	public void setChurchId(Integer churchId) {
 		this.churchId = churchId;
 	}
 }

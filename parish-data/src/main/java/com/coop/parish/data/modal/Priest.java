@@ -9,15 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
-
 @Entity
-@DynamicUpdate(true)
+//@DynamicUpdate(true)
 @Table(name="priest_info")
 public class Priest {
 	
@@ -88,10 +84,7 @@ public class Priest {
 	
 	@Column(name="church_id")
 	private int churchId;
-	
-	@Column(name="priest_image")
-	private String image;
-	
+		
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="priest", targetEntity=PriestAdditionalInfo.class, optional=false)
 	private PriestAdditionalInfo additionalInfo;
 	
@@ -242,12 +235,6 @@ public class Priest {
 	}
 	public void setChurchId(int churchId) {
 		this.churchId = churchId;
-	}
-	public String getImage() {
-		return image;
-	}
-	public void setImage(String image) {
-		this.image = image;
 	}
 }
 

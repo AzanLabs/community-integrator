@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <jsp:include page="../includes/staticIncludes.jsp"></jsp:include>
 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/settings.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/panels.js"></script>
 </head>
 <body>
 	<div class="container">

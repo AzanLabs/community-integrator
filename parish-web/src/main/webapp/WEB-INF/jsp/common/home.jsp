@@ -1,5 +1,5 @@
 <%@ include file="../includes/jspIncludes.jsp" %>
-<c:if var="isLoggedIn" test="${!empty sessionScope.userRole}" scope="request">
+<c:if var="isLoggedIn" test="${!empty sessionScope.user.role}" scope="request">
 	<c:if test="${!empty sessionScope.isSet and SessionScope.isSet eq 'YES'}">
 		<!--<c:redirect url="/firstSteps.jsp"></c:redirect> -->
 	</c:if>

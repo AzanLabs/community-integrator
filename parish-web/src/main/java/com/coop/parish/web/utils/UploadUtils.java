@@ -2,11 +2,13 @@ package com.coop.parish.web.utils;
 
 import java.io.File;
 
+import javax.imageio.ImageIO;
+
 import com.coop.parish.core.exceptions.ParishException;
 
 public class UploadUtils {
 	
-	private static void checkFileSize(File file,Long limit) throws ParishException{
+	public static void checkFileSize(File file,Long limit) throws ParishException{
 		if(file == null || !file.exists()){
 			throw new ParishException("Invalid Input");
 		}
@@ -17,12 +19,15 @@ public class UploadUtils {
 		}
 	}
 	
-	private static void checkFileType(String contentType, String expected) throws ParishException{
-		if(expected == null || contentType == null || contentType.isEmpty()){
-			throw new ParishException("Invalid Input");
+	public static void checkFileType(File file, String contentType) throws ParishException{
+		//check if contenttype is of image
+		if(!contentType.startsWith("image")){
+			throw new ParishException("Invalid file format");
 		}
-		if(!expected.equalsIgnoreCase(contentType)){
-			throw new ParishException("Image Type should be only "+expected);
+		try{
+			ImageIO.read(file);
+		}catch(Exception e){
+			throw new ParishException("The Uploaded file is a corrupted one");
 		}
 	}
 	

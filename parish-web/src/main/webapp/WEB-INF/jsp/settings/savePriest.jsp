@@ -1,43 +1,41 @@
 <%@ include file="../includes/jspIncludes.jsp" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Save Priest</title>
-</head>
-<body>
-	<div class="container">
-	<form id="priest-form" name="priest-form" method="POST" action="./actionSavePriest" class="form-horizontal">
-	<input type="hidden" name="priestBean.id" id="priestBean.id"/>
-		<div class = "row">
-			<fieldset class="col-sm-4">
-				<label>PriestImage</label>
-				<div class="priest-img-holder">
-					<img src="${pageContext.request.contextPath}/images/no-img-icon-md.png" class="priest-img border"/>
-				</div>
-				<input type="file" name="upload"/>
-			</fieldset>
-			<fieldset class="col-sm-8">
-				<label>Basic Info</label>
-				<div class="form-group">
-					<label for="priestBean.name" class="control-label col-sm-2">Priest Name</label>
-					<div class="col-sm-8">
-						<input name="priestBean.name" id="priestBean.name" type="text" class="form-control mandatory" required
-						placeholder="Name"/>
+	<iframe name="priest-form-target" id="priest-form-target" class="hidden"></iframe>
+	<form id="priest-form" name="priest-form" method="POST" action="./actionSavePriest" 
+		enctype="multipart/form-data" class="form-horizontal container-fluid">
+		<div class="with-img overlay-holder">
+			<fieldset>
+			<label>Basic Info</label>
+			<div id="close" class="close">X</div>
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="form-group">
+						<label for="priestBean.name" class="control-label col-sm-2">Priest Name</label>
+						<div class="col-sm-8">
+							<input name="priestBean.name" id="priestBean.name" type="text" class="form-control mandatory" required
+							placeholder="Name"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="priestBean.dob" class="control-label col-sm-2">Priest DOB</label>
+						<div class="col-sm-8">
+							<input name="priestBean.dob" id="priestBean.dob" type="text" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="priestBean.birthPlace" class="control-label col-sm-2">Priest Birth Place</label>
+						<div class="col-sm-8">
+							<input name="priestBean.birthPlace" id="priestBean.birthPlace" type="text" class="form-control"/>
+						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="priestBean.dob" class="control-label col-sm-2">Priest DOB</label>
-					<div class="col-sm-8">
-						<input name="priestBean.dob" id="priestBean.dob" type="text" class="form-control"/>
+				<div class="col-sm-4">
+					<label>PriestImage</label>
+					<div class="priest-img-holder">
+						<img src="/parish/images/no-img-icon-md.png" class="priest-img border">
 					</div>
+					<input name="upload" type="file">
 				</div>
-				<div class="form-group">
-					<label for="priestBean.birthPlace" class="control-label col-sm-2">Priest Birth Place</label>
-					<div class="col-sm-8">
-						<input name="priestBean.birthPlace" id="priestBean.birthPlace" type="text" class="form-control"/>
-					</div>
-				</div>
+			</div>
 			</fieldset>
 		</div>
 		<fieldset>
@@ -162,9 +160,9 @@
 					<textarea name="priestBean.additionalInfo" id="priestBean.additionalInfo" class="form-control"></textarea>
 				</div>
 			</div>
+			<div class="text-right">
+				<a href="#close" id="close">Cancel</a>
+				<input id="submit" type="submit" value="submit" class="btn btn-primary"/>
+			</div>
 		</fieldset>
-		<input type="hidden" name="priestBean.churchId" id="churchId"/>
 	</form>
-	</div>
-</body>
-</html>

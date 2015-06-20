@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.coop.parish.core.ServiceLocator;
 import com.coop.parish.core.beans.ChurchBean;
+import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.core.service.ChurchService;
 import com.coop.parish.web.utils.WebUtils;
@@ -31,10 +32,12 @@ public class ChurchAction extends ActionSupport implements SessionAware {
 		//save church action which needs input from churchbean
 		logger.debug("Entering into Method : "+className +" > save church");
 		try{
+			UserBean user = (UserBean)session.get("user");
 			service = ServiceLocator.instance().getChurchService();
-			churchBean = service.saveChurch(churchBean, session);
+			churchBean = service.saveChurch(churchBean, user);
+			user.setChurchId(churchBean.getId());
 			if(WebUtils.isUserLoggedIn(session)){
-				session.put("churchId", churchBean.getId());
+				session.put("user", user);
 				session.put("isSet", "YES");
 			}
 		} catch (ParishException e) {

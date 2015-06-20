@@ -16,7 +16,7 @@ public class Event {
 	@Id
 	@GeneratedValue
 	@Column(name="event_id")
-	private int id;
+	private Integer id;
 	
 	@Column(name="event_name")
 	private String name;
@@ -34,12 +34,12 @@ public class Event {
 	private boolean isActive;
 	
 	@Column(name="church_id")
-	private int churchId;
+	private Integer churchId;
 	
 	@Embedded
 	private Audit audit;
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -51,7 +51,7 @@ public class Event {
 		this.audit = audit;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -95,11 +95,11 @@ public class Event {
 		this.isActive = isActive;
 	}
 
-	public int getChurchId() {
+	public Integer getChurchId() {
 		return churchId;
 	}
 
-	public void setChurchId(int churchId) {
+	public void setChurchId(Integer churchId) {
 		this.churchId = churchId;
 	}
 	

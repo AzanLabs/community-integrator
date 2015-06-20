@@ -29,7 +29,7 @@ public class EChurchBean {
 	private String diocese;
 	private String additionalInfo;
 	private List<Priest> priests;
-	private List<Event> events;
+	private List<Event> event;
 	
 	public EChurchBean(){}
 	
@@ -227,11 +227,11 @@ public class EChurchBean {
 	}
 
 	public List<Event> getEvents() {
-		return events;
+		return event;
 	}
 
-	public void setEvents(List<Event> events) {
-		this.events = events;
+	public void setEvents(List<Event> event) {
+		this.event = event;
 	}
 	
 }

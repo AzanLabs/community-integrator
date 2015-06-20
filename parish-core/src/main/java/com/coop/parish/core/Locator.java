@@ -6,6 +6,7 @@ import com.coop.parish.core.service.ChurchService;
 import com.coop.parish.core.service.EventService;
 import com.coop.parish.core.service.LoginService;
 import com.coop.parish.core.service.PriestService;
+import com.coop.parish.core.service.UserService;
 
 public interface Locator {
 	
@@ -24,4 +25,8 @@ public interface Locator {
 	public EventService getEventService();
 	
 	public EventService getEventService(EntityManager em);
+	
+	public UserService getUserService();
+	
+	public UserService getUserService(EntityManager em);
 }

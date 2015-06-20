@@ -4,7 +4,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Save Church Form</title>
-<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/church.js"></script>
 </head>
 <body>
 	
@@ -126,7 +125,7 @@
 						placeholder="Please Enter Church History" value="${churchBean.additionalInfo}"></textarea>
 					</div>
 				</div>
-				<div class="form-group text-right">
+				<div class="form-group text-right" id="submit-grp">
 					<input id="submit" type="submit" class="submit btn btn-primary" value="Submit"/>
 				</div>
 			</fieldset>

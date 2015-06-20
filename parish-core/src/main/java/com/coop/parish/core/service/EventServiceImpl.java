@@ -1,29 +1,26 @@
 package com.coop.parish.core.service;
 
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.coop.parish.core.beans.EventBean;
+import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
+import com.coop.parish.data.modal.Audit;
 import com.coop.parish.data.modal.Event;
 
 public class EventServiceImpl extends BaseServiceImpl implements EventService{
 
 	public EventServiceImpl(EntityManager em) {
 		super(em);
-	}
-
-	public EventBean saveEvent(EventBean eventBean) throws Exception {
-		Event event = null;
-		if(eventBean == null){
-			throw new NullPointerException(Constants.PARAM_NULL_MSG);
-		}
-		event  = eventBean.toBO();
-		event.setActive(true);
-		em.persist(event);
-		return new EventBean(event);		
 	}
 
 	public EventBean getEventById(int id) throws Exception {
@@ -61,9 +58,9 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		return new EventBean(event);
 	}
 	
-	public int deleteEvent(int id) throws Exception{
+	public int deleteEvent(Integer id) throws Exception{
 		Event event = null;
-		if(id <= 0){
+		if(id == null || id <= 0){
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
 		event = em.find(Event.class, id);
@@ -84,5 +81,42 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
 		return true;
-	}	
+	}
+
+	public EventBean saveEvent(EventBean eventBean, UserBean user) throws Exception {
+		Event event = null;
+		if(eventBean == null || user == null){
+			throw new NullPointerException(Constants.PARAM_NULL_MSG);
+		}
+		event  = eventBean.toBO();
+		event.setActive(true);
+		event.setChurchId(user.getChurchId());
+		
+		Audit audit = new Audit();
+		audit.setCreatedBy(user.getId());
+		audit.setLastModifiedBy(user.getId());
+		audit.setCreatedOn(new Date());
+		audit.setLastModifiedOn(new Date());
+		event.setAudit(audit);
+		em.persist(event);
+		return new EventBean(event);	
+	}
+	
+	public List<EventBean> getAllEventsOfChurch(Integer churchId) throws ParishException{
+		if(churchId <= 0){
+			throw new ParishException(Constants.NO_SUCH_OBJECT);
+		}
+		List<EventBean> eventBeans = new ArrayList<EventBean>();
+		List<Event> events = null;
+		Query query = em.createQuery("select e from Event e where e.churchId = :churchId and e.isActive = :isActive");
+		query.setParameter("churchId",churchId);
+		query.setParameter("isActive", true);
+		events = query.getResultList();
+		if(events != null){
+			for(Event event : events){
+				eventBeans.add(new EventBean(event));
+			}
+		}
+		return eventBeans;
+	}
 }
