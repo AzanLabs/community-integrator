@@ -1,6 +1,6 @@
 package com.coop.parish.web.actions;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.coop.parish.core.ServiceLocator;
 import com.coop.parish.core.beans.PriestBean;
+import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.core.service.PriestService;
 import com.opensymphony.xwork2.Action;
@@ -20,16 +21,21 @@ public class GetAllPriestAction extends ActionSupport implements SessionAware{
 	private static final long serialVersionUID = -5618787504288467033L;
 	private Logger logger  = LogManager.getLogger(GetAllPriestAction.class);
 	private Map<String, Object> session = null;
-	private List<PriestBean> priests = new ArrayList<PriestBean>();
+	private Map<Integer, PriestBean> priestsMap = new HashMap<Integer, PriestBean>();
 	
 	public String getAllPriestByChurch(){
 		logger.info("Entering into GetAllPriest Function");
+		List<PriestBean> priests = null;
 		try{
-			if(session.containsKey("churchId")){
-				Integer churchId = Integer.valueOf(session.get("churchId").toString());
+				UserBean user = (UserBean)session.get("user");
 				PriestService service = ServiceLocator.instance().getPriestService();
-				setPriests(service.getAllPriest(churchId));
-			}
+				priests = service.getAllPriest(user.getChurchId());
+				if(priests != null){
+					for(PriestBean p : priests){
+						priestsMap.put(p.getId(), p);
+					}
+				}
+			
 		}catch(ParishException e){
 			addActionError(e.getMessage());
 			return Action.ERROR;
@@ -40,13 +46,13 @@ public class GetAllPriestAction extends ActionSupport implements SessionAware{
 		return Action.SUCCESS;
 		
 	}
+	public Map<Integer, PriestBean> getPriestsMap() {
+		return priestsMap;
+	}
+	public void setPriestsMap(Map<Integer, PriestBean> priestsMap) {
+		this.priestsMap = priestsMap;
+	}
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
-	}
-	public List<PriestBean> getPriests() {
-		return priests;
-	}
-	public void setPriests(List<PriestBean> priests) {
-		this.priests = priests;
 	}
 }

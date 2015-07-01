@@ -13,10 +13,12 @@ var saveChurch = function(event){
 		success : function(resp){
 			console.log("sucess function");
 			$(document.body).html(resp);
+			responseBox.success("Church Created Successfully");
 		},
 		error : function(resp){
 			console.log("failure");
 			parish.form.showErrors('church-form', resp.responseText);
+			responseBox.error(resp);
 		},
 		complete : function(){
 			overlay.hide();
@@ -26,4 +28,6 @@ var saveChurch = function(event){
 
 $(document).ready(function(){
 	$('#church-form').on('submit', saveChurch);
-})
+});
+
+var responseBox = new ResponseBox();

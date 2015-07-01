@@ -61,3 +61,42 @@ parish.form = {
 	}
 };
 
+function ResponseBox(){
+	this.content = '';
+	this.successView = $("#response-box-success");
+	this.errorView = $("#response-box-error");
+	this.errorView.find(".close").on('click', this.closeErrorView.bind(this));
+	this.errorViewContent = this.errorView.find(".content");
+	this.successViewContent = this.successView.find(".content");
+}
+
+ResponseBox.prototype = {
+		success : function(content){
+			this.successViewContent.html($("<p class='small'></p>").html(content));
+			this.successView.fadeIn().delay(3000).fadeOut();
+		},
+		error : function(resp){
+			var errors,
+			content = $("<p class='small'></p>");
+			if(resp.responseJSON){
+				errors = resp.responseJSON.errors;
+				for(var key in errors){
+					var error = errors[key];
+					if(error instanceof Array){
+						error.forEach(function(ele){
+							content.append($("<div>").html(ele));
+						});
+					}else{
+						content.append($("<div>").html(error));
+					}
+				}
+			}
+			this.errorViewContent.html(content);
+			this.errorView.fadeIn().delay(10000).fadeOut();
+		},
+		closeErrorView : function(e){
+			e.preventDefault();
+			this.errorView.hide();
+		}
+}
+

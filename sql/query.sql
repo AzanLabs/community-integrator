@@ -98,6 +98,7 @@ create table if not exists priest_info(
 	priest_email_id varchar(100),
 	priest_diocese varchar(100) NOT NULL,
 	priest_additional_position varchar(255),
+	priest_image varchar(255),
 	church_id int NOT NULL,
 	is_active boolean,
 	created_on timestamp NOT NULL,

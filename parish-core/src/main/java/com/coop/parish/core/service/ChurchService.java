@@ -9,7 +9,7 @@ public interface ChurchService extends BaseService{
 	
 	public ChurchBean getChurchById(int id) throws Exception;
 	
-	public ChurchBean updateChurch(ChurchBean churchBean) throws Exception;
+	public ChurchBean updateChurch(ChurchBean churchBean, UserBean userBean) throws Exception;
 	
 	public int deleteChurch(int id) throws Exception;
 	

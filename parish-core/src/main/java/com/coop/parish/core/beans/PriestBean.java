@@ -29,8 +29,16 @@ public class PriestBean {
 	private Long mobileNo;
 	private String emailId;
 	private String diocese;
-	private String addditionalPosition;
+	private String additionalPosition;
 	private String additionalInfo;
+	private String image;
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 	private int churchId;
 	
 	public PriestBean(){}
@@ -62,11 +70,11 @@ public class PriestBean {
 			this.setMobileNo(priest.getMobileNo());
 			this.setEmailId(priest.getEmailId());
 			this.setDiocese(priest.getDiocese());
-			this.setAddditionalPosition(priest.getAddditionalPosition());
+			this.setAdditionalPosition(priest.getAddditionalPosition());
+			this.setImage(priest.getImageName());
 			if(priest.getAdditionalInfo() != null){
 				this.setAdditionalInfo(priest.getAdditionalInfo().getInfo());
 			}
-			this.setChurch_id(priest.getChurchId());
 		}
 	}
 	
@@ -95,7 +103,7 @@ public class PriestBean {
 			priest.setMobileNo(this.getMobileNo());
 			priest.setEmailId(this.getEmailId());
 			priest.setDiocese(this.getDiocese());
-			priest.setAddditionalPosition(this.getAddditionalPosition());
+			priest.setAddditionalPosition(this.getAdditionalPosition());
 			
 			PriestAdditionalInfo info = null;
 			if(this.getAdditionalInfo() != null){
@@ -260,11 +268,11 @@ public class PriestBean {
 	}
 	
 	@RequiredStringValidator(key="bean.field.required", messageParams={"not_working"}, message="")
-	public String getAddditionalPosition() {
-		return addditionalPosition;
+	public String getAdditionalPosition() {
+		return additionalPosition;
 	}
-	public void setAddditionalPosition(String addditionalPosition) {
-		this.addditionalPosition = addditionalPosition;
+	public void setAdditionalPosition(String additionalPosition) {
+		this.additionalPosition = additionalPosition;
 	}
 	
 	@RequiredStringValidator(key="bean.field.required", messageParams={"not_working"}, message="")
@@ -275,11 +283,4 @@ public class PriestBean {
 		this.additionalInfo = additionalInfo;
 	}
 	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"not_working"}, message="")
-	public int getChurch_id() {
-		return churchId;
-	}
-	public void setChurch_id(int church_id) {
-		this.churchId = church_id;
-	}
 }

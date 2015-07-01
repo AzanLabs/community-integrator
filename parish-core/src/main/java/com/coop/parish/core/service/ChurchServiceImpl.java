@@ -40,7 +40,7 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		return new ChurchBean(church);
 	}
 
-	public ChurchBean updateChurch(ChurchBean churchBean) throws Exception {
+	public ChurchBean updateChurch(ChurchBean churchBean, UserBean user) throws Exception {
 		Church church = null;
 		int id = 0;
 		if(churchBean == null){
@@ -50,9 +50,23 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		if(id <= 0){
 			throw new ParishException(Constants.PARAM_NULL_MSG);
 		}
-		if(isInDB(id)){
+		Church fromDB = em.find(Church.class, id);
+		System.out.println("audit"+fromDB.getAudit().getCreatedOn());
+		if(fromDB != null){
 			church = churchBean.toBO();
+	
+			Audit audit = new Audit();
+			audit.setCreatedOn(fromDB.getAudit().getCreatedOn());
+			audit.setCreatedBy(fromDB.getAudit().getCreatedBy());
+			audit.setLastModifiedBy(user.getId());
+			audit.setLastModifiedOn(new Date());
+			
 			church.setActive(true);
+			church.setAudit(audit);
+			church.setParishId(fromDB.getParishId());
+			
+			fromDB.getAdditionalInfo().setInfo(church.getAdditionalInfo().getInfo());
+			church.setAdditionalInfo(fromDB.getAdditionalInfo());
 			em.merge(church);
 		}
 		return new ChurchBean(church);

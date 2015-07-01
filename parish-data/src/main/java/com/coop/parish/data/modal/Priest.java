@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -82,8 +84,12 @@ public class Priest {
 	@Column(name="priest_additional_position")
 	private String addditionalPosition;
 	
-	@Column(name="church_id")
-	private int churchId;
+	@Column(name="priest_image")
+	private String imageName;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="church_id")
+	private Church church;
 		
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="priest", targetEntity=PriestAdditionalInfo.class, optional=false)
 	private PriestAdditionalInfo additionalInfo;
@@ -230,11 +236,20 @@ public class Priest {
 		this.additionalInfo = additionalInfo;
 		additionalInfo.setPriest(this);
 	}
-	public int getChurchId() {
-		return churchId;
+	public Church getChurch() {
+		return church;
 	}
-	public void setChurchId(int churchId) {
-		this.churchId = churchId;
+	public void setChurch(Church church) {
+		this.church = church;
+		if(church.getPriests() != null && !church.getPriests().contains(this)){
+			church.getPriests().add(this);
+		}
+	}
+	public String getImageName() {
+		return imageName;
+	}
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 }
 

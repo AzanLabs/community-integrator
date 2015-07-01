@@ -72,16 +72,22 @@ public class Church
 	@Column(name="parish_id")
 	private Integer parishId;
 	
-	@OneToMany(fetch=FetchType.LAZY)
-	@JoinColumn(name="church_id")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="church")
 	private List<Priest> priests;
 	
-	@OneToMany(fetch=FetchType.LAZY)
-	@JoinColumn(name="church_id")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="church")
 	private List<Event> event;
 	
 	@Embedded
 	private Audit audit;
+	
+	public Church(){
+		
+	}
+	
+	public Church(Integer churchId) {
+		this.id = churchId;
+	}
 
 	public int getId() {
 		return id;

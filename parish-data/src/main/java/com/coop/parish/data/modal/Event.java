@@ -5,8 +5,11 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -33,8 +36,9 @@ public class Event {
 	@Column(name="is_active")
 	private boolean isActive;
 	
-	@Column(name="church_id")
-	private Integer churchId;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="church_id")
+	private Church church;
 	
 	@Embedded
 	private Audit audit;
@@ -95,12 +99,15 @@ public class Event {
 		this.isActive = isActive;
 	}
 
-	public Integer getChurchId() {
-		return churchId;
+	public Church getChurch() {
+		return church;
 	}
 
-	public void setChurchId(Integer churchId) {
-		this.churchId = churchId;
+	public void setChurch(Church church) {
+		this.church = church;
+		if(church.getEvents() != null && !church.getEvents().contains(this)){
+			church.getEvents().add(this);
+		}
 	}
 	
 }

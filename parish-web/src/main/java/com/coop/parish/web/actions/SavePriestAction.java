@@ -3,8 +3,6 @@ package com.coop.parish.web.actions;
 import java.io.File;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.coop.parish.core.ServiceLocator;
@@ -30,10 +28,12 @@ public class SavePriestAction extends ActionSupport implements SessionAware{
 	public String save(){
 		try{
 			UserBean user = (UserBean)session.get("user");
-			UploadUtils.checkFileSize(file, 400L);
-			UploadUtils.checkFileType(file, contentType);
+			if(file != null){
+				UploadUtils.checkFileSize(file, 400L);
+				UploadUtils.checkFileType(file, contentType);
+			}
 			PriestService service = ServiceLocator.instance().getPriestService();
-			service.savePriest(priestBean, user, file, fileName);
+			priestBean = service.savePriest(priestBean, user, file, fileName);
 		
 		}catch(ParishException e){
 			addActionError(e.getMessage());

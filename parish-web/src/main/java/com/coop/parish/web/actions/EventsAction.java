@@ -69,8 +69,9 @@ public class EventsAction extends ActionSupport implements SessionAware{
 	
 	public String editEvent(){
 		try{
+			UserBean user = (UserBean)session.get("user");
 			service = ServiceLocator.instance().getEventService();
-			eventBean = service.updateEvent(eventBean);
+			eventBean = service.updateEvent(eventBean, user);
 		}catch(ParishException e){
 			e.printStackTrace();
 			logger.warn("caught Parish Exception "+e.getMessage());

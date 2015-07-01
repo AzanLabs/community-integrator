@@ -11,7 +11,7 @@ public interface EventService extends BaseService{
 	
 	public EventBean getEventById(int id) throws Exception;
 	
-	public EventBean updateEvent(EventBean eventBean) throws Exception;
+	public EventBean updateEvent(EventBean eventBean, UserBean user) throws Exception;
 	
 	public int deleteEvent(Integer id) throws Exception;
 	

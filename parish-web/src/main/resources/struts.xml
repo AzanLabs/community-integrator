@@ -4,6 +4,7 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
     <struts>
     	<constant name="struts.devMode" value="true"></constant>
+    	<constant name="struts.multipart.maxSize" value="1000000" />
     	<!-- <constant name="struts.objectFactory" value="spring"/> -->
     	<package name="parish-default" extends="struts-default, json-default">
     		<interceptors>
@@ -89,10 +90,15 @@
     	<package name="church" namespace="/church" extends="parish-default">
     	
 			<default-interceptor-ref name="loginStack"></default-interceptor-ref>
-			<default-action-ref name=""></default-action-ref>
 			<!-- pages section -->
 			<action name="pageChurchForm">
 				<result>/WEB-INF/jsp/settings/saveChurch.jsp</result>
+			</action>
+			<action name="pageViewChurch">
+				<result>/WEB-INF/jsp/settings/viewChurch.jsp</result>
+			</action>
+			<action name="pageUpdateChurch">
+				<result>/WEB-INF/jsp/settings/updateChurch.jsp</result>
 			</action>
 			<action name="pageFirstSteps">
 				<result>/WEB-INF/jsp/settings/firstSteps.jsp</result>
@@ -131,9 +137,18 @@
     			<result name="success">/WEB-INF/jsp/common/home.jsp</result>
     		</action>
     		
+    		<action name="getPriestProfileImage" class="com.coop.parish.web.actions.GetImageAction" method="getPriestProfileImage">
+    			<result name="success" type="stream">
+    				<param name="contenttype">application/octet-stream</param>
+        			<param name="inputName">fileInputStream</param>
+        			<param name="contentDisposition">imageId</param>
+        			<param name="bufferSize">1024</param>
+    			</result>
+    		</action>
+    		
     		<action name="actionGetAllPriestByChurch" class="com.coop.parish.web.actions.GetAllPriestAction" method="getAllPriestByChurch">
     			<result name="success" type="json">
-    				<param name="root">priests</param>
+    				<param name="root">priestsMap</param>
         			<param name="wrapPrefix"><![CDATA[{"priests" : ]]></param>
         			<param name="wrapSuffix"><![CDATA[}]]></param>	
     			</result>
@@ -141,12 +156,65 @@
     		
     		<action name="actionAllEvents" class="com.coop.parish.web.actions.GetAllEventsAction" method="getAllEventsOfChurch">
     			<result name="success" type="json">
-    				<param name="root">events</param>
+    				<param name="root">eventsMap</param>
         			<param name="wrapPrefix"><![CDATA[{"events" : ]]></param>
         			<param name="wrapSuffix"><![CDATA[}]]></param>	
     			</result>
     		</action>
     		
+			<action name="actionViewChurch" class="com.coop.parish.web.actions.ChurchAction" method="getMyChurch">
+				<result name="success" type="json">
+    				<param name="statusCode">200</param>
+    				<param name="root">churchBean</param>
+        			<param name="wrapPrefix"><![CDATA[{"church" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+				</result>
+			</action>
+			
+			<action name="actionSaveEvents" class="com.coop.parish.web.actions.EventsAction" method="saveEvent">
+				<result name="success" type="json">
+					<param name="statusCode">200</param>
+    				<param name="root">eventBean</param>
+        			<param name="wrapPrefix"><![CDATA[{"event" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+				</result>
+			</action>
+			
+			<action name="actionUpdateEvent" class="com.coop.parish.web.actions.EventsAction" method="editEvent">
+				<result name="success" type="json">
+					<param name="statusCode">200</param>
+					<param name="root">eventBean</param>
+					<param name="wrapPrefix"><![CDATA[{"event" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+				</result>
+			</action>
+			
+			<action name="actionUploadMultipleFiles" class="com.coop.parish.web.actions.UploadMultipleFilesAction" method="execute">
+    			<interceptor-ref name="defaultStack">
+        			<param name="fileUpload.allowedTypes">image/jpeg,image/gif,image/png</param>
+        			<param name="fileUpload.maximumSize">250000</param>
+    			</interceptor-ref>
+				<result name="success">/WEB-INF/jsp/settings/viewChurch.jsp</result>
+			</action>
+			
+			<action name="actionDeleteEvent" class="com.coop.parish.web.actions.EventsAction" method="disableEvent">
+				<result name="success" type="json">
+					<param name="statusCode">200</param>
+					<param name="root">id</param>
+					<param name="wrapPrefix"><![CDATA[{"id" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+				</result>
+			</action>
+			
+			<action name="actionDeletePriest" class="com.coop.parish.web.actions.PriestAction" method="disablePriest">
+				<result name="success" type="json">
+					<param name="statusCode">200</param>
+					<param name="root">id</param>
+					<param name="wrapPrefix"><![CDATA[{"id" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+				</result>
+			</action>
+			
 			<action name="actionFStepsSaveChurch" class="com.coop.parish.web.actions.ChurchAction" method="saveChurch">
 				<result name="success" type="redirect">actionHome</result>
 			</action>
@@ -159,18 +227,25 @@
 				<result name="success">/WEB-INF/jsp/settings/viewChurch.jsp</result>
 			</action>
 			
-			<action name="actionSaveEvents" class="com.coop.parish.web.actions.EventsAction" method="saveEvent">
-				<result name="success">/WEB-INF/jsp/settings/viewEvent.jsp</result>
-			</action>
-			
-			<action name="actionSavePriest" class="com.coop.parish.web.actions.SavePriestAction" method="save">
+			<action name="actionUpdateChurch" class="com.coop.parish.web.actions.ChurchAction" method="editChurch">
 				<result name="success">/WEB-INF/jsp/settings/viewChurch.jsp</result>
 			</action>
 			
-			<action name="actionDeleteEvent" class="com.coop.parish.web.actions.EventsAction" method="disableEvent">
+			<action name="actionSavePriest" class="com.coop.parish.web.actions.SavePriestAction" method="save">
 				<result name="success" type="json">
 					<param name="statusCode">200</param>
-					<param name="root">id</param>
+					<param name="root">priestBean</param>
+					<param name="wrapPrefix"><![CDATA[{"priest" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
+				</result>
+			</action>
+			
+			<action name="actionUpdatePriest" class="com.coop.parish.web.actions.PriestAction" method="editPriest">
+				<result name="success" type="json">
+					<param name="statusCode">200</param>
+					<param name="root">priestBean</param>
+					<param name="wrapPrefix"><![CDATA[{"priest" : ]]></param>
+        			<param name="wrapSuffix"><![CDATA[}]]></param>	
 				</result>
 			</action>
 			<!-- action ends -->

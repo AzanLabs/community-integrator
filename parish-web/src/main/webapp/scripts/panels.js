@@ -1,7 +1,7 @@
 /**
  * Priest Modal
  */
-'use strict';
+'use strict'; //to minimize errors and for debugging purpose  strict mode is used
 function Priest(config){
 	if(config){
 		for(var key in config){
@@ -9,87 +9,160 @@ function Priest(config){
 		}
 	}
 }
-
+/**
+ * controller which controls the church view, update action in churchpanel of settings module
+ * data is loaded as json and views are rendered by sending json data to jsp
+ * json data is used as modal to avoid call to avoid db calls for every view and update view calls
+ */
 function ChurchController(config){
 	
-	this.churchId = config.churchId;
-	this.view = $("#church-panel");//view
-	this.church = ''; //modal
-	this.overlay = $("#church-panel-container .overlay");
-	this.viewHide = $("#church-panel-container .no-edit");
-	this.init();
-} 
+	this.holder = $("#church-panel"); //views
+	this.fullView = '';  
+	this.updateForm = '';
+	
+	this.church = ''; //modal populated by loadData call
+	
+	this.overlay = $("#body-overlay");
+	this.churchId = config["churchId"]; 
+	this.isUpdateFormLoaded = false; // flag used to optimize the load and initialization of update form
+}
 
 ChurchController.prototype = {
+		/**
+		 * init function which is called just after the creation of ChurcH Controller, 
+		 * contains all the functions one after another to render the view and make the panel work
+		 */
 		init : function(){
-			this.cancelBtn = $("<a href='#cancel' alt='cancel'>Cancel</a>");
-			this.cancelBtn.on('click', this.makeAsView.bind(this));// binding the cancel function
-			var edit = $('<a href="#edit" id="church-edit-btn">Edit</a>');
-			edit.on('click', this.makeAsForm.bind(this));
-			edit.appendTo($('.edit-btn-holder'));//binding the eedit btn function
-			this.loadData(this.churchId); //loads data
-			//this.renderChurchPanel(); // render the churchpanel
-			
+			$("#update-church-btn").on('click', this.showUpdateForm.bind(this));
+			this.loadData();
+			if(!this.church){
+				return;
+			}
+			this.loadView();
 		},
-		showOverlay : function(text){
-			this.overlay.text(text);
-			this.overlay.fadeIn();
-		},
-		hideOverlay : function(){
-			this.overlay.fadeOut();
-		},
-		loadData : function(churchId){
-			//get the data and render to panel
+		/**
+		 * loads church json data and populate the modal
+		 */
+		loadData : function(){
 			var that = this;
 			$.ajax({
-				url : './pageChurchForm',
-				type : 'GET',
-				beforeSend : function(){
-					that.showOverlay();
-				},
+				url : './actionViewChurch',
+				method : 'GET',
+				async : false,
+				data : {"id" : that.churchId},
 				success : function(resp){
-					console.log(resp);
-					//returns the form
-					that.church = resp;
-					that.renderChurchPanel();
+					console.log(resp.responseText);
+					that.church = resp.church;
 				},
 				error : function(resp){
 					console.log(resp);
-				},
-				complete : function(){
-					that.hideOverlay();
+					responseBox.error(resp);
 				}
 			});
 		},
-		makeAsView : function(){
-			$('#church-form #submit-grp').hide();
-			$('#church-form .form-control').css('border','none');
-			this.viewHide.fadeIn();
+		/**
+		 * loads the initial view using the json data,
+		 * the view is constructed by jsp using the data send, thus avoiding dynamic dom creation , manipulation
+		 */
+		loadView : function(){
+			var that = this;
+			$.ajax({
+				url : './pageViewChurch',
+				method : 'POSt',
+				data : this.church,
+				beforeSend : function(){
+					that.overlay.show();
+				},
+				success : function(resp){ //response will be the html text 
+					that.fullView = $(resp);
+					that.fullView.hide();
+					that.holder.append(that.fullView);
+					that.fullView.fadeIn();
+				},
+				error : function(resp){
+					console.log(resp);
+					responseBox.error(resp);
+				},
+				complete : function(){
+					that.overlay.hide();
+				}
+			});
 		},
-		makeAsForm : function(){
-			$('#church-form #submit-grp').show();
-			$('#church-form .form-control').css('border-bottom','#08C 1px dashed');
-			this.viewHide.fadeOut();
-		},
-		renderChurchPanel : function(){
-			if(this.church){
-				this.view.html(this.church);
-				$('#church-form #submit').before(this.cancelBtn); //add cancelbtn to the form
-				this.makeAsView();
+		/**
+		 * this method renders the update form
+		 */
+		showUpdateForm : function(){
+			var that = this;
+			if(this.isUpdateFormLoaded){
+				this.updateForm.show();
+				return;
 			}
+			$.ajax({
+				url : './pageUpdateChurch',
+				method : 'POST',
+				data : this.church,
+				success : function(resp){ //responseText will be html text of updateform
+					that.updateForm = $(resp);
+					//hook the necessary functions needed to handle user action
+					that.updateForm.find('.close').on('click', that.switchFromFormToView.bind(that));
+					that.updateForm.find('.clear').on('click', that.switchFromFormToView.bind(that));
+					that.updateForm.find('#update-church-form').on('submit', that.handleUpdate.bind(that));
+					that.holder.append(that.updateForm);
+					that.isUpdateFormLoaded = true;
+				},
+				error : function(resp){
+					console.log(resp);
+				}
+			})
+		},
+		clearForm : function(){
+			this.updateForm.find('input').val('');
+			this.updateForm.find('textarea').val('');
+		},
+		switchFromFormToView : function(e){
+			e.preventDefault();
+			this.updateForm.fadeOut();
+		},
+		handleUpdate : function(e){
+			e.preventDefault();
+			var that = this;
+			var data = parish.form.getFormData('update-church-form');
+			$.ajax({
+				url : './actionUpdateChurch',
+				type : 'POST',
+				data : data,
+				beforeSend : function(){
+					that.overlay.show();
+				},
+				success : function(resp){//on success close the form and update the view, 
+					//response will contain html text of view page
+					that.fullView.remove();
+					that.fullView = $(resp);
+					that.holder.append(that.fullView);
+					that.updateForm.hide();
+					responseBox.success("Updated Successfully");
+				},
+				error : function(resp){
+					console.log(resp);
+					responseBox.error(resp);
+				},
+				complete : function(){
+					that.overlay.hide();
+				}
+			});
 		}
-}
+};
 
 function PriestController(){
-	 
-	this.dom = [];
-	this.priests = [];
-	this.holder = $('#priest-tiles');
-	this.overlay = $('#priest-panel .overlay');
 	
+	this.priests = [];
+	
+	this.holder = $('#priest-tiles');
 	this.addForm = $('#priest-form');
-	this.updateForm = '';
+	this.updateForm = $("#update-priest-form");
+	this.fullView = $("#view-priest-container");
 	this.view = $('<div></div>');
+	this.overlay = $('#body-overlay');
 	
 	this.updateFormLoaded = false;
 	this.viewLoaded = false;
@@ -98,209 +171,241 @@ function PriestController(){
 PriestController.prototype = {
 	
 	init : function(){
-		//load the data
-		var priests = {'1001' : {
-		    name : 'sankar',
-		    image : 'http://img.jgi.doe.gov/images/img-user-forum.png'
-		}, '1002' : {
-		    name : 'sankar',
-		    image : 'http://img.jgi.doe.gov/images/img-user-forum.png'
-		},'1003' : {
-		    name : 'sankar',
-		    image : 'http://img.jgi.doe.gov/images/img-user-forum.png'
-		}};
 		
 		$("#add-new-priest").on('click', this.showAddForm.bind(this));
-		$("#priest-form .close").on('click', this.switchFromFormToView.bind(this));
-		$("#priest-form").on('submit', this.handleSave.bind(this));
+		this.addForm.find('.close').on('click', this.closeAddForm.bind(this));
+		this.addForm.find('.clear').on('click', this.closeAddForm.bind(this));
+		this.addForm.on('submit', this.handleSave.bind(this));
 		this.addForm.hide();
-		this.priests = priests;
+		
+		this.fullView.find(".close").on('click', this.closeFullView.bind(this));
+		this.fullView.hide();
+		
+		this.updateForm.find(".close").on('click', this.closeUpdateForm.bind(this));
+		this.updateForm.find(".clear").on('click', this.closeUpdateForm.bind(this));
+		this.updateForm.on('submit', this.handleUpdate.bind(this));
+		this.updateForm.hide();
+		
+		this.loadData();
 		this.createDom();
-		this.loadDataToDom();
-		this.show();
 	},
 	loadData : function(){
 		var that = this;
 		$.ajax({
-			url : '.',
+			url : './actionGetAllPriestByChurch',
 			type : 'GET',
+			async : false,
 			beforeSend : function(){
-				
+				that.overlay.show();
 			},
 			success : function(resp){
 				console.log(resp);
+				that.priests = resp.priests;
 			},
 			error : function(resp){
 				console.log(resp);
+				responseBox.error(resp);
 			},
 			complete : function(){
-				
+				that.overlay.hide();
 			}
 		});
 	},
+	priestDom : function(key){
+		var dom = {};
+		dom.container = $("<div id='"+key+"' class='priest'></div>");
+		dom.image = $("<img id='image' src= './getPriestProfileImage?imageId="+this.priests[key].image+"' 'alt='priest-image' class='priest-profile-image'></img>");
+		dom.name = $("<h4 id='name'>"+ this.priests[key].name+"</h4>");
+		dom.container.append(dom.image).append(dom.name);
+		
+		//controls
+		dom.controls = $("<div class='controls text-right'></div>");
+		dom.viewBtn = $("<a href='#view'>View</a>").on('click', this.showFullView.bind(this));
+		dom.viewBtn.data('id',key);
+		dom.editBtn = $("<a href='#edit'>Edit</a>").on('click', this.showUpdateForm.bind(this));
+		dom.editBtn.data('id',key);
+		dom.deleteBtn = $("<a href='#delete'>Delete</a>").on('click', this.deletePriest.bind(this));
+		dom.deleteBtn.data('id',key);
+		
+		var v = dom.container.append(dom.controls.append(dom.viewBtn).append(dom.editBtn).append(dom.deleteBtn));
+		this.view.append(v);
+	},
 	createDom : function(){
 		for(var key in this.priests){
-			var dom = {};
-			dom.container = $("<div class='priest'></div>");
-			dom.image = $("<img src='' alt='priest-image'></img>");
-			dom.name = $("<h4></h4>");
-			dom.container.append(dom.image).append(dom.name);
-			
-			//controls
-			dom.controls = $("<div class='controls text-right'></div>");
-			dom.viewBtn = $("<a href='#view'>View</a>").on('click', this.priestFullView.bind(this));
-			dom.viewBtn.data('id',key);
-			dom.editBtn = $("<a href='#edit'>Edit</a>").on('click', this.editPriest.bind(this));
-			dom.editBtn.data('id',key);
-			dom.deleteBtn = $("<a href='#delete'>Delete</a>").on('click', this.deletePriest.bind(this));
-			dom.deleteBtn.data('id',key);
-			
-			var v = dom.container.append(dom.controls.append(dom.viewBtn).append(dom.editBtn).append(dom.deleteBtn));
-			this.view.append(v);
-			this.dom[key] = dom;
-			this.viewLoaded = true;
+			this.priestDom(key);
 		}
-	},
-	loadDataToDom : function(){
-		for(var key in this.priests){
-			this.dom[key].image.attr('src',this.priests[key].image);
-			this.dom[key].name.html(this.priests[key].name);
-		}
-	},
-	show : function(){
 		this.holder.append(this.view);
+		this.viewLoaded = true;
 	},
-	showAddForm : function(event){
-		event.preventDefault();
-		this.view.hide();
+	showAddForm : function(e){
+		e.preventDefault();
 		this.addForm.fadeIn();
 	},
-	switchFromFormToView : function(event){
-		event.preventDefault();
-		this.addForm.hide();
-		this.view.fadeIn();
+	showFullView : function(e){
+		e.preventDefault();
+		//get the respective data
+		var id = $(e.target).data('id');
+		var currentPriest = this.priests[id];
+		//load the respective date to dom
+		for(var key in currentPriest){
+			var formEle = "#"+key;
+			this.fullView.find(formEle).html(currentPriest[key]);
+		}
+		this.fullView.find("#profile-img").attr("src", "./getPriestProfileImage?imageId="+currentPriest.image);
+		//show the full view
+		this.fullView.fadeIn();
 	},
-	handleSave : function(event){
-		event.preventDefault();
+	showUpdateForm : function(e){
+		e.preventDefault();
+		//get the respective data
+		var id = $(e.target).data('id');
+		var currentPriest = this.priests[id];
+		//load data into dom
+		for(var key in currentPriest){
+			var formEle = "#"+key;
+			this.updateForm.find(formEle).val(currentPriest[key]);
+		}
+		this.updateForm.find("#profile-img").attr("src", "./getPriestProfileImage?imageId="+currentPriest.image);
+		//show the update form
+		this.updateForm.fadeIn();
+	},
+	clearForm : function(){
+		this.addForm.find('input').val('');
+		this.addForm.find('textarea').val('');
+	},
+	closeAddForm : function(e){
+		if(e) e.preventDefault();
+		this.clearForm();
+		this.addForm.fadeOut();
+	},
+	closeFullView : function(e){
+		e.preventDefault();
+		this.fullView.fadeOut();
+	},
+	closeUpdateForm : function(e){
+		e.preventDefault();
+		this.updateForm.fadeOut();
+	},
+	
+	handleSave : function(e){
+		e.preventDefault();
 		var data = new FormData(document.getElementById('priest-form'));; 
 		var that = this;
 		var xhr = new XMLHttpRequest();
 		xhr.onReadyStateChange = function(){
 			if(xhr.readyState == 4 && xhr.status == 200){
 				console.log(xhr.response);
+				debugger;
 				that.addForm.hide();
-				that.view.fadeIn();
+				//add to the dom view
 			}else if(xhr.readyState == 4 && xhr.status != 200){
 				console.log(xhr.response);
+				responseBox.error(resp);
 			}
 		}
 		xhr.open("POST",'./actionSavePriest',true);
 		xhr.send(data);
 	},
-	priestFullView : function(event){
-		event.preventDefault();
-		//get the full view of priest
-		var priestId = $(event.target).data('id');
+	handleUpdate : function(e){
+		e.preventDefault();
+		var that = this;
+		var data = parish.form.getFormData('update-priest-form'); 
 		$.ajax({
-			url : './',
+			url : './actionUpdatePriest',
 			type : 'POST',
-			data : this.priests[priestId],
+			data : data,
 			beforeSend : function(){
-				
+				that.overlay.show();
 			},
-			success : function(){
-				
+			success : function(resp){ //response has the updated json , update the modal and view accordingly
+				var priest = resp.priest;
+				responseBox.success("Updated Successfully");
+				that.priests[priest.id] = priest;
+				that.view.find("#"+priest.id).find('#name').html(priest.name);
+				that.updateForm.fadeOut();
 			},
-			error : function(){
+			error : function(resp){
+				console.log(resp);
+				responseBox.error(resp);
 				
 			},
 			complete : function(){
-				
+				that.overlay.hide();
 			}
 		});
 	},
-	editPriest : function(event){
-		var priestId = $(event.target).data('id');
+	deletePriest : function(e){
+		e.preventDefault();
+		var that = this;
+		var confirm = window.confirm("Do u Really Want to Delete?");
+		if(!confirm){
+			return;
+		}
+		var priestId = $(e.target).data('id');
 		$.ajax({
-			url : './',
-			type : 'POST',
-			data : this.priests[priestId],
-			beforeSend : function(){
-				
-			},
-			success : function(){
-				
-			},
-			error : function(){
-				
-			},
-			complete : function(){
-				
-			}
-		});
-	},
-	deletePriest : function(event){
-		var priestId = $(event.target).data('id');
-		$.ajax({
-			url : './',
+			url : './actionDeletePriest',
 			type : 'GET',
-			data : priestId,
+			data : {id : priestId},
 			beforeSend : function(){
-				
+				that.overlay.show();
 			},
-			success : function(){
-				
+			success : function(resp){
+				var id = "#"+resp.id;
+				that.priests[resp.id] = null;
+				that.view.find(id).remove();
+				responseBox.success("Deleted Successfully");
 			},
-			error : function(){
-				
+			error : function(resp){
+				console.log(resp);
+				responseBox.error(resp);
 			},
 			complete : function(){
-				
+				that.overlay.hide();
 			}
 		});
 	}
 };
 
+function Events(){
+	
+}
+
 function EventsController(){
 	 
-	this.dom = [];
-	this.events = [];
+	this.events = []; //modal , which will be populated by load data call
+	
+	this.addForm = $('#event-form'); //views
+	this.updateForm = $("#event-update-form");
+	this.fullView = $("#event-full-view");
+	this.thumbView = $('<div></div>');
+	
 	this.holder = $('#events-tiles');
-	this.overlay = $('#events-panel .overlay');
-	
-	this.addForm = $('#event-form');
-	this.updateForm = '';
-	this.view = $('<div></div>');
-	this.fullView = '';
-	
-	this.updateFormLoaded = false;
-	this.viewLoaded = false;
+	this.overlay = $('#body-overlay');
+	this.responseBox = $("#response-box");
 }
 
 EventsController.prototype = {
-	
+	/**
+	 * init function which must be called to bootstrap all needed dependencies for the panel to work
+	 */
 	init : function(){
 		//load the data
-		var events = {'1001' : {
-		    name : 'sankar',
-		    image : 'http://img.jgi.doe.gov/images/img-user-forum.png'
-		}, '1002' : {
-		    name : 'sankar',
-		    image : 'http://img.jgi.doe.gov/images/img-user-forum.png'
-		},'1003' : {
-		    name : 'sankar',
-		    image : 'http://img.jgi.doe.gov/images/img-user-forum.png'
-		}};
-		
 		$("#add-new-event").on('click', this.showAddForm.bind(this));
-		$("#event-form #close").on('click', this.switchFromFormToView.bind(this));
-		$("#event-form").on('submit', this.handleSave.bind(this));
+		this.addForm.find('.close').on('click', this.closeAddForm.bind(this));
+		this.addForm.find('.clear').on('click', this.closeAddForm.bind(this));
+		this.addForm.on('submit', this.handleSave.bind(this));
 		this.addForm.hide();
+		
+		this.fullView.find(".close").on('click', this.closeFullView.bind(this));
+		this.fullView.hide();
+		
+		this.updateForm.find(".close").on('click', this.closeUpdateForm.bind(this));
+		this.updateForm.find(".clear").on('click', this.closeUpdateForm.bind(this));
+		this.updateForm.on('submit', this.handleUpdate.bind(this));
+		this.updateForm.hide();
 		//this.events = events;
 		this.loadData();
 		this.createDom();
-		this.loadDataToDom();
-		this.show();
 	},
 	loadData : function(){
 		var that = this;
@@ -317,62 +422,92 @@ EventsController.prototype = {
 			},
 			error : function(resp){
 				console.log(resp);
+				responseBox.error(resp);
 			},
 			complete : function(){
 				that.overlay.fadeOut();
 			}
 		});
 	},
+	eventDom : function(key){
+		var dom = {};
+		dom.container = $("<div id='"+key+"' class='event'></div>");
+		dom.image = $("<img id='image' src='http://img.jgi.doe.gov/images/img-user-forum.png' alt='event-image'></img>");
+		dom.name = $("<h4 id='name'>"+this.events[key].name+"</h4>");
+		dom.container.append(dom.image).append(dom.name);
+		
+		//controls
+		dom.controls = $("<div class='controls text-right'></div>");
+		dom.viewBtn = $("<a href='#view'>View</a>").on('click', this.showFullView.bind(this));
+		dom.viewBtn.data('id',key);
+		dom.editBtn = $("<a href='#edit'>Edit</a>").on('click', this.showUpdateForm.bind(this));
+		dom.editBtn.data('id',key);
+		dom.deleteBtn = $("<a href='#delete' class='glyphicon glyphicon-trash'>Delete</a>").on('click', this.deleteEvent.bind(this));
+		dom.deleteBtn.data('id',key);
+		var v = dom.container.append(dom.controls.append(dom.viewBtn).append(dom.editBtn).append(dom.deleteBtn));
+		this.thumbView.append(v);
+	},
 	createDom : function(){
 		for(var key in this.events){
-			var dom = {};
-			dom.container = $("<div class='event'></div>");
-			dom.image = $("<img src='' alt='event-image'></img>");
-			dom.name = $("<h4></h4>");
-			dom.container.append(dom.image).append(dom.name);
-			
-			//controls
-			dom.controls = $("<div class='controls text-right'></div>");
-			dom.viewBtn = $("<a href='#view'>View</a>").on('click', this.eventFullView.bind(this));
-			dom.viewBtn.data('id',key);
-			dom.editBtn = $("<a href='#edit'>Edit</a>").on('click', this.editEvent.bind(this));
-			dom.editBtn.data('id',key);
-			dom.deleteBtn = $("<a href='#delete' class='glyphicon glyphicon-trash'>Delete</a>").on('click', this.deleteEvent.bind(this));
-			dom.deleteBtn.data('id',key);
-			
-			var v = dom.container.append(dom.controls.append(dom.viewBtn).append(dom.editBtn).append(dom.deleteBtn));
-			this.view.append(v);
-			this.dom[key] = dom;
-			this.viewLoaded = true;
+			this.eventDom(key);
 		}
-	},
-	loadDataToDom : function(){
-		for(var key in this.events){
-			this.dom[key].image.attr('src','http://img.jgi.doe.gov/images/img-user-forum.png');
-			this.dom[key].name.html(this.events[key].name);
-		}
-	},
-	show : function(){
-		this.holder.append(this.view);
+		this.holder.append(this.thumbView);
 	},
 	showAddForm : function(e){
 		e.preventDefault();
-		this.view.hide();
 		this.addForm.fadeIn();
+	},
+	showFullView : function(e){
+		e.preventDefault();
+		//get the respective data
+		var id = $(e.target).data('id');
+		var currentEvent = this.events[id];
+		//load the respective date to dom
+		for(var key in currentEvent){
+			var formEle = "#"+key;
+			this.fullView.find(formEle).html(currentEvent[key]);
+		}
+		//show the full view
+		this.fullView.fadeIn();
+	},
+	showUpdateForm : function(e){
+		e.preventDefault();
+		//get the respective data
+		var id = $(e.target).data('id');
+		var currentEvent = this.events[id];
+		//load data into dom
+		for(var key in currentEvent){
+			var formEle = "#"+key;
+			this.updateForm.find(formEle).val(currentEvent[key]);
+		}
+		//show the update form
+		this.updateForm.fadeIn();
 	},
 	clearForm : function(){
 		this.addForm.find('input').val('');
 		this.addForm.find('textarea').val('');
 	},
-	switchFromFormToView : function(){
+	closeAddForm : function(e){
+		if(e) e.preventDefault();
 		this.clearForm();
-		this.addForm.hide();
-		this.view.fadeIn();
+		this.addForm.fadeOut();
 	},
-	handleSave : function(e){
+	closeFullView : function(e){
 		e.preventDefault();
+		this.fullView.fadeOut();
+	},
+	closeUpdateForm : function(e){
+		e.preventDefault();
+		this.updateForm.fadeOut();
+	},
+	/**
+	 * saves the church event
+	 * @param e
+	 */
+	handleSave : function(e){
+		e.preventDefault(); //prevent the default event
 		var that = this;
-		var event = parish.form.getFormData('event-form');
+		var event = parish.form.getFormData('event-form'); //get the submitted data
 		$.ajax({
 			url : './actionSaveEvents',
 			type : 'POST',
@@ -380,84 +515,79 @@ EventsController.prototype = {
 			beforeSend : function(){
 				that.overlay.show();
 			},
-			success : function(resp){
-				console.log(resp);
-				that.switchFromFormToView();
+			success : function(resp){ //response will have the json object of new event, 
+				//create a new view from the event data add it to the view and hide the form
+				console.log(resp.event);
+				var event = resp.event;
+				responseBox.success(event.name+"Event Created Successfully");
+				that.events[event.id] = event;
+				that.eventDom(event.id);
+				that.closeAddForm();
 			},
 			error : function(resp){
 				console.log(resp);
+				responseBox.error(resp);
 			},
 			complete : function(){
 				that.overlay.fadeOut();
 			}
 		});
 	},
-	eventFullView : function(e){
+	handleUpdate : function(e){
 		e.preventDefault();
-		//get the full view of priest
-		var id = $(e.target).data('id');
+		var key = $(e.target).data('id');
 		var that = this;
+		var data = parish.form.getFormData('event-update-form'); 
 		$.ajax({
-			url : './pageViewEvent',
+			url : './actionUpdateEvent',
 			type : 'POST',
-			data : this.events[id],
+			data : data,
 			beforeSend : function(){
-				
+				that.overlay.show();
 			},
-			success : function(resp){
-				console.log(resp);
-				that.view.hide();
-				that.fullView = $(resp);
-				that.holder.append(that.fullView);
+			success : function(resp){//response contains json of updated event, update the data and view accordingly
+				console.log(resp.event);
+				responseBox.success("Events Updated SuccessFully");
+				var event = resp.event;
+				that.events[event.id] = event; //update the modal
+				that.thumbView.find('#'+event.id).find("#name").html(event.name); //update the view
+				that.updateForm.fadeOut();
 			},
 			error : function(resp){
 				console.log(resp);
+				responseBox.error(resp);
 			},
 			complete : function(){
-				
-			}
-		});
-	},
-	editEvent : function(e){
-		var priestId = $(e.target).data('id');
-		$.ajax({
-			url : './',
-			type : 'POST',
-			data : this.events[eventId],
-			beforeSend : function(){
-				
-			},
-			success : function(){
-				
-			},
-			error : function(){
-				
-			},
-			complete : function(){
-				
+				that.overlay.hide();
 			}
 		});
 	},
 	deleteEvent : function(e){
 		var id = $(e.target).data('id');
 		var that = this;
+		var confirm = window.confirm("Do u Really Want to Delete?");
+		if(!confirm){
+			return;
+		}
 		$.ajax({
 			url : './actionDeleteEvent',
 			type : 'GET',
-			data : {id : this.events[id].id},
+			data : {id : id},
 			beforeSend : function(){
-				
+				that.overlay.show();
 			},
-			success : function(resp){
-				console.log(resp);
-				that.dom[id].container.remove();
-				that.events[id] = null;
+			success : function(resp){ //response contains the id of deleted event
+				var id = "#"+resp.id;
+				that.events[resp.id] = null;
+				that.thumbView.find(id).remove();
+				responseBox.success("Event Deleted Successfully");
 			},
 			error : function(resp){
 				console.log(resp);
+				responseBox.error(resp);
 			},
 			complete : function(){
-				
+				that.overlay.hide();
 			}
 		});
 	}

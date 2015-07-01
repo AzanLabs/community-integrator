@@ -2,6 +2,7 @@ package com.coop.parish.core.beans;
 
 import java.util.Date;
 
+import com.coop.parish.data.modal.Church;
 import com.coop.parish.data.modal.Event;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -28,7 +29,6 @@ public class EventBean {
 			this.setEventDate(event.getEventDate());
 			this.setDescription(event.getDescription());
 			this.setDetails(event.getDetails());
-			this.setChurchId(event.getChurchId());
 		}
 	}
 	
@@ -39,7 +39,6 @@ public class EventBean {
 		event.setEventDate(this.getEventDate());
 		event.setDescription(this.getDescription());
 		event.setDetails(details);
-		event.setChurchId(this.getChurchId());
 		return event;
 	}
 	

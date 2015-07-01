@@ -1,10 +1,13 @@
 <%@ include file="../includes/jspIncludes.jsp" %>	
-<jsp:useBean id="churchBean" class="com.coop.parish.core.beans.ChurchBean">
+<jsp:useBean id="churchBean" class="com.coop.parish.core.beans.ChurchBean" scope="request">
 	<jsp:setProperty name="churchBean" property="*"></jsp:setProperty>
 </jsp:useBean>
-<div class="container-fluid">
+<div class="container-fluid popover">
+	<a class="close">X</a>
+	<h2>Update Form</h2>
 	<p class="info">All fields are mandatory unless specified otherwise</p>
-	<form id="church-form" name="church-form" method="POST"  action="./actionFStepsSaveChurch" class="form-horizontal">
+	<form id="update-church-form" name="church-form" method="POST"  action="./actionFStepsSaveChurch" class="form-horizontal">
+		<input type="text" class="hidden" name="churchBean.id" value="${churchBean.id}" />
 		<fieldset>
 			<label>General Info</label>
 			<div class="form-group">
@@ -114,12 +117,13 @@
 				<label for="churchBean.additionalInfo" class="control-label col-sm-3 mandatory">Church History</label>
 				<div class="col-sm-9">
 					<textarea name="churchBean.additionalInfo" id="churchBean.additionalInfo" rows="10" class="form-control" required 
-					placeholder="Please Enter Church History" value="${churchBean.additionalInfo}"></textarea>
+					placeholder="Please Enter Church History">${churchBean.additionalInfo}</textarea>
 				</div>
 			</div>
 			<hr/>
-			<div class="text-right" id="submit-grp">
-				<input id="submit" type="submit" class="submit btn btn-primary" value="Submit"/>
+			<div class="form-group text-right" id="submit-grp">
+				<a href="#cancel" class="clear">Cancel</a> (or)
+				<button id="submit" type="submit" class="submit btn btn-primary"> Update</button>
 			</div>
 		</fieldset>
 	</form>

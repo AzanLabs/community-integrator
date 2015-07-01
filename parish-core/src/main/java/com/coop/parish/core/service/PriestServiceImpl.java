@@ -18,6 +18,7 @@ import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.data.modal.Audit;
+import com.coop.parish.data.modal.Church;
 import com.coop.parish.data.modal.Priest;
 
 public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
@@ -33,7 +34,7 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		}
 		priest  = priestBean.toBO();
 		priest.setActive(true);
-		priest.setChurchId(user.getChurchId());
+		priest.setChurch(new Church(user.getChurchId()));
 		
 		Audit audit = new Audit();
 		audit.setCreatedBy(user.getId());
@@ -43,7 +44,11 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		priest.setAudit(audit);
 		
 		em.persist(priest);
-		this.uploadPriestAvathar(user, priest.getId(), file, fileName);
+		String imageName = this.uploadPriestAvathar(user, priest.getId(), file, fileName);
+		if(imageName != null){
+			priest.setImageName(imageName);
+			em.merge(priest);
+		}
 		return new PriestBean(priest);	
 	}
 
@@ -64,19 +69,32 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		return new PriestBean(priest);
 	}
 
-	public PriestBean updatePriest(PriestBean priestBean) throws Exception {
+	public PriestBean updatePriest(PriestBean priestBean, UserBean user) throws Exception {
 		Priest priest = null;
 		int id = 0;
-		if(priestBean == null){
+		if(priestBean == null || user == null){
 			throw new ParishException(Constants.PARAM_NULL_MSG);
 		}
 		id = priestBean.getId();
 		if(id <= 0){
 			throw new ParishException(Constants.PARAM_NULL_MSG);
 		}
-		if(isInDB(id)){
+		Priest fromDB = em.find(Priest.class, id);
+		if(fromDB != null){
 			priest = priestBean.toBO();
+			
+			Audit audit = new Audit();
+			audit.setCreatedBy(fromDB.getAudit().getCreatedBy());
+			audit.setCreatedOn(fromDB.getAudit().getCreatedOn());
+			audit.setLastModifiedBy(user.getId());
+			audit.setLastModifiedOn(new Date());
+			
+			priest.setAudit(audit);
 			priest.setActive(true);
+			
+			fromDB.getAdditionalInfo().setInfo(priest.getAdditionalInfo().getInfo());
+			priest.setAdditionalInfo(fromDB.getAdditionalInfo());
+			priest.setChurch(new Church(user.getChurchId()));
 			em.merge(priest);
 		}
 		return new PriestBean(priest);
@@ -114,7 +132,7 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		if(churchId <= 0){
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
-		Query q = em.createQuery("select p from priest p where churchId = :churchId and isActive = :isActive");
+		Query q = em.createQuery("select p from Priest p where p.church.id = :churchId and p.isActive = :isActive");
 		q.setParameter("churchId", churchId);
 		q.setParameter("isActive", true);
 		priests = q.getResultList();
@@ -127,22 +145,27 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		return priestBeans;
 	}
 	
-	private void uploadPriestAvathar(UserBean user, Integer priestId, File file, String fileName) throws ParishException, IOException{
+	private String uploadPriestAvathar(UserBean user, Integer priestId, File temp, String fileName) throws ParishException, IOException{
+		if(temp == null){
+			return null;
+		}
 		Integer parishId = user.getParishId();
 		Integer churchId = user.getChurchId();
-		if(parishId == null || churchId == null || file == null){
+		if(parishId == null || churchId == null || temp == null){
 			throw new ParishException("Invalid Request");
 		}
 		StringBuilder builder = new StringBuilder("/home/sankar/parish/");
-		builder.append(parishId).append("/").append(churchId).append("/priests");
+		builder.append("/priests");
 		String path = builder.toString();
 		File f = new File(path);
-		System.out.println("path"+FilenameUtils.getExtension(file.getPath()));
+		System.out.println("path"+FilenameUtils.getExtension(temp.getPath()));
 		if(!f.exists()){
 			f.mkdirs();
 		}
 		path = path+"/"+String.valueOf(priestId)+"."+FilenameUtils.getExtension(fileName);
-		FileUtils.copyFile(file, new File(path));
+		File file = new File(path);
+		FileUtils.copyFile(temp, file);
+		return file.getName();
 	}
 
 }

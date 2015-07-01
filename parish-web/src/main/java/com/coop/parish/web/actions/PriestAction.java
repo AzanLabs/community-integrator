@@ -1,13 +1,16 @@
 package com.coop.parish.web.actions;
 
 import java.io.File;
+import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.SessionAware;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.coop.parish.core.ServiceLocator;
 import com.coop.parish.core.beans.PriestBean;
+import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.core.service.PriestService;
 import com.opensymphony.xwork2.Action;
@@ -15,7 +18,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
-public class PriestAction extends ActionSupport{
+public class PriestAction extends ActionSupport implements SessionAware{
 
 	private static final String className = PriestAction.class.getName(); //needed by action support class to serialize
 	private static final long serialVersionUID = 3719148551858332373L; //logger
@@ -26,6 +29,7 @@ public class PriestAction extends ActionSupport{
 	private File file;
 	private String type;
 	private String fileName;
+	private Map<String, Object> session;
 	
 	public String savePriest(){
 		logger.debug("Entering into Method : "+className +" > save priest");
@@ -68,8 +72,9 @@ public class PriestAction extends ActionSupport{
 	
 	public String editPriest(){
 		try{
+			UserBean user = (UserBean)session.get("user");
 			service = ServiceLocator.instance().getPriestService();
-			priestBean = service.updatePriest(priestBean);
+			priestBean = service.updatePriest(priestBean, user);
 		}catch(ParishException e){
 			e.printStackTrace();
 			logger.warn("caught Parish Exception "+e.getMessage());
@@ -85,7 +90,7 @@ public class PriestAction extends ActionSupport{
 	}
 	
 	@SkipValidation
-	public String deletePriest(){
+	public String disablePriest(){
 		try{
 			service = ServiceLocator.instance().getPriestService();
 			id = service.deletePriest(id);
@@ -133,5 +138,9 @@ public class PriestAction extends ActionSupport{
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
 	}
 }

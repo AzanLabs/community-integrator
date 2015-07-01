@@ -41,6 +41,6 @@ public class ActionTest extends StrutsTestCase{
 		session.put("churchId", null);
 		action.setSession(session);
 		String result = action.getAllPriestByChurch();
-		System.out.println(action.getPriests().isEmpty());
+		
 	}
 }

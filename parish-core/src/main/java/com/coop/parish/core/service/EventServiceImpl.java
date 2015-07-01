@@ -15,6 +15,7 @@ import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.data.modal.Audit;
+import com.coop.parish.data.modal.Church;
 import com.coop.parish.data.modal.Event;
 
 public class EventServiceImpl extends BaseServiceImpl implements EventService{
@@ -40,7 +41,7 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		return new EventBean(event);
 	}
 
-	public EventBean updateEvent(EventBean eventBean) throws Exception {
+	public EventBean updateEvent(EventBean eventBean, UserBean user) throws Exception {
 		Event event = null;
 		int id = 0;
 		if(eventBean == null){
@@ -50,9 +51,19 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		if(id <= 0){
 			throw new ParishException(Constants.PARAM_NULL_MSG);
 		}
-		if(isInDB(id)){
+		Event fromDB = em.find(Event.class, id);
+		if(fromDB != null){
 			event = eventBean.toBO();
+			
+			Audit audit = new Audit();
+			audit.setCreatedOn(fromDB.getAudit().getCreatedOn());
+			audit.setCreatedBy(fromDB.getAudit().getCreatedBy());
+			audit.setLastModifiedBy(user.getId());
+			audit.setLastModifiedOn(new Date());
+			
+			event.setChurch(new Church(user.getChurchId()));
 			event.setActive(true);
+			event.setAudit(audit);
 			em.merge(event);
 		}
 		return new EventBean(event);
@@ -90,7 +101,7 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		}
 		event  = eventBean.toBO();
 		event.setActive(true);
-		event.setChurchId(user.getChurchId());
+		event.setChurch(new Church(user.getChurchId()));
 		
 		Audit audit = new Audit();
 		audit.setCreatedBy(user.getId());
@@ -108,7 +119,7 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		}
 		List<EventBean> eventBeans = new ArrayList<EventBean>();
 		List<Event> events = null;
-		Query query = em.createQuery("select e from Event e where e.churchId = :churchId and e.isActive = :isActive");
+		Query query = em.createQuery("select e from Event e where e.church.id = :churchId and e.isActive = :isActive");
 		query.setParameter("churchId",churchId);
 		query.setParameter("isActive", true);
 		events = query.getResultList();

@@ -61,7 +61,7 @@ public class ServiceTest {
 		bean.setName("mycoop");
 		ChurchService service = ServiceLocator.instance().getChurchService();
 		try {
-			service.updateChurch(bean);
+			//service.updateChurch(bean);
 		} catch (Exception e) {
 			System.out.println("exception catched");
 			e.printStackTrace();

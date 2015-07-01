@@ -1,6 +1,7 @@
 package com.coop.parish.web.actions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,14 +19,20 @@ public class GetAllEventsAction extends ActionSupport implements SessionAware{
 	
 	private static final long serialVersionUID = -6870979610045269603L;
 	private Map<String, Object> session;
-	List<EventBean> events = new ArrayList<EventBean>();
+	Map<Integer, EventBean> eventsMap = new HashMap<Integer, EventBean>();
 	
 	public String getAllEventsOfChurch(){
+		List<EventBean> events = null;
 		try
 		{
 			UserBean user = (UserBean)session.get("user");
 			EventService service = ServiceLocator.instance().getEventService();
 			events = service.getAllEventsOfChurch(user.getChurchId());
+			if(events != null){
+				for(EventBean e : events){
+					eventsMap.put(e.getId(), e);
+				}
+			}
 			return Action.SUCCESS;
 			
 		}catch(ParishException e){
@@ -39,12 +46,12 @@ public class GetAllEventsAction extends ActionSupport implements SessionAware{
 		}
 	}
 	
-	public List<EventBean> getEvents() {
-		return events;
+	public Map<Integer, EventBean> getEventsMap() {
+		return eventsMap;
 	}
 
-	public void setEvents(List<EventBean> events) {
-		this.events = events;
+	public void setEventsMap(Map<Integer, EventBean> eventsMap) {
+		this.eventsMap = eventsMap;
 	}
 
 	public void setSession(Map<String, Object> session) {

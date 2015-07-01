@@ -13,7 +13,7 @@ public interface PriestService extends BaseService{
 	
 	public PriestBean getPriestById(int id) throws Exception;
 	
-	public PriestBean updatePriest(PriestBean priestBean) throws Exception;
+	public PriestBean updatePriest(PriestBean priestBean, UserBean user) throws Exception;
 	
 	public int deletePriest(int id) throws Exception;
 	

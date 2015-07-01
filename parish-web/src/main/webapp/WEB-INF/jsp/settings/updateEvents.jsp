@@ -1,9 +1,9 @@
 <%@ include file="../includes/jspIncludes.jsp" %>
-<form id="event-form" name="event-form" method="POST" action="./actionSaveEvents" class="form-horizontal popover">
+<form id="event-update-form" name="event-form" method="POST" action="./actionSaveEvents" class="form-horizontal popover">
 	<a class="close">X</a>
-	<h4>Save Event</h4>
+	<h4>Update Form</h4>
 	<fieldset>
-		<label>Event Info</label>
+		<label>Event</label>
 		<input type="hidden" name="eventBean.id" id="id"/>
 		<div class="form-group">
 			<label for="eventBean.name" class="control-label col-sm-2">Event Name</label>
@@ -32,7 +32,7 @@
 		<hr/>
 		<div class="text-right">
 			<a class="clear" href="#clear">Cancel</a>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary">Update</button>
 		</div>
 	</fieldset>
 </form>

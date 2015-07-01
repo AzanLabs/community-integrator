@@ -134,7 +134,7 @@ Panels.prototype = {
 						$(moduleId).append(resp);
 						that.isEventsPanelLoaded = true;
 					}
-				})
+				});
 			}
 		}
 };
@@ -238,3 +238,5 @@ Panels.prototype = {
         this.__append(part);
     };
 })(this || self);
+
+var responseBox = new ResponseBox();

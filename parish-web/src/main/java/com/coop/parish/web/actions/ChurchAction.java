@@ -74,8 +74,9 @@ public class ChurchAction extends ActionSupport implements SessionAware {
 	
 	public String editChurch(){
 		try{
+			UserBean user = (UserBean)session.get("user");
 			service = ServiceLocator.instance().getChurchService();
-			churchBean = service.updateChurch(churchBean);
+			churchBean = service.updateChurch(churchBean, user);
 		}catch(ParishException e){
 			e.printStackTrace();
 			logger.warn("caught Parish Exception "+e.getMessage());
