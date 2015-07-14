@@ -24,9 +24,6 @@ public class UserBean {
 			this.setId(user.getId());
 			this.setIdentifier(user.getIdentifier());
 			this.setPassword(user.getPassword());
-			this.setRole(user.getRole());
-			this.setChurchId(user.getChurchId());
-			this.setParishId(user.getParishId());
 			this.setActive(user.isActive());
 		}
 	}
@@ -36,9 +33,6 @@ public class UserBean {
 		user.setId(this.getId());
 		user.setIdentifier(this.getIdentifier());
 		user.setPassword(this.getPassword());
-		user.setRole(this.getRole());
-		user.setChurchId(this.getChurchId());
-		user.setParishId(this.getParishId());
 		user.setActive(this.isActive());
 		return user;
 	}

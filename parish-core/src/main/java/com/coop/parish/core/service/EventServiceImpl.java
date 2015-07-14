@@ -16,7 +16,7 @@ import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.data.modal.Audit;
 import com.coop.parish.data.modal.Church;
-import com.coop.parish.data.modal.Event;
+import com.coop.parish.data.modal.Events;
 
 public class EventServiceImpl extends BaseServiceImpl implements EventService{
 
@@ -25,7 +25,7 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 	}
 
 	public EventBean getEventById(int id) throws Exception {
-		Event event = null;
+		Events events = null;
 		if(id <= 0){
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
@@ -34,15 +34,15 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		query.setParameter("id", id);
 		query.setParameter("isActive", true);
 		try{
-			event =  (Event)query.getSingleResult();
+			events =  (Events)query.getSingleResult();
 		}catch(NoResultException e){
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
-		return new EventBean(event);
+		return new EventBean(events);
 	}
 
 	public EventBean updateEvent(EventBean eventBean, UserBean user) throws Exception {
-		Event event = null;
+		Events events = null;
 		int id = 0;
 		if(eventBean == null){
 			throw new ParishException(Constants.PARAM_NULL_MSG);
@@ -51,9 +51,9 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		if(id <= 0){
 			throw new ParishException(Constants.PARAM_NULL_MSG);
 		}
-		Event fromDB = em.find(Event.class, id);
+		Events fromDB = em.find(Events.class, id);
 		if(fromDB != null){
-			event = eventBean.toBO();
+			events = eventBean.toBO();
 			
 			Audit audit = new Audit();
 			audit.setCreatedOn(fromDB.getAudit().getCreatedOn());
@@ -61,26 +61,26 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 			audit.setLastModifiedBy(user.getId());
 			audit.setLastModifiedOn(new Date());
 			
-			event.setChurch(new Church(user.getChurchId()));
-			event.setActive(true);
-			event.setAudit(audit);
-			em.merge(event);
+			events.setChurch(new Church(user.getChurchId()));
+			events.setActive(true);
+			events.setAudit(audit);
+			em.merge(events);
 		}
-		return new EventBean(event);
+		return new EventBean(events);
 	}
 	
 	public int deleteEvent(Integer id) throws Exception{
-		Event event = null;
+		Events events = null;
 		if(id == null || id <= 0){
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
-		event = em.find(Event.class, id);
-		if(event == null){
+		events = em.find(Events.class, id);
+		if(events == null){
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
-		event.setActive(false);
-		em.merge(event);
-		return event.getId();
+		events.setActive(false);
+		em.merge(events);
+		return events.getId();
 	}
 	
 	private boolean isInDB(int id) throws ParishException{
@@ -95,22 +95,22 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 	}
 
 	public EventBean saveEvent(EventBean eventBean, UserBean user) throws Exception {
-		Event event = null;
+		Events events = null;
 		if(eventBean == null || user == null){
 			throw new NullPointerException(Constants.PARAM_NULL_MSG);
 		}
-		event  = eventBean.toBO();
-		event.setActive(true);
-		event.setChurch(new Church(user.getChurchId()));
+		events  = eventBean.toBO();
+		events.setActive(true);
+		events.setChurch(new Church(user.getChurchId()));
 		
 		Audit audit = new Audit();
 		audit.setCreatedBy(user.getId());
 		audit.setLastModifiedBy(user.getId());
 		audit.setCreatedOn(new Date());
 		audit.setLastModifiedOn(new Date());
-		event.setAudit(audit);
-		em.persist(event);
-		return new EventBean(event);	
+		events.setAudit(audit);
+		em.persist(events);
+		return new EventBean(events);	
 	}
 	
 	public List<EventBean> getAllEventsOfChurch(Integer churchId) throws ParishException{
@@ -118,13 +118,13 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
 		List<EventBean> eventBeans = new ArrayList<EventBean>();
-		List<Event> events = null;
+		List<Events> events = null;
 		Query query = em.createQuery("select e from Event e where e.church.id = :churchId and e.isActive = :isActive");
 		query.setParameter("churchId",churchId);
 		query.setParameter("isActive", true);
 		events = query.getResultList();
 		if(events != null){
-			for(Event event : events){
+			for(Events event : events){
 				eventBeans.add(new EventBean(event));
 			}
 		}

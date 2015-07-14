@@ -3,20 +3,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>First Steps</title>
 <jsp:include page="../includes/staticIncludes.jsp"></jsp:include>
 </head>
 <body>
-	<header class="header container-fluid">
-		<div class="logo col-xs-6">
-			<h2>Logo</h2>
-		</div>
-		<div class="col-xs-6 logout text-right">
+	<div class="container-fluid navbar navbar-default">
+		<div class="navbar-brand">Logo</div>
+		<div class="nav navbar-nav navbar-right">
 			<a href="./actionLogout">
 				<button class="btn btn-primary">Logout</button>
 			</a>
 		</div>
-	</header>
+	</div>
+	<div class="overlay-holder">
 	<div id="body-overlay" class="overlay"></div>
 	${sessionScope.userRole}<br>
 	${sessionScope.roleWeight}
@@ -39,6 +39,7 @@
 		<h3>Error !</h3>
 		<div class="content">
 		</div>
+	</div>
 	</div>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/firstSteps.js"></script>
 </body>

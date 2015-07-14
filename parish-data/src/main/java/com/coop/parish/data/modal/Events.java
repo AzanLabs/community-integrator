@@ -14,30 +14,30 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="church_events")
-public class Event {
+public class Events {
 	
 	@Id
 	@GeneratedValue
 	@Column(name="event_id")
 	private Integer id;
 	
-	@Column(name="event_name")
+	@Column(name="event_name", nullable=false)
 	private String name;
 	
-	@Column(name="event_date_time")
+	@Column(name="event_date_time", nullable=false)
 	private Date eventDate;
 	
 	@Column(name="event_description")
 	private String description;
 	
-	@Column(name="event_details")
+	@Column(name="event_details", nullable=false)
 	private String details;
 	
-	@Column(name="is_active")
+	@Column(name="is_active", nullable=false)
 	private boolean isActive;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="church_id")
+	@JoinColumn(name="church_id", nullable=false, updatable=false)
 	private Church church;
 	
 	@Embedded

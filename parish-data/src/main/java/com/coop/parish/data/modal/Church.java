@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -24,59 +23,56 @@ public class Church
 	@Column(name="church_id")
 	private int id;
 	
-	@Column(name="church_name")
+	@Column(name="church_name", nullable=false)
 	private String name;
 	
-	@Column(name="church_door_no")
+	@Column(name="church_door_no", nullable=false)
 	private String doorNo ;
 	
-	@Column(name="church_street")
+	@Column(name="church_street", nullable=false)
 	private String street;
 	
-	@Column(name="church_village")
+	@Column(name="church_village", nullable=false)
 	private String village;
 	
 	@Column(name="church_taluk")
 	private String taluk;
 	
-	@Column(name="church_district")
+	@Column(name="church_district", nullable=false)
 	private String district;
 	
-	@Column(name="church_state")
+	@Column(name="church_state", nullable=false)
 	private String state;
 	
-	@Column(name="church_country")
+	@Column(name="church_country", nullable=false)
 	private String country;
 	
-	@Column(name="church_pincode")
+	@Column(name="church_pincode", nullable=false)
 	private Integer pincode;
 	
 	@Column(name="church_telephone_no")
 	private Long telephoneNo;
 	
-	@Column(name="church_mobile_no")
+	@Column(name="church_mobile_no", nullable=false)
 	private Long mobileNo;
 	
-	@Column(name="church_email_id")
+	@Column(name="church_email_id", nullable=false)
 	private String emailId;
 	
-	@Column(name="church_diocese")
+	@Column(name="church_diocese", nullable=false)
 	private String diocese;
 	
-	@Column(name="is_active")
+	@Column(name="is_active", nullable=false)
 	private boolean isActive;
 
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, optional=false, mappedBy="church",targetEntity=ChurchAdditionalInfo.class)
 	private ChurchAdditionalInfo additionalInfo;
 	
-	@Column(name="parish_id")
-	private Integer parishId;
-	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="church")
 	private List<Priest> priests;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="church")
-	private List<Event> event;
+	private List<Events> events;
 	
 	@Embedded
 	private Audit audit;
@@ -165,14 +161,6 @@ public class Church
 		return pincode;
 	}
 
-	public Integer getParishId() {
-		return parishId;
-	}
-
-	public void setParishId(Integer parishId) {
-		this.parishId = parishId;
-	}
-
 	public void setPincode(Integer pincode) {
 		this.pincode = pincode;
 	}
@@ -234,12 +222,12 @@ public class Church
 		this.priests = priests;
 	}
 
-	public List<Event> getEvents() {
-		return event;
+	public List<Events> getEvents() {
+		return events;
 	}
 
-	public void setEvents(List<Event> event) {
-		this.event = event;
+	public void setEvents(List<Events> events) {
+		this.events = events;
 	}
 
 	public Audit getAudit() {

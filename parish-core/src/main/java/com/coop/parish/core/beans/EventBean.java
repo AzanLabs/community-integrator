@@ -3,7 +3,7 @@ package com.coop.parish.core.beans;
 import java.util.Date;
 
 import com.coop.parish.data.modal.Church;
-import com.coop.parish.data.modal.Event;
+import com.coop.parish.data.modal.Events;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
@@ -22,24 +22,24 @@ public class EventBean {
 		this.id = id;
 	}
 	
-	public EventBean(Event event){
-		if(event != null){
-			this.setId(event.getId());
-			this.setName(event.getName());
-			this.setEventDate(event.getEventDate());
-			this.setDescription(event.getDescription());
-			this.setDetails(event.getDetails());
+	public EventBean(Events events){
+		if(events != null){
+			this.setId(events.getId());
+			this.setName(events.getName());
+			this.setEventDate(events.getEventDate());
+			this.setDescription(events.getDescription());
+			this.setDetails(events.getDetails());
 		}
 	}
 	
-	public Event toBO(){
-		Event event = new Event();
-		event.setId(this.getId());
-		event.setName(this.getName());
-		event.setEventDate(this.getEventDate());
-		event.setDescription(this.getDescription());
-		event.setDetails(details);
-		return event;
+	public Events toBO(){
+		Events events = new Events();
+		events.setId(this.getId());
+		events.setName(this.getName());
+		events.setEventDate(this.getEventDate());
+		events.setDescription(this.getDescription());
+		events.setDetails(details);
+		return events;
 	}
 	
 	public Integer getId() {

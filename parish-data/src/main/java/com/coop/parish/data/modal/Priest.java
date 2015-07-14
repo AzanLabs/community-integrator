@@ -24,70 +24,70 @@ public class Priest {
 	@Column(name="priest_id")
 	private int id;
 	
-	@Column(name="priest_name")
+	@Column(name="priest_name", nullable=false)
 	private String name;
 	
-	@Column(name="priest_dob")
+	@Column(name="priest_dob", nullable=false)
 	private Date dob;
 	
-	@Column(name="priest_education")
+	@Column(name="priest_birth_place", nullable=false)
+	private String birthPlace;
+	
+	@Column(name="priest_education", nullable=false)
 	private String education;
 	
 	@Column(name="priest_specialization")
 	private String specialization;
 	
-	@Column(name="priest_birth_place")
-	private String birthPlace;
-	
 	@Column(name="priest_educated_university")
 	private String educatedUniversity;
 	
-	@Column(name="priest_door_no")
+	@Column(name="priest_door_no", nullable=false)
 	private String doorNo;
 	
-	@Column(name="priest_street")
+	@Column(name="priest_street", nullable=false)
 	private String street;
 	
-	@Column(name="priest_village")
+	@Column(name="priest_village", nullable=false)
 	private String village;
 	
 	@Column(name="priest_taluk")
 	private String taluk;
 	
-	@Column(name="priest_district")
+	@Column(name="priest_district", nullable=false)
 	private String district;
 	
-	@Column(name="priest_state")
+	@Column(name="priest_state", nullable=false)
 	private String state;
 	
-	@Column(name="priest_country")
+	@Column(name="priest_country", nullable=false)
 	private String country;
 	
-	@Column(name="priest_pincode")
+	@Column(name="priest_pincode", nullable=false)
 	private int pincode;
 	
 	@Column(name="priest_telephone_no")
 	private Long telephoneNo;
 	
-	@Column(name="priest_mobile_no")
+	@Column(name="priest_mobile_no", nullable=false)
 	private Long mobileNo;
 	
-	@Column(name="priest_email_id")
+	@Column(name="priest_email_id", nullable=false)
 	private String emailId;
 	
-	@Column(name="priest_diocese")
+	@Column(name="priest_diocese", nullable=false)
 	private String diocese;
-	
-	@Column(name="is_active")
-	private boolean isActive;
-	
+		
 	@Column(name="priest_additional_position")
 	private String addditionalPosition;
 	
 	@Column(name="priest_image")
 	private String imageName;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@Column(name="is_active")
+	private boolean isActive;
+	
+	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Church.class)
 	@JoinColumn(name="church_id")
 	private Church church;
 		
@@ -239,11 +239,9 @@ public class Priest {
 	public Church getChurch() {
 		return church;
 	}
+	
 	public void setChurch(Church church) {
 		this.church = church;
-		if(church.getPriests() != null && !church.getPriests().contains(this)){
-			church.getPriests().add(this);
-		}
 	}
 	public String getImageName() {
 		return imageName;

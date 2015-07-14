@@ -45,5 +45,4 @@ public class PriestAdditionalInfo {
 	public void setPriest(Priest priest) {
 		this.priest = priest;
 	}
-	
 }

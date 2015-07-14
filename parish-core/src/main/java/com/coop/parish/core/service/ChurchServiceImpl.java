@@ -63,7 +63,6 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 			
 			church.setActive(true);
 			church.setAudit(audit);
-			church.setParishId(fromDB.getParishId());
 			
 			fromDB.getAdditionalInfo().setInfo(church.getAdditionalInfo().getInfo());
 			church.setAdditionalInfo(fromDB.getAdditionalInfo());
@@ -121,7 +120,6 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 			throw new NullPointerException(Constants.PARAM_NULL_MSG);
 		}
 		church  = churchBean.toBO();
-		church.setParishId(user.getParishId());
 		
 		Audit audit = new Audit();
 		audit.setCreatedBy(user.getId());

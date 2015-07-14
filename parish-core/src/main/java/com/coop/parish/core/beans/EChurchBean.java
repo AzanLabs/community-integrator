@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.coop.parish.data.modal.Church;
 import com.coop.parish.data.modal.ChurchAdditionalInfo;
-import com.coop.parish.data.modal.Event;
+import com.coop.parish.data.modal.Events;
 import com.coop.parish.data.modal.Priest;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
@@ -29,7 +29,7 @@ public class EChurchBean {
 	private String diocese;
 	private String additionalInfo;
 	private List<Priest> priests;
-	private List<Event> event;
+	private List<Events> events;
 	
 	public EChurchBean(){}
 	
@@ -226,12 +226,12 @@ public class EChurchBean {
 		this.priests = priests;
 	}
 
-	public List<Event> getEvents() {
-		return event;
+	public List<Events> getEvents() {
+		return events;
 	}
 
-	public void setEvents(List<Event> event) {
-		this.event = event;
+	public void setEvents(List<Events> events) {
+		this.events = events;
 	}
 	
 }

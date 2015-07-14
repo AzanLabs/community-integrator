@@ -8,6 +8,14 @@
 </head>
 <body>
 	<div>
+		<div class="container-fluid navbar navbar-default">
+		<div class="navbar-brand">Logo</div>
+		<div class="nav navbar-nav navbar-right">
+			<a href="./actionLogout">
+				<button class="btn btn-primary">Logout</button>
+			</a>
+		</div>
+		</div>
 		<div id="body-overlay" class="overlay">
 			<h4 class="overlay-text">
 				Loading...

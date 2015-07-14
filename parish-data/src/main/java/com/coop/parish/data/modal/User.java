@@ -3,8 +3,11 @@ package com.coop.parish.data.modal;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,27 +19,32 @@ public class User {
 	@Column(name="user_id")
 	private int id;
 
-	@Column(name="user_identifier")
+	@Column(name="user_identifier", nullable=false)
 	private String identifier;
 	
-	@Column(name="user_password")
+	@Column(name="user_password", nullable=false)
 	private String password;
 	
-	@Column(name="user_role")
-	private String role;
+	@Column(name="user_type", nullable=false)
+	private String type;
 	
-	@Column(name="parish_id")
-	private Integer parishId;
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Priest.class)
+	@JoinColumn(name="priest_id")
+	private Priest priest;
 	
-	@Column(name="church_id")
-	private Integer churchId;
-	
-	@Column(name="is_active")
+	@Column(name="church_is_set", nullable=false)
+	private boolean churchIsSet;
+		
+	@Column(name="is_active", nullable=false)
 	private boolean isActive;
 	
 	@Embedded
 	private Audit audit;
-
+	
+	public User(){
+		
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -44,7 +52,7 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -61,28 +69,28 @@ public class User {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
+	public String getType() {
+		return type;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public Integer getParishId() {
-		return parishId;
+	public Priest getPriest() {
+		return priest;
 	}
 
-	public void setParishId(Integer parishId) {
-		this.parishId = parishId;
+	public void setPriest(Priest priest) {
+		this.priest = priest;
 	}
 
-	public Integer getChurchId() {
-		return churchId;
+	public boolean isChurchIsSet() {
+		return churchIsSet;
 	}
 
-	public void setChurchId(Integer churchId) {
-		this.churchId = churchId;
+	public void setChurchIsSet(boolean churchIsSet) {
+		this.churchIsSet = churchIsSet;
 	}
 
 	public boolean isActive() {
@@ -100,5 +108,5 @@ public class User {
 	public void setAudit(Audit audit) {
 		this.audit = audit;
 	}
-		
+
 }
