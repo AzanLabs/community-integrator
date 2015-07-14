@@ -87,7 +87,8 @@ create table user(
 create table if not exists church_events(
 	event_id int PRIMARY KEY AUTO_INCREMENT,
 	event_name varchar(300) NOT NULL,
-	event_date_time timestamp,
+	event_start_date timestamp,
+	event_end_date timestamp,
 	event_description varchar(300) NOT NULL,	
 	event_details varchar(1024) NOT NULL,
 	is_active boolean NOT NULL,
@@ -108,3 +109,48 @@ create table church_gallery(
 	CONSTRAINT fk_gallery FOREIGN KEY(church_id) REFERENCES church_info(church_id)	
 );
 
+create table bible_verses(
+	verse_id int PRIMARY KEY AUTO_INCREMENT,
+	verse varchar(100) NOT NULL,
+	chapter varchar(100) NOT NULL,
+	words varchar(600) NOT NULL,
+	type varchar(2) NOT NULL,
+	church_id int NOT NULL,
+	is_active boolean NOT NULL,
+	created_on timestamp NOT NULL,
+	created_by int NOT NULL,
+	last_modified_on timestamp NOT NULL,
+	last_modified_by int NOT NULL,
+	CONSTRAINT fk_verse FOREIGN KEY(church_id) REFERENCES church_info(church_id)
+);
+
+create table church_updates(
+	id int PRIMARY KEY AUTO_INCREMENT,
+	name varchar(255),
+	description varchar(255) NOT NULL,
+	details varchar(1024) NOT NULL,
+	church_id int NOT NULL,
+	is_active boolean NOT NULL,
+	created_on timestamp NOT NULL,
+	created_by int NOT NULL,
+	last_modified_on timestamp NOT NULL,
+	last_modified_by int NOT NULL,
+	CONSTRAINT fk_updates FOREIGN KEY(church_id) REFERENCES church_info(church_id)
+);
+
+create table priest_mam(
+	mam_id int PRIMARY KEY AUTO_INCREMENT,
+	requestor_name varchar(255) NOT NULL,
+	meeting_date timestamp NOT NULL,
+	description varchar(255) NOT NULL,
+	reason varchar(1024) NOT NULL,
+	status varchar(20) NOT NULL,
+	comments varchar(1024),
+	priest_id int NOT NULL,
+	is_active boolean NOT NULL,
+	created_on timestamp NOT NULL,
+	created_by int NOT NULL,
+	last_modified_on timestamp NOT NULL,
+	last_modified_by int NOT NULL,
+	CONSTRAINT fk_priest_mam FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id)
+);

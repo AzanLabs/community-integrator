@@ -68,11 +68,17 @@ public class Church
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, optional=false, mappedBy="church",targetEntity=ChurchAdditionalInfo.class)
 	private ChurchAdditionalInfo additionalInfo;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="church")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="church", targetEntity=Priest.class)
 	private List<Priest> priests;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="church")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="church", targetEntity=Events.class)
 	private List<Events> events;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="church", targetEntity=Updates.class)
+	private List<Updates> recentUpdates;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="church", targetEntity=BibleVerses.class)
+	private List<BibleVerses> bibleWords;
 	
 	@Embedded
 	private Audit audit;
@@ -237,4 +243,21 @@ public class Church
 	public void setAudit(Audit audit) {
 		this.audit = audit;
 	}
+	
+	public List<Updates> getRecentUpdates() {
+		return recentUpdates;
+	}
+
+	public void setRecentUpdates(List<Updates> recentUpdates) {
+		this.recentUpdates = recentUpdates;
+	}
+	
+	public List<BibleVerses> getBibleWords() {
+		return bibleWords;
+	}
+
+	public void setBibleWords(List<BibleVerses> bibleWords) {
+		this.bibleWords = bibleWords;
+	}
+
 }

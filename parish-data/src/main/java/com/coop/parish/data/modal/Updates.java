@@ -1,7 +1,5 @@
 package com.coop.parish.data.modal;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -13,44 +11,38 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="church_events")
-public class Events {
+@Table(name="church_updates")
+public class Updates {
 	
 	@Id
 	@GeneratedValue
-	@Column(name="event_id")
-	private Integer id;
+	@Column(name="id")
+	private int id;
 	
-	@Column(name="event_name", nullable=false)
+	@Column(name="name", nullable=false)
 	private String name;
 	
-	@Column(name="event_start_date", nullable=false)
-	private Date eventStartDate;
-	
-	@Column(name="event_end_date")
-	private Date eventEndDate;
-	
-	@Column(name="event_description")
+	@Column(name="description", nullable=false)
 	private String description;
 	
-	@Column(name="event_details", nullable=false)
+	@Column(name="details", nullable=false)
 	private String details;
 	
-	@Column(name="is_active", nullable=false)
-	private boolean isActive;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="church_id", nullable=false, updatable=false)
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="church_id")
 	private Church church;
+	
+	@Column(name="is_active", nullable=false)
+	private Boolean isActive;
 	
 	@Embedded
 	private Audit audit;
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -60,22 +52,6 @@ public class Events {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Date getEventStartDate() {
-		return eventStartDate;
-	}
-
-	public void setEventStartDate(Date eventStartDate) {
-		this.eventStartDate = eventStartDate;
-	}
-
-	public Date getEventEndDate() {
-		return eventEndDate;
-	}
-
-	public void setEventEndDate(Date eventEndDate) {
-		this.eventEndDate = eventEndDate;
 	}
 
 	public String getDescription() {
@@ -94,20 +70,20 @@ public class Events {
 		this.details = details;
 	}
 
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
 	public Church getChurch() {
 		return church;
 	}
 
 	public void setChurch(Church church) {
 		this.church = church;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public Audit getAudit() {
@@ -117,5 +93,5 @@ public class Events {
 	public void setAudit(Audit audit) {
 		this.audit = audit;
 	}
-
+	
 }

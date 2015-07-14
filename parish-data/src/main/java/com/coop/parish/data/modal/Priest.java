@@ -1,6 +1,7 @@
 package com.coop.parish.data.modal;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -90,6 +92,9 @@ public class Priest {
 	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Church.class)
 	@JoinColumn(name="church_id")
 	private Church church;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="priest", targetEntity=PriestMAM.class)
+	private List<PriestMAM> priestMAM;
 		
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="priest", targetEntity=PriestAdditionalInfo.class, optional=false)
 	private PriestAdditionalInfo additionalInfo;
@@ -248,6 +253,13 @@ public class Priest {
 	}
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
+	}
+	
+	public List<PriestMAM> getPriestMAM() {
+		return priestMAM;
+	}
+	public void setPriestMAM(List<PriestMAM> priestMAM) {
+		this.priestMAM = priestMAM;
 	}
 }
 
