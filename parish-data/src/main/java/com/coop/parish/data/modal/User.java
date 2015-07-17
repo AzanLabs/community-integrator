@@ -26,7 +26,10 @@ public class User {
 	private String password;
 	
 	@Column(name="user_type", nullable=false)
-	private String type;
+	private Character type;
+	
+	@Column(name="priest_id", insertable=false, updatable=false)
+	private Integer priestId;
 	
 	@OneToOne(fetch=FetchType.LAZY, targetEntity=Priest.class)
 	@JoinColumn(name="priest_id")
@@ -69,11 +72,11 @@ public class User {
 		this.password = password;
 	}
 
-	public String getType() {
+	public Character getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Character type) {
 		this.type = type;
 	}
 
@@ -108,5 +111,12 @@ public class User {
 	public void setAudit(Audit audit) {
 		this.audit = audit;
 	}
+	
+	public Integer getPriestId() {
+		return priestId;
+	}
 
+	public void setPriestId(Integer priestId) {
+		this.priestId = priestId;
+	}
 }

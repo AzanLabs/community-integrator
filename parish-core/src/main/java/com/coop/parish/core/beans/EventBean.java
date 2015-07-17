@@ -26,7 +26,7 @@ public class EventBean {
 		if(events != null){
 			this.setId(events.getId());
 			this.setName(events.getName());
-			this.setEventDate(events.getEventDate());
+			this.setEventDate(events.getEventStartDate());
 			this.setDescription(events.getDescription());
 			this.setDetails(events.getDetails());
 		}
@@ -36,7 +36,7 @@ public class EventBean {
 		Events events = new Events();
 		events.setId(this.getId());
 		events.setName(this.getName());
-		events.setEventDate(this.getEventDate());
+		events.setEventStartDate(this.getEventDate());
 		events.setDescription(this.getDescription());
 		events.setDetails(details);
 		return events;
