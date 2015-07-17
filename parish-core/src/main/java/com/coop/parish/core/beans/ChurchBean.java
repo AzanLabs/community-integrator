@@ -1,16 +1,16 @@
 package com.coop.parish.core.beans;
 
-import java.io.Serializable;
-
 import com.coop.parish.data.modal.Church;
-import com.coop.parish.data.modal.ChurchAdditionalInfo;
-import com.opensymphony.xwork2.validator.annotations.EmailValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
-public class ChurchBean implements Serializable
+/**
+ * Church Bean Class which represents the User Entity.
+ * This Bean has methods to convert Bean to Entity Object and Entity Object to beans,
+ * The Entity - Bean , Bean - Entity Conversion does not Consider all the fields involved, 
+ * This Bean also has the Struts Validation Annotation, Only common Validations should be present here.
+ * Action Specific Validations should be done in validate method.  
+ */
+public class ChurchBean
 {
-	private static final long serialVersionUID = -1730684388548572967L;
 	private int id;
 	private String name;
 	private String doorNo;
@@ -33,6 +33,11 @@ public class ChurchBean implements Serializable
 		this.id = id;
 	}
 	
+	/**
+	 * Constructor which Populates Church Bean.
+	 * Some fields present in the Entity Objects might be omitted in the beans , ex : Audit fields
+	 * @param church entity
+	 */
 	public ChurchBean(Church church){
 		if(church != null){
 			this.setId(church.getId());
@@ -51,155 +56,155 @@ public class ChurchBean implements Serializable
 			this.setMobileNo(church.getMobileNo());
 			this.setEmailId(church.getEmailId());
 			this.setDiocese(church.getDiocese());
-			this.setAdditionalInfo(church.getAdditionalInfo().getInfo());
 		}
 	}
 	
+	/**
+	 * Converts "this" bean to the relative Entity Object.
+	 * The Returned Entity Object is not complete, fields which need not to be modified directly by user are omitted.
+	 * @return church entity which wraps the bean values 
+	 */
 	public Church toBO(){
-		Church church = null;
-		if(this != null){
-			church = new Church();
-			church.setId(this.getId());
-			church.setName(this.getName());
-			
-			church.setDoorNo(this.getDoorNo());
-			church.setStreet(this.getStreet());
-			church.setVillage(this.getVillage());
-			church.setTaluk(this.getTaluk());
-			church.setDistrict(this.getDistrict());
-			church.setState(this.getState());
-			church.setCountry(this.getCountry());
-			church.setPincode(this.getPincode());
-			
-			church.setTelephoneNo(this.getTelephoneNo());
-			church.setMobileNo(this.getMobileNo());
-			church.setEmailId(this.getEmailId());
-			church.setDiocese(this.getDiocese());
-			
-			ChurchAdditionalInfo info = new ChurchAdditionalInfo();
-			info.setInfo(this.getAdditionalInfo());	
-			church.setAdditionalInfo(info);
-		}
+
+		Church church = new Church();
+		church.setId(this.getId());
+		church.setName(this.getName());
+		
+		church.setDoorNo(this.getDoorNo());
+		church.setStreet(this.getStreet());
+		church.setVillage(this.getVillage());
+		church.setTaluk(this.getTaluk());
+		church.setDistrict(this.getDistrict());
+		church.setState(this.getState());
+		church.setCountry(this.getCountry());
+		church.setPincode(this.getPincode());
+		
+		church.setTelephoneNo(this.getTelephoneNo());
+		church.setMobileNo(this.getMobileNo());
+		church.setEmailId(this.getEmailId());
+		church.setDiocese(this.getDiocese());
+		
 		return church;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
 	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Church Name"}, message="")
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Door Number"}, message="")
+
 	public String getDoorNo() {
 		return doorNo;
 	}
+
 	public void setDoorNo(String doorNo) {
 		this.doorNo = doorNo;
 	}
 
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Street"}, message="")
 	public String getStreet() {
 		return street;
 	}
+
 	public void setStreet(String street) {
 		this.street = street;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Village/Town"}, message="")
+
 	public String getVillage() {
 		return village;
 	}
+
 	public void setVillage(String village) {
 		this.village = village;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Taluk"}, message="")
+
 	public String getTaluk() {
 		return taluk;
 	}
+
 	public void setTaluk(String taluk) {
 		this.taluk = taluk;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"District"}, message="")
+
 	public String getDistrict() {
 		return district;
 	}
+
 	public void setDistrict(String district) {
 		this.district = district;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"State"}, message="")
+
 	public String getState() {
 		return state;
 	}
+
 	public void setState(String state) {
 		this.state = state;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Country"}, message="")
+
 	public String getCountry() {
 		return country;
 	}
+
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"Pincode"}, message="")
+
 	public Integer getPincode() {
 		return pincode;
 	}
+
 	public void setPincode(Integer pincode) {
 		this.pincode = pincode;
 	}
-	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"Telephone Number"}, message="")
+
 	public Long getTelephoneNo() {
 		return telephoneNo;
 	}
+
 	public void setTelephoneNo(Long telephoneNo) {
 		this.telephoneNo = telephoneNo;
 	}
-	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"Mobile Number"}, message="")
+
 	public Long getMobileNo() {
 		return mobileNo;
 	}
+
 	public void setMobileNo(Long mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-	
-	@RequiredFieldValidator(key="bean.field.required", messageParams={"Email"}, message="")
-	@EmailValidator(key="bean.email.invalid", messageParams={"Email Id"})
+
 	public String getEmailId() {
 		return emailId;
 	}
+
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Diocese"}, message="")
+
 	public String getDiocese() {
 		return diocese;
 	}
+
 	public void setDiocese(String diocese) {
 		this.diocese = diocese;
 	}
-	
-	@RequiredStringValidator(key="bean.field.required", messageParams={"Church Info"}, message="")
+
 	public String getAdditionalInfo() {
 		return additionalInfo;
 	}
+
 	public void setAdditionalInfo(String additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
+	
 }

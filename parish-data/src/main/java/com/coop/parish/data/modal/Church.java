@@ -14,7 +14,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-//@DynamicUpdate(true)
 @Table(name="church_info")
 public class Church 
 {
@@ -23,28 +22,28 @@ public class Church
 	@Column(name="church_id")
 	private int id;
 	
-	@Column(name="church_name", nullable=false)
+	@Column(name="church_name", nullable=false, length=1024)
 	private String name;
 	
-	@Column(name="church_door_no", nullable=false)
+	@Column(name="church_door_no", nullable=false, length=50)
 	private String doorNo ;
 	
-	@Column(name="church_street", nullable=false)
+	@Column(name="church_street", nullable=false, length=255)
 	private String street;
 	
-	@Column(name="church_village", nullable=false)
+	@Column(name="church_village", nullable=false, length=255)
 	private String village;
 	
-	@Column(name="church_taluk")
+	@Column(name="church_taluk", length=255)
 	private String taluk;
 	
-	@Column(name="church_district", nullable=false)
+	@Column(name="church_district", nullable=false, length=255)
 	private String district;
 	
-	@Column(name="church_state", nullable=false)
+	@Column(name="church_state", nullable=false, length=255)
 	private String state;
 	
-	@Column(name="church_country", nullable=false)
+	@Column(name="church_country", nullable=false, length=255)
 	private String country;
 	
 	@Column(name="church_pincode", nullable=false)
@@ -56,10 +55,10 @@ public class Church
 	@Column(name="church_mobile_no", nullable=false)
 	private Long mobileNo;
 	
-	@Column(name="church_email_id", nullable=false)
+	@Column(name="church_email_id", nullable=false, length=100)
 	private String emailId;
 	
-	@Column(name="church_diocese", nullable=false)
+	@Column(name="church_diocese", nullable=false, length=255)
 	private String diocese;
 	
 	@Column(name="is_active", nullable=false)
@@ -259,5 +258,5 @@ public class Church
 	public void setBibleWords(List<BibleVerses> bibleWords) {
 		this.bibleWords = bibleWords;
 	}
-
+	
 }

@@ -1,5 +1,6 @@
 package com.coop.parish.core.service;
 
+import java.nio.charset.Charset;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -16,6 +17,7 @@ import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.data.modal.Audit;
 import com.coop.parish.data.modal.Church;
+import com.coop.parish.data.modal.ChurchAdditionalInfo;
 
 public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 
@@ -112,28 +114,41 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		church = (Church)obj;
 		return new EChurchBean(church);
 	}
-
-	public ChurchBean saveChurch(ChurchBean churchBean,
-			UserBean user) throws Exception {
-		Church church = null;
-		if(churchBean == null || user == null){
+	
+	/**
+	 * This Method Creates a new Church Instance, and modifies the status
+	 * @param churchBean - bean which contains all the church information.
+	 * @param user - bean which has the current user information
+	 * @return - the saved church bean
+	 * @throws Exception  If improper data is send to persist.
+	 */
+	public ChurchBean saveChurchFirstSteps(ChurchBean churchBean, UserBean user)
+			throws ParishException {
+		if(churchBean == null || user == null) {//checks the input params
 			throw new NullPointerException(Constants.PARAM_NULL_MSG);
 		}
-		church  = churchBean.toBO();
+		//convert bean to business object
+		Church church = churchBean.toBO();
+		
+		//touch and complete BO
+		church.setActive(true);
+		ChurchAdditionalInfo addInfo = new ChurchAdditionalInfo();
+		addInfo.setInfo(churchBean.getAdditionalInfo().getBytes(Charset.forName("UTF-8")));
+		church.setAdditionalInfo(addInfo);
 		
 		Audit audit = new Audit();
-		audit.setCreatedBy(user.getId());
 		audit.setCreatedOn(new Date());
-		audit.setLastModifiedBy(user.getId());
+		audit.setCreatedBy(user.getId());
 		audit.setLastModifiedOn(new Date());
+		audit.setLastModifiedBy(user.getId());
 		
 		church.setAudit(audit);
-		church.setActive(true);
-		em.persist(church);
-		user.setChurchId(church.getId());
+		em.persist(church); //persist 
 		
+		//update the churchIsSet status on user
 		UserService service = ServiceLocator.instance().getUserService(em);
-		service.updateChurchId(user);
-		return new ChurchBean(church);		
+		service.updateChurchStatus(user.getId(), true);
+		
+		return new ChurchBean(church);
 	}
 }

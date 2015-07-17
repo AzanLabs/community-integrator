@@ -1,10 +1,14 @@
 package com.coop.parish.core.service;
 
-import com.coop.parish.core.beans.UserBean;
+import com.coop.parish.core.exceptions.ParishException;
 
 public interface UserService extends BaseService{
 	
-	public UserBean getUserById(Integer id) throws Exception;
-	
-	public void updateChurchId(UserBean user) throws Exception;
+	/**
+	 * This Method Changes the church_is_set status of User
+	 * @param userId 
+	 * @param status boolean status which holds if the church is set or not
+	 * @throws ParishException  is thrown if the user is not present 
+	 */
+	public void updateChurchStatus(Integer userId, Boolean status) throws ParishException;
 }

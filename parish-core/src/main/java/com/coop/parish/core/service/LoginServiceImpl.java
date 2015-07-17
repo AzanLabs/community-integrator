@@ -60,7 +60,7 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService{
 	 * @param identifier
 	 * @param password
 	 * @param user User Data from Database
-	 * @throws ParishException if Password Doesnot Matches
+	 * @throws ParishException if Password does not Matches
 	 */
 	private void authorize(String identifier, String password, User user) 
 			throws ParishException {

@@ -19,10 +19,10 @@ public class User {
 	@Column(name="user_id")
 	private int id;
 
-	@Column(name="user_identifier", nullable=false)
+	@Column(name="user_identifier", nullable=false, length=20)
 	private String identifier;
 	
-	@Column(name="user_password", nullable=false)
+	@Column(name="user_password", nullable=false, length=50)
 	private String password;
 	
 	@Column(name="user_type", nullable=false)

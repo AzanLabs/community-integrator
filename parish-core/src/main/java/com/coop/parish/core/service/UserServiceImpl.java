@@ -1,12 +1,14 @@
 package com.coop.parish.core.service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaUpdate;
+import java.util.Date;
 
-import com.coop.parish.core.beans.UserBean;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
+import com.coop.parish.data.modal.Audit;
 import com.coop.parish.data.modal.User;
 
 public class UserServiceImpl extends BaseServiceImpl implements UserService{
@@ -15,19 +17,37 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService{
 		super(em);
 	}
 
-	public UserBean getUserById(Integer id) throws Exception {
-		if(id == null){
-			throw new ParishException(Constants.NO_SUCH_OBJECT);
+	/**
+	 * This Method Changes the church_is_set status of User
+	 * @param userId 
+	 * @param status boolean status which holds if the church is set or not
+	 * @throws ParishException  is thrown if the user is not present 
+	 */
+	public void updateChurchStatus(Integer userId, Boolean status)
+			throws ParishException {
+		if(userId == null || status == null) {//check the validity of params
+			throw new ParishException(Constants.PARAM_NULL_MSG);
 		}
-		User user = em.find(User.class, id);
-		return new UserBean(user);
-	}
-
-	public void updateChurchId(UserBean user) throws Exception {
-		Query query = em.createQuery("update User u set u.churchId = :churchId where u.id = :id and u.isActive = :isActive");
-		query.setParameter("churchId", user.getChurchId());
-		query.setParameter("id", user.getId());
+		User user = null;
+		//get the Entity
+		Query query = em.createQuery("select usr from User usr where usr.id = :userId and usr.isActive = :isActive");
+		query.setParameter("userId", userId);
 		query.setParameter("isActive", true);
-		query.executeUpdate();
+		try {
+			user = (User)query.getSingleResult();
+		}catch(NoResultException e) { 
+			throw new ParishException("Unexcepted Error"); 
+		}
+		//dirty checking to avoid update call
+		if(user.isChurchIsSet() == status){
+			return;
+		}
+		Audit audit = user.getAudit();
+		audit.setLastModifiedBy(userId);
+		audit.setLastModifiedOn(new Date());
+		user.setAudit(audit);
+		user.setActive(true);
+		user.setChurchIsSet(status);
+		em.merge(user);
 	}
 }

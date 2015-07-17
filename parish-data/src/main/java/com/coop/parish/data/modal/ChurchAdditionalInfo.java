@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,8 +19,9 @@ public class ChurchAdditionalInfo
 	@Column(name="id")
 	private int church_id;
 	
+	@Lob
 	@Column(name="church_info")
-	private String info;
+	private byte[] info;
 	
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="church_id", referencedColumnName="church_id", nullable=false)
@@ -34,11 +36,11 @@ public class ChurchAdditionalInfo
 		this.church_id = church_id;
 	}
 
-	public String getInfo() {
+	public byte[] getInfo() {
 		return info;
 	}
 
-	public void setInfo(String info) {
+	public void setInfo(byte[] info) {
 		this.info = info;
 	}
 	
