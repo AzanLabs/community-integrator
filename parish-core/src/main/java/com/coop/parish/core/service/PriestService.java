@@ -1,15 +1,24 @@
 package com.coop.parish.core.service;
 
-import java.io.File;
 import java.util.List;
 
+import com.coop.parish.core.beans.FileBean;
 import com.coop.parish.core.beans.PriestBean;
 import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.exceptions.ParishException;
 
 public interface PriestService extends BaseService{
 	
-	public PriestBean savePriest(PriestBean priestBean, UserBean user, File file,String contentType) throws Exception;
+	/**
+	 * saves the priest profile with image gives back the saved data
+	 * @param priestBean 
+	 * @param user current user from session
+	 * @param file profile image
+	 * @param contentType type of file
+	 * @return data which represents priest
+	 * @throws ParishException if the data is not valid
+	 */
+	public PriestBean savePriest(PriestBean priestBean, UserBean user, FileBean fileBean) throws Exception;
 	
 	public PriestBean getPriestById(int id) throws Exception;
 	

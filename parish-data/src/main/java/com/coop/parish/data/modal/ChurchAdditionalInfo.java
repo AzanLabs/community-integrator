@@ -17,23 +17,25 @@ public class ChurchAdditionalInfo
 	@Id
 	@GeneratedValue
 	@Column(name="id")
-	private int church_id;
+	private int id;
 	
 	@Lob
 	@Column(name="church_info")
 	private byte[] info;
 	
+	@Column(name="church_id",insertable=false, updatable=false)
+	private Integer churchId;
+	
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="church_id", referencedColumnName="church_id", nullable=false)
 	private Church church;
-
-
-	public int getChurch_id() {
-		return church_id;
+	
+	public int getId() {
+		return id;
 	}
 
-	public void setChurch_id(int church_id) {
-		this.church_id = church_id;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public byte[] getInfo() {
@@ -43,7 +45,15 @@ public class ChurchAdditionalInfo
 	public void setInfo(byte[] info) {
 		this.info = info;
 	}
-	
+
+	public Integer getChurchId() {
+		return churchId;
+	}
+
+	public void setChurchId(Integer churchId) {
+		this.churchId = churchId;
+	}
+
 	public Church getChurch() {
 		return church;
 	}
@@ -51,4 +61,5 @@ public class ChurchAdditionalInfo
 	public void setChurch(Church church) {
 		this.church = church;
 	}
+	
 }

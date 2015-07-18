@@ -3,7 +3,7 @@ package com.coop.parish.core.beans;
 import com.coop.parish.data.modal.Church;
 
 /**
- * Church Bean Class which represents the User Entity.
+ * Church Bean Class which represents the Church Entity.
  * This Bean has methods to convert Bean to Entity Object and Entity Object to beans,
  * The Entity - Bean , Bean - Entity Conversion does not Consider all the fields involved, 
  * This Bean also has the Struts Validation Annotation, Only common Validations should be present here.

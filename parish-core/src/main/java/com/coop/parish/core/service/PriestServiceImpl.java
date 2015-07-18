@@ -2,6 +2,7 @@ package com.coop.parish.core.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.persistence.Query;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import com.coop.parish.core.beans.FileBean;
 import com.coop.parish.core.beans.PriestBean;
 import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.constants.Constants;
@@ -20,21 +22,38 @@ import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.data.modal.Audit;
 import com.coop.parish.data.modal.Church;
 import com.coop.parish.data.modal.Priest;
+import com.coop.parish.data.modal.PriestAdditionalInfo;
 
 public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 
 	public PriestServiceImpl(EntityManager em) {
 		super(em);
 	}
-
-	public PriestBean savePriest(PriestBean priestBean, UserBean user, File file, String fileName) throws Exception {
+	
+	/**
+	 * saves the priest profile with image gives back the saved data
+	 * @param priestBean 
+	 * @param user current user from session
+	 * @param file profile image
+	 * @param contentType type of file
+	 * @return data which represents priest
+	 * @throws ParishException if the data is not valid
+	 */
+	public PriestBean savePriest(PriestBean priestBean, UserBean user, FileBean fileBean) 
+			throws ParishException {
 		Priest priest = null;
-		if(priestBean == null){
+		if(priestBean == null || user == null || fileBean == null){
 			throw new NullPointerException(Constants.PARAM_NULL_MSG);
 		}
-		priest  = priestBean.toBO();
-		priest.setActive(true);
+		//convert to business object
+		priest = priestBean.toBO();
+		
+		priest.setActive(true); //touch priest
 		priest.setChurch(new Church(user.getChurchId()));
+		
+		PriestAdditionalInfo addInfo = new PriestAdditionalInfo();
+		addInfo.setInfo(priestBean.getAdditionalInfo().getBytes(Charset.forName("UTF-8")));
+		priest.setAdditionalInfo(addInfo);
 		
 		Audit audit = new Audit();
 		audit.setCreatedBy(user.getId());
@@ -42,14 +61,21 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		audit.setLastModifiedBy(user.getId());
 		audit.setLastModifiedOn(new Date());
 		priest.setAudit(audit);
+		em.persist(priest); //persist priest
 		
-		em.persist(priest);
-		String imageName = this.uploadPriestAvathar(user, priest.getId(), file, fileName);
+		//get the priestId and save the profileImage
+		System.out.println("priest Id is"+priest.getId());
+		return new PriestBean(priest);
+		
+		//update priest imageName
+		
+		//update the priestId in user
+		/*String imageName = this.uploadPriestAvathar(user, priest.getId(), file, fileName);
 		if(imageName != null){
 			priest.setImageName(imageName);
 			em.merge(priest);
 		}
-		return new PriestBean(priest);	
+		return new PriestBean(priest);*/	
 	}
 
 	public PriestBean getPriestById(int id) throws Exception {
@@ -149,9 +175,8 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		if(temp == null){
 			return null;
 		}
-		Integer parishId = user.getParishId();
 		Integer churchId = user.getChurchId();
-		if(parishId == null || churchId == null || temp == null){
+		if(churchId == null || temp == null){
 			throw new ParishException("Invalid Request");
 		}
 		StringBuilder builder = new StringBuilder("/home/sankar/parish/");

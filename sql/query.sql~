@@ -74,7 +74,7 @@ create table user(
 	user_password varchar(250) NOT NULL,
 	user_type varchar(10) NOT NULL,
 	priest_id int,
-	church_id int,
+	church-id int,
 	church_is_set boolean NOT NULL,
 	is_active boolean NOT NULL,
 	created_on timestamp NOT NULL,

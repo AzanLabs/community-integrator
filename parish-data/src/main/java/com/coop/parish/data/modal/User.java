@@ -31,6 +31,9 @@ public class User {
 	@Column(name="priest_id", insertable=false, updatable=false)
 	private Integer priestId;
 	
+	@Column(name="church_id")
+	private Integer churchId;
+	
 	@OneToOne(fetch=FetchType.LAZY, targetEntity=Priest.class)
 	@JoinColumn(name="priest_id")
 	private Priest priest;
@@ -118,5 +121,13 @@ public class User {
 
 	public void setPriestId(Integer priestId) {
 		this.priestId = priestId;
+	}
+	
+	public Integer getChurchId() {
+		return churchId;
+	}
+
+	public void setChurchId(Integer churchId) {
+		this.churchId = churchId;
 	}
 }

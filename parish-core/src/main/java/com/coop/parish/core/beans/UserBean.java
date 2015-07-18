@@ -18,6 +18,7 @@ public class UserBean {
 	private Character userType;
 	private Boolean isChurchSet;
 	private Integer priestId;
+	private Integer churchId;
 	
 	public UserBean(){}
 	
@@ -39,6 +40,7 @@ public class UserBean {
 			this.setUserType(user.getType());
 			this.setIsChurchSet(user.isChurchIsSet());
 			this.setPriestId(user.getPriestId());
+			this.setChurchId(user.getChurchId());
 		}
 	}
 	
@@ -108,5 +110,13 @@ public class UserBean {
 
 	public void setPriestId(Integer priestId) {
 		this.priestId = priestId;
+	}
+	
+	public Integer getChurchId() {
+		return churchId;
+	}
+
+	public void setChurchId(Integer churchId) {
+		this.churchId = churchId;
 	}
 }
