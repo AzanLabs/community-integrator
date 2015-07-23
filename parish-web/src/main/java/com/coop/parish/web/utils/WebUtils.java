@@ -15,7 +15,7 @@ public class WebUtils {
 		
 		if(session.containsKey("user")){
 			UserBean user = (UserBean)session.get("user"); 
-			if(!user.getRole().isEmpty()){
+			if(user.getIdentifier() != null){
 				flag = true;
 			}
 		}

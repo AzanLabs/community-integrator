@@ -63,26 +63,19 @@
 			</action>
 			
     		<action name="actionLogin" class="com.coop.parish.web.actions.LoginAction" method="login">
-    			<result name="admin" type="redirectAction">
-    				<param name="actionName">pageHome</param>
-            		<param name="namespace">/platform</param>
-    			</result>
-    			<result name="padmin" type="redirectAction">
-    				<param name="actionName">pageHome</param>
-            		<param name="namespace">/parish</param>
-    			</result>
-    			<result name="home" type="redirectAction">
+    			<result name="success" type="redirectAction">
     				<param name="actionName">actionHome</param>
-            		<param name="namespace">/church</param>
+            		<param name="namespace">/</param>
     			</result>
-    			<result name="setup" type="redirectAction">
-    				<param name="actionName">pageFirstSteps</param>
-            		<param name="namespace">/church</param>
-    			</result>
+    			<result name="input">/WEB-INF/jsp/common/login.jsp</result>
+    			<result name="error">/WEB-INF/jsp/common/login.jsp</result>
     		</action>
     		
-    		<action name="actionHome" class="com.coop.parish.web.actions.HomeAction" method="execute">
-    			<result name="success">/WEB-INF/jsp/common/home.jsp</result>
+    		<action name="actionHome" class="com.coop.parish.web.actions.HomeAction" method="takeMeToHome">
+    			<result name="HOME">/WEB-INF/jsp/common/home.jsp</result>
+    			<result name="FSTEPSCHURCH">/WEB-INF/jsp/settings/fsaveChurch.jsp</result>
+    			<result name="FSTEPSPRIEST">/WEB-INF/jsp/settings/fsavePriest.jsp</result>
+    			<result name="PREFERENCES">/WEB-INF/jsp/common/preferences.jsp</result>
     		</action>
 		</package>
     	
@@ -133,8 +126,11 @@
     			<result name="success" type="redirect">actionHome</result>
     		</action>
     		
-			<action name="actionHome" class="com.coop.parish.web.actions.HomeAction" method="execute">
-    			<result name="success">/WEB-INF/jsp/common/home.jsp</result>
+			<action name="actionHome" class="com.coop.parish.web.actions.HomeAction" method="takeMeToHome">
+    			<result name="HOME">/WEB-INF/jsp/common/home.jsp</result>
+    			<result name="FSTEPSCHURCH">/WEB-INF/jsp/settings/fsaveChurch.jsp</result>
+    			<result name="FSTEPSPRIEST">/WEB-INF/jsp/settings/fsavePriest.jsp</result>
+    			<result name="PREFERENCES">/WEB-INF/jsp/common/preferences.jsp</result>
     		</action>
     		
     		<action name="getPriestProfileImage" class="com.coop.parish.web.actions.GetImageAction" method="getPriestProfileImage">
@@ -250,16 +246,5 @@
 			</action>
 			<!-- action ends -->
     	</package>
-    	
-    	<package name="parish" namespace="/parish" extends="parish-default">
-    		<action name="pageHome">
-    			<result>/WEB-INF/jsp/settings/comingSoon.jsp</result>
-    		</action>
-    	</package>
-    	
-    	<package name="platform" namespace="/platform" extends="parish-default">
-    		<action name="pageHome">
-    			<result>/WEB-INF/jsp/settings/comingSoon.jsp</result>
-    		</action>
-    	</package>
+  
     </struts>

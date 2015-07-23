@@ -31,12 +31,16 @@ public class User {
 	@Column(name="priest_id", insertable=false, updatable=false)
 	private Integer priestId;
 	
-	@Column(name="church_id")
+	@Column(name="church_id", insertable=false, updatable=false)
 	private Integer churchId;
 	
 	@OneToOne(fetch=FetchType.LAZY, targetEntity=Priest.class)
-	@JoinColumn(name="priest_id")
+	@JoinColumn(name="priest_id", nullable=true,referencedColumnName="priest_id")
 	private Priest priest;
+	
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Church.class)
+	@JoinColumn(name="church_id",nullable=true, referencedColumnName="church_id")
+	private Church church;
 	
 	@Column(name="church_is_set", nullable=false)
 	private boolean churchIsSet;
@@ -114,7 +118,7 @@ public class User {
 	public void setAudit(Audit audit) {
 		this.audit = audit;
 	}
-	
+
 	public Integer getPriestId() {
 		return priestId;
 	}
@@ -122,7 +126,7 @@ public class User {
 	public void setPriestId(Integer priestId) {
 		this.priestId = priestId;
 	}
-	
+
 	public Integer getChurchId() {
 		return churchId;
 	}
@@ -130,4 +134,13 @@ public class User {
 	public void setChurchId(Integer churchId) {
 		this.churchId = churchId;
 	}
+
+	public Church getChurch() {
+		return church;
+	}
+
+	public void setChurch(Church church) {
+		this.church = church;
+	}
+
 }

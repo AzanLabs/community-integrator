@@ -25,4 +25,11 @@ public interface ChurchService extends BaseService{
 	 */	
 	public ChurchBean saveChurchFirstSteps(ChurchBean churchBean, 
 			UserBean user) throws ParishException;
+	/**
+	 * This method checks if the church profile is completed or not
+	 * @param churchId 
+	 * @return boolean status TRUE / FALSE
+	 */
+	public boolean isChurchSet(Integer churchId);
+	
 }

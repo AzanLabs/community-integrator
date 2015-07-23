@@ -68,7 +68,7 @@ public class PriestBean {
 			this.setEmailId(priest.getEmailId());
 			this.setDiocese(priest.getDiocese());
 			this.setAdditionalPosition(priest.getAddditionalPosition());
-			this.setImage(priest.getImageName());
+			this.setImage(priest.getId()+"."+priest.getImageType());
 			if(priest.getAdditionalInfo() != null){//priest additional info will be small and can be eager fetched
 				this.setAdditionalInfo(new String(priest.getAdditionalInfo().getInfo()));
 			}

@@ -28,7 +28,10 @@ public class Updates {
 	@Column(name="details", nullable=false)
 	private String details;
 	
-	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@Column(name="church_id", insertable=false, updatable=false)
+	private Integer churchId;
+
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="church_id")
 	private Church church;
 	
@@ -37,7 +40,9 @@ public class Updates {
 	
 	@Embedded
 	private Audit audit;
-
+	
+	public Updates(){}
+	
 	public int getId() {
 		return id;
 	}
@@ -76,8 +81,19 @@ public class Updates {
 
 	public void setChurch(Church church) {
 		this.church = church;
+		if(church.getRecentUpdates() != null) {
+			church.getRecentUpdates().add(this);
+		}
+	}
+	
+	public Integer getChurchId() {
+		return churchId;
 	}
 
+	public void setChurchId(Integer churchId) {
+		this.churchId = churchId;
+	}
+	
 	public Boolean getIsActive() {
 		return isActive;
 	}

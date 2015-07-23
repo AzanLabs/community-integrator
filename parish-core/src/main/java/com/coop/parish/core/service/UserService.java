@@ -10,5 +10,4 @@ public interface UserService extends BaseService{
 	 * @param status boolean status which holds if the church is set or not
 	 * @throws ParishException  is thrown if the user is not present 
 	 */
-	public void updateChurchStatus(Integer userId, Boolean status) throws ParishException;
 }

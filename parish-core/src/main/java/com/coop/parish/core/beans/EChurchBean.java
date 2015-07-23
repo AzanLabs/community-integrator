@@ -56,7 +56,7 @@ public class EChurchBean {
 			this.setEmailId(church.getEmailId());
 			this.setDiocese(church.getDiocese());
 			if(church.getAdditionalInfo() != null){
-				this.setAdditionalInfo(church.getAdditionalInfo().getInfo());
+				//this.setAdditionalInfo(church.getAdditionalInfo().getInfo());
 			}
 			if(!church.getPriests().isEmpty()){
 				this.setPriests(church.getPriests());
@@ -92,7 +92,7 @@ public class EChurchBean {
 			ChurchAdditionalInfo info = null;
 			if(this.additionalInfo != null){
 				info = new ChurchAdditionalInfo();
-				info.setInfo(this.getAdditionalInfo());	
+				//info.setInfo(this.getAdditionalInfo());	
 			}
 			church.setAdditionalInfo(info);
 		}

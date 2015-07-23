@@ -1,7 +1,6 @@
 package com.coop.parish.core.service;
 
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +17,7 @@ import com.coop.parish.data.modal.Audit;
 import com.coop.parish.data.modal.Church;
 import com.coop.parish.data.modal.Events;
 
-public class EventServiceImpl extends BaseServiceImpl implements EventService{
+public class EventServiceImpl extends BaseServiceImpl implements EventService {
 
 	public EventServiceImpl(EntityManager em) {
 		super(em);
@@ -93,25 +92,6 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		}
 		return true;
 	}
-
-	public EventBean saveEvent(EventBean eventBean, UserBean user) throws Exception {
-		Events events = null;
-		if(eventBean == null || user == null){
-			throw new NullPointerException(Constants.PARAM_NULL_MSG);
-		}
-		events  = eventBean.toBO();
-		events.setActive(true);
-		events.setChurch(new Church(user.getChurchId()));
-		
-		Audit audit = new Audit();
-		audit.setCreatedBy(user.getId());
-		audit.setLastModifiedBy(user.getId());
-		audit.setCreatedOn(new Date());
-		audit.setLastModifiedOn(new Date());
-		events.setAudit(audit);
-		em.persist(events);
-		return new EventBean(events);	
-	}
 	
 	public List<EventBean> getAllEventsOfChurch(Integer churchId) throws ParishException{
 		if(churchId <= 0){
@@ -130,4 +110,28 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		}
 		return eventBeans;
 	}
+
+	public EventBean saveEvents(EventBean eventBean, UserBean user)
+			throws ParishException {
+		Events events = null;
+		if(eventBean == null || user == null){
+			throw new NullPointerException(Constants.PARAM_NULL_MSG);
+		}
+		if(user.getChurchId() == null){
+			throw new ParishException("Forbidden");
+		}
+		events  = eventBean.toBO();
+		events.setActive(true);
+		events.setChurch(new Church(user.getChurchId()));
+		
+		Audit audit = new Audit();
+		audit.setCreatedBy(user.getId());
+		audit.setLastModifiedBy(user.getId());
+		audit.setCreatedOn(new Date());
+		audit.setLastModifiedOn(new Date());
+		events.setAudit(audit);
+		em.persist(events);
+		return new EventBean(events);	
+	}
+
 }

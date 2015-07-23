@@ -79,12 +79,13 @@ public class Church
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="church", targetEntity=BibleVerses.class)
 	private List<BibleVerses> bibleWords;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="church", targetEntity=Gallery.class)
+	private List<Gallery> gallery;
+	
 	@Embedded
 	private Audit audit;
 	
-	public Church(){
-		
-	}
+	public Church(){ }
 	
 	public Church(Integer churchId) {
 		this.id = churchId;
@@ -219,6 +220,14 @@ public class Church
 		additionalInfo.setChurch(this);
 	}
 
+	public Audit getAudit() {
+		return audit;
+	}
+
+	public void setAudit(Audit audit) {
+		this.audit = audit;
+	}
+	
 	public List<Priest> getPriests() {
 		return priests;
 	}
@@ -235,14 +244,6 @@ public class Church
 		this.events = events;
 	}
 
-	public Audit getAudit() {
-		return audit;
-	}
-
-	public void setAudit(Audit audit) {
-		this.audit = audit;
-	}
-	
 	public List<Updates> getRecentUpdates() {
 		return recentUpdates;
 	}
@@ -250,7 +251,7 @@ public class Church
 	public void setRecentUpdates(List<Updates> recentUpdates) {
 		this.recentUpdates = recentUpdates;
 	}
-	
+
 	public List<BibleVerses> getBibleWords() {
 		return bibleWords;
 	}
@@ -259,4 +260,11 @@ public class Church
 		this.bibleWords = bibleWords;
 	}
 	
+	public List<Gallery> getGallery() {
+		return gallery;
+	}
+
+	public void setGallery(List<Gallery> gallery) {
+		this.gallery = gallery;
+	}
 }

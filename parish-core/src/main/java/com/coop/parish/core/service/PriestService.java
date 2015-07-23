@@ -28,4 +28,6 @@ public interface PriestService extends BaseService{
 	
 	public List<PriestBean> getAllPriest(int churchId) throws ParishException;
 	
+	public boolean isPriestSet(Integer priestId);
+	
 }

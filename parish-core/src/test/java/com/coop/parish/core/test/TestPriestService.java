@@ -1,5 +1,6 @@
 package com.coop.parish.core.test;
 
+import java.io.File;
 import java.util.Date;
 
 import org.testng.Assert;
@@ -51,6 +52,9 @@ public class TestPriestService {
 		 user.setChurchId(1);
 		 
 		 fileBean = new FileBean();
+		 fileBean.setFile(new File("H:/santhome/CSC_0454.jpg"));
+		 fileBean.setFileName("CSC_0454.jpg");
+		 fileBean.setFileType("jpg");
 	}
 	
 	@Test

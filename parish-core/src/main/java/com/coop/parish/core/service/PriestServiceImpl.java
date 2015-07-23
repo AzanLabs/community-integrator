@@ -12,8 +12,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
+import com.coop.parish.core.ServiceLocator;
 import com.coop.parish.core.beans.FileBean;
 import com.coop.parish.core.beans.PriestBean;
 import com.coop.parish.core.beans.UserBean;
@@ -34,21 +34,29 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 	 * saves the priest profile with image gives back the saved data
 	 * @param priestBean 
 	 * @param user current user from session
-	 * @param file profile image
-	 * @param contentType type of file
+	 * @param fileBean which represents the priest profile image
 	 * @return data which represents priest
 	 * @throws ParishException if the data is not valid
+	 * @throws IOException 
 	 */
 	public PriestBean savePriest(PriestBean priestBean, UserBean user, FileBean fileBean) 
-			throws ParishException {
+			throws ParishException, IOException {
+		UserService userService = null;
 		Priest priest = null;
-		if(priestBean == null || user == null || fileBean == null){
+		if(priestBean == null || user == null) {
 			throw new NullPointerException(Constants.PARAM_NULL_MSG);
 		}
+		
+		//since our logged in users are only priest, are allowed to create their info only once
+		if(user.getPriestId() != null) {
+			throw new ParishException("Profile Already Exists");
+		}
+	
 		//convert to business object
 		priest = priestBean.toBO();
 		
 		priest.setActive(true); //touch priest
+		priest.setImageType(fileBean.getFileType());
 		priest.setChurch(new Church(user.getChurchId()));
 		
 		PriestAdditionalInfo addInfo = new PriestAdditionalInfo();
@@ -63,19 +71,11 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		priest.setAudit(audit);
 		em.persist(priest); //persist priest
 		
-		//get the priestId and save the profileImage
-		System.out.println("priest Id is"+priest.getId());
-		return new PriestBean(priest);
-		
-		//update priest imageName
-		
-		//update the priestId in user
-		/*String imageName = this.uploadPriestAvathar(user, priest.getId(), file, fileName);
-		if(imageName != null){
-			priest.setImageName(imageName);
-			em.merge(priest);
+		if(fileBean != null){
+			//save the profile image and update the profile
+			this.uploadPriestAvathar(user, priest.getId(), fileBean);
 		}
-		return new PriestBean(priest);*/	
+		return new PriestBean(priest);		
 	}
 
 	public PriestBean getPriestById(int id) throws Exception {
@@ -171,26 +171,54 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		return priestBeans;
 	}
 	
-	private String uploadPriestAvathar(UserBean user, Integer priestId, File temp, String fileName) throws ParishException, IOException{
-		if(temp == null){
-			return null;
+	/**
+	 * This method saves the priest and return the filename of the image
+	 * @param user current session user data
+	 * @param priestId 
+	 * @param temp Temporary file 
+	 * @param fileName 
+	 * @return image name
+	 * @throws IOException
+	 */
+	private String uploadPriestAvathar(UserBean user, Integer priestId, FileBean fileBean) throws IOException {
+		//check for necessary inputs
+		if(fileBean == null || user == null || priestId == null) {
+			throw new NullPointerException(Constants.PARAM_NULL_MSG);
 		}
-		Integer churchId = user.getChurchId();
-		if(churchId == null || temp == null){
-			throw new ParishException("Invalid Request");
-		}
-		StringBuilder builder = new StringBuilder("/home/sankar/parish/");
-		builder.append("/priests");
-		String path = builder.toString();
-		File f = new File(path);
-		System.out.println("path"+FilenameUtils.getExtension(temp.getPath()));
-		if(!f.exists()){
-			f.mkdirs();
-		}
-		path = path+"/"+String.valueOf(priestId)+"."+FilenameUtils.getExtension(fileName);
-		File file = new File(path);
-		FileUtils.copyFile(temp, file);
+		
+		StringBuilder builder = new StringBuilder(FileUtils.getUserDirectoryPath()).append(File.separatorChar).append("parish");
+		builder.append(File.separatorChar).append("priest").append(File.separatorChar);
+		builder.append(priestId).append(".").append(fileBean.getFileType());
+		
+		System.out.println("path "+builder.toString());
+		//create an empty file in the copy location
+		File file = new File(builder.toString());
+		//stream the temp file to the copy location
+		FileUtils.copyFile(fileBean.getFile(), file);
+		//return the file name
 		return file.getName();
+	}
+
+	/**
+	 * This method checks if the given priest profile is completed or not
+	 * param priestId
+	 * return boolean value representing if the priest profile is available or not
+	 */
+	public boolean isPriestSet(Integer priestId) {
+		boolean isSet = false;
+		if(priestId == null) {
+			throw new NullPointerException(Constants.PARAM_NULL_MSG);
+		}
+		Query query = em.createQuery("select id from Priest p where p.id = :id and p.isActive = :isActive");
+		query.setParameter("id", priestId);
+		query.setParameter("isActive", true);
+		try {
+			query.getSingleResult();
+		} catch(NoResultException e) {
+			return isSet;
+		}
+		isSet = true;
+		return isSet;
 	}
 
 }

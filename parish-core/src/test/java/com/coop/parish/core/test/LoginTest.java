@@ -13,20 +13,10 @@ public class LoginTest{
 	
 	LoginService service = ServiceLocator.instance().getLoginService();
 	
-	
-	@Test(expectedExceptions = ParishException.class)
-	public void myTest() throws ParishException{
-		UserBean userBean = null;
-		//userBean = service.validateLogin("select", "'''");
-		UserService service = ServiceLocator.instance().getUserService();
-		try{
-			System.out.println(true == false);
-			service.updateChurchStatus(1, true);
-		}catch(Exception e){
-			e.printStackTrace();
-			System.out.println("msg"+e.getMessage());
-		}
-		
+	@Test
+	public void testLogin() throws ParishException {
+		UserBean user = service.validateLogin("admin", "admin");
+		System.out.println(user.getIdentifier());
 	}
 		
 }

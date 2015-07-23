@@ -1,9 +1,5 @@
 <%@ include file="../includes/jspIncludes.jsp" %>
-<c:if var="isLoggedIn" test="${!empty sessionScope.user.role}" scope="request">
-	<c:if test="${!empty sessionScope.isSet and SessionScope.isSet eq 'YES'}">
-		<!--<c:redirect url="/firstSteps.jsp"></c:redirect> -->
-	</c:if>
-</c:if>
+<c:set var="isLoggedIn" value="${!empty sessionScope.user and !empty sessionScope.user.identifier}" scope="request"></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,8 +22,7 @@
 			</li>
 		</ul>
 	</div>
-	homepage Yet to implement
-	is logged in : ${requestScope.isLoggedIn}<br>
+	<p>Home Page</p>
 	<c:if test="${requestScope.isLoggedIn}">
 		<p>hey u r logged in</p>
 	</c:if>

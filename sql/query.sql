@@ -51,7 +51,7 @@ create table if not exists priest_info(
 	priest_email_id varchar(100) NOT NULL,
 	priest_diocese varchar(100) NOT NULL,
 	priest_additional_position varchar(255),
-	priest_image varchar(255),
+	priest_image_type varchar(10),
 	church_id int NOT NULL,
 	is_active boolean,
 	created_on timestamp NOT NULL,
@@ -81,7 +81,8 @@ create table user(
 	created_by int NOT NULL,
 	last_modified_on timestamp NOT NULL,
 	last_modified_by int NOT NULL,
-	CONSTRAINT fk_priest_id FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id)
+	CONSTRAINT fk_priest_id FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id),
+	CONSTRAINT fk_church_id FOREIGN KEY(church_id) REFERENCES church_info(church_id)
 );
 
 

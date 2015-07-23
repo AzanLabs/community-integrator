@@ -100,3 +100,9 @@ ResponseBox.prototype = {
 		}
 }
 
+function login(e){
+	alert('here');
+	
+	return true;
+}
+

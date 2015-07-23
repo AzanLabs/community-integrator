@@ -7,9 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.hibernate.mapping.Map;
-
-import com.coop.parish.core.ServiceLocator;
 import com.coop.parish.core.beans.ChurchBean;
 import com.coop.parish.core.beans.EChurchBean;
 import com.coop.parish.core.beans.UserBean;
@@ -127,10 +124,14 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		if(churchBean == null || user == null) {//checks the input params
 			throw new NullPointerException(Constants.PARAM_NULL_MSG);
 		}
+		if(user.getChurchId() == null){
+			throw new ParishException("Forbidden Request"); //TODO : change it to run time exception
+		}
 		//convert bean to business object
 		Church church = churchBean.toBO();
 		
 		//touch and complete BO
+		church.setId(user.getChurchId());
 		church.setActive(true);
 		ChurchAdditionalInfo addInfo = new ChurchAdditionalInfo();
 		addInfo.setInfo(churchBean.getAdditionalInfo().getBytes(Charset.forName("UTF-8")));
@@ -144,11 +145,29 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		
 		church.setAudit(audit);
 		em.persist(church); //persist 
-		
-		//update the churchIsSet status on user
-		UserService service = ServiceLocator.instance().getUserService(em);
-		service.updateChurchStatus(user.getId(), true);
-		
+
 		return new ChurchBean(church);
+	}
+	
+	/**
+	 * This method checks if the church profile is completed or not
+	 * @param churchId 
+	 * @return boolean status TRUE / FALSE
+	 */
+	public boolean isChurchSet(Integer churchId) {
+		boolean isSet = false;
+		if(churchId == null) {
+			throw new NullPointerException(Constants.PARAM_NULL_MSG);
+		}
+		Query query = em.createQuery("select id from Church c where c.id = :id and c.isActive = :isActive");
+		query.setParameter("id", churchId);
+		query.setParameter("isActive", true);
+		try {
+			query.getSingleResult();
+		} catch(NoResultException e) {
+			return isSet;
+		}
+		isSet = true;
+		return isSet;
 	}
 }

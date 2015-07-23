@@ -30,7 +30,7 @@ public class EventsAction extends ActionSupport implements SessionAware{
 	public String saveEvent(){
 		//save event action which needs input from eventbean
 		logger.debug("Entering into Method : "+className +" > save event");
-		try{
+		/*try{
 			UserBean user = (UserBean)session.get("user");
 			service = ServiceLocator.instance().getEventService();
 			System.out.println("is user id present"+user.getId());
@@ -44,7 +44,7 @@ public class EventsAction extends ActionSupport implements SessionAware{
 			e.printStackTrace();
 			logger.error("Error during save event", e);
 			return Action.ERROR;
-		}
+		}*/
 		return Action.SUCCESS;
 	}
 	

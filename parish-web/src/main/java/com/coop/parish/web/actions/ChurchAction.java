@@ -34,7 +34,7 @@ public class ChurchAction extends ActionSupport implements SessionAware {
 		try{
 			UserBean user = (UserBean)session.get("user");
 			service = ServiceLocator.instance().getChurchService();
-			churchBean = service.saveChurch(churchBean, user);
+			churchBean = service.saveChurchFirstSteps(churchBean, user);
 			user.setChurchId(churchBean.getId());
 			if(WebUtils.isUserLoggedIn(session)){
 				session.put("user", user);

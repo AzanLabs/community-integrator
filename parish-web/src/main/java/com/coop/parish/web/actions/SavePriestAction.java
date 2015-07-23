@@ -33,7 +33,7 @@ public class SavePriestAction extends ActionSupport implements SessionAware{
 				UploadUtils.checkFileType(file, contentType);
 			}
 			PriestService service = ServiceLocator.instance().getPriestService();
-			priestBean = service.savePriest(priestBean, user, file, fileName);
+			priestBean = service.savePriest(priestBean, user, null);
 		
 		}catch(ParishException e){
 			addActionError(e.getMessage());

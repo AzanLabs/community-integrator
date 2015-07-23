@@ -43,12 +43,12 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService{
 	private User authenticate(String identifier) 
 			throws ParishException {
 		User user = null;
-		Query query = em.createQuery("Select usr from User as usr where usr.identifier = :identifier and usr.isActive = :isActive");
+		Query query = em.createQuery("select usr from User usr where usr.identifier = :identifier and usr.isActive = :isActive");
 		//TODO : Consider SQL Injection
 		query.setParameter("identifier", identifier);
 		query.setParameter("isActive", true);
 		try {
-			user = (User) query.getSingleResult();
+			user = (User)query.getSingleResult();
 		} catch(NoResultException e){
 			throw new ParishException(Constants.AUTHENTICATION_FAILED);
 		}

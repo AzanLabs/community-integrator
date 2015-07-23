@@ -6,6 +6,9 @@ body{
 a{
 	background-color : unset;
 }
+.error{
+	color : red;
+}
 .overlay-holder{
 	position : relative;
 }

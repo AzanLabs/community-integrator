@@ -39,13 +39,20 @@ public class Events {
 	@Column(name="is_active", nullable=false)
 	private boolean isActive;
 	
+	@Column(name="church_id", insertable=false, updatable=false)
+	private Integer churchId;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="church_id", nullable=false, updatable=false)
+	@JoinColumn(name="church_id")
 	private Church church;
 	
 	@Embedded
 	private Audit audit;
-
+	
+	public Events(){
+		
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -108,8 +115,19 @@ public class Events {
 
 	public void setChurch(Church church) {
 		this.church = church;
+		if(church.getEvents() != null){
+			church.getEvents().add(this);
+		}
+	}
+	
+	public Integer getChurchId() {
+		return churchId;
 	}
 
+	public void setChurchId(Integer churchId) {
+		this.churchId = churchId;
+	}
+	
 	public Audit getAudit() {
 		return audit;
 	}

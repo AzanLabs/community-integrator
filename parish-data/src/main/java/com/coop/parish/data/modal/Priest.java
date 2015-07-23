@@ -82,8 +82,8 @@ public class Priest {
 	@Column(name="priest_additional_position", length=255)
 	private String addditionalPosition;
 	
-	@Column(name="priest_image")
-	private String imageName;
+	@Column(name="priest_image_type")
+	private String imageType;
 	
 	@Column(name="is_active")
 	private boolean isActive;
@@ -104,6 +104,13 @@ public class Priest {
 	@Embedded
 	private Audit audit;
 
+	public Priest(Integer priestId) {
+		this.id = priestId;
+	}
+		
+	public Priest(){
+		
+	}
 	public int getId() {
 		return id;
 	}
@@ -264,12 +271,12 @@ public class Priest {
 		this.addditionalPosition = addditionalPosition;
 	}
 
-	public String getImageName() {
-		return imageName;
+	public String getImageType() {
+		return imageType;
 	}
 
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
+	public void setImageType(String imageType) {
+		this.imageType = imageType;
 	}
 
 	public boolean isActive() {

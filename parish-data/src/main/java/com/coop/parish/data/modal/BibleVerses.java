@@ -31,8 +31,11 @@ public class BibleVerses {
 	@Column(name="type", nullable=false)
 	private String type;
 	
+	@Column(name="churchId", insertable=false, updatable=false)
+	private Integer churchId;
+
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="church_id", updatable=false)
+	@JoinColumn(name="church_id")
 	private Church church;
 	
 	@Column(name="is_active", nullable=false)
@@ -40,7 +43,10 @@ public class BibleVerses {
 	
 	@Embedded
 	private Audit audit;
-
+	
+	public BibleVerses(){
+		
+	}
 	public int getId() {
 		return id;
 	}
@@ -87,6 +93,9 @@ public class BibleVerses {
 
 	public void setChurch(Church church) {
 		this.church = church;
+		if(church.getBibleWords() != null) {
+			church.getBibleWords().add(this);
+		}
 	}
 
 	public boolean isActive() {
@@ -103,6 +112,14 @@ public class BibleVerses {
 
 	public void setAudit(Audit audit) {
 		this.audit = audit;
+	}
+	
+	public Integer getChurchId() {
+		return churchId;
+	}
+
+	public void setChurchId(Integer churchId) {
+		this.churchId = churchId;
 	}
 	
 }

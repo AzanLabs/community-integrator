@@ -16,86 +16,68 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 public class LoginAction extends ActionSupport implements SessionAware{
 
-	private static final long serialVersionUID = 2846508119732702465L;
-	private Map<String, Object> session;
+	private static final long serialVersionUID = 2154215427689539344L;
 	private String identifier;
 	private String password;
-	private LoginService service = null;
+	private Map<String, Object> session;
 	private UserBean user;
 	
-	public String login(){
-		System.out.println("iden:"+this.getIdentifier());
-		try{
-			Integer weightage = null;
-			boolean isSet = false;
-			if(WebUtils.isUserLoggedIn(session)){
-				weightage = Integer.valueOf(session.get("roleWeight").toString());
-				isSet = "YES".equals(String.valueOf(session.get("isSet")));
-				return WebUtils.getResultString(weightage, isSet);
+	/**
+	 * validates the login attempt
+	 * @return String which represents the result name
+	 */
+	public String login() {
+		try {
+			//check if the user is already logged in, 
+			if(WebUtils.isUserLoggedIn(session)) {
+				return Action.SUCCESS;
 			}
-			//authentication and authorization
-			else if(this.identifier.equals(user.getIdentifier()) && this.password.equalsIgnoreCase(user.getPassword())){
-				weightage = WebUtils.getWeightage(user.getRole());
-				//TODO : add user related details (address, name etc)
-				session.put("user", user);
-				session.put("roleWeight", weightage);
-				
-				//is church web site set or not , redirect based on it
-				if(user.getChurchId() != null){
-					isSet = true;
-					session.put("isSet", "YES");
-				}else{
-					session.put("isSet", "NO");
-				}
-				return WebUtils.getResultString(weightage, isSet);
-			}
-			addActionError("Incorrect Password");
-			return Action.ERROR;
-		}catch(ParishException e){
-			e.printStackTrace();
+			//validate login credentials
+			LoginService service = ServiceLocator.instance().getLoginService();
+			user = service.validateLogin(identifier, password);
+			session.put("user", user);
+			return Action.SUCCESS;
+			
+		} catch(ParishException e) {
+			
 			addActionError(e.getMessage());
 			return Action.ERROR;
-		}catch(Exception e){
-			e.printStackTrace();
-			addActionError("Unexcepted error");
+		} catch(Exception e) {
+			
+			addActionError("Unexcepted Error Occured. Please Contact System Administrator");
 			return Action.ERROR;
 		}
 	}
 	
+	/**
+	 * clears the current user session
+	 */
 	@SkipValidation
-	public String logout(){
+	public String logout() {
 		session.clear();
 		return Action.SUCCESS;
 	}
 	
-	@Override
-	public void validate(){
-		
-		try {
-			service = ServiceLocator.instance().getLoginService();
-			user = service.isUserPresent(this.getIdentifier());
-		} catch (ParishException e) {
-			e.printStackTrace();
-			addFieldError("identifier", "user id doesn't exists");
-		}
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
 	}
 	
 	public String getIdentifier() {
 		return identifier;
 	}
-	@RequiredStringValidator(key="bean.field.reuired", messageParams={"asd"})
+	
+	@RequiredStringValidator(message="Identifier is a Required Field")
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
+
 	public String getPassword() {
 		return password;
 	}
-	@RequiredStringValidator(key="bean.field.reuired", messageParams={"asd"})
+	
+	@RequiredStringValidator(message="Password is a Required Field")
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public void setSession(Map<String, Object> session) {
-		this.session  = session;
-	}	
 }
