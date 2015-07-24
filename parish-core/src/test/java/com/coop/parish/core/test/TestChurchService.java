@@ -20,6 +20,7 @@ public class TestChurchService {
 	public void setUp(){
 		service = ServiceLocator.instance().getChurchService();
 		
+		
 		churchBean = new ChurchBean();
 		churchBean.setName("coop");
 		churchBean.setDoorNo("608");
@@ -38,6 +39,7 @@ public class TestChurchService {
 		
 		user = new UserBean();
 		user.setId(1001);
+		user.setChurchId(2001);
 	}
 	
 	@Test

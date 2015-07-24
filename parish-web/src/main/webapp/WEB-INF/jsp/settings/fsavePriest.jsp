@@ -1,4 +1,17 @@
 <%@ include file="../includes/jspIncludes.jsp" %>
+<c:if test="${empty session.user or empty session.user.identifier}">
+	<c:redirect url="./pagelogin"></c:redirect>
+</c:if>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Login</title>
+<jsp:include page="../includes/staticIncludes.jsp"></jsp:include>
+</head>
+<body>
+	<div class="container">
 	<form id="priest-form" name="priest-form" method="POST" action="./actionSavePriest" 
 		enctype="multipart/form-data" class="form-horizontal popover">
 		<a class="close">X</a>
@@ -167,3 +180,6 @@
 			</div>
 		</fieldset>
 	</form>
+	</div>
+	</body>
+	</html>

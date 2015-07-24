@@ -21,7 +21,6 @@ import javax.persistence.Table;
 public class Priest {
 	
 	@Id
-	@GeneratedValue
 	@Column(name="priest_id")
 	private int id;
 	

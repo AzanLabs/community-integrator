@@ -75,14 +75,11 @@ create table user(
 	user_type varchar(10) NOT NULL,
 	priest_id int,
 	church_id int,
-	church_is_set boolean NOT NULL,
 	is_active boolean NOT NULL,
 	created_on timestamp NOT NULL,
 	created_by int NOT NULL,
 	last_modified_on timestamp NOT NULL,
-	last_modified_by int NOT NULL,
-	CONSTRAINT fk_priest_id FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id),
-	CONSTRAINT fk_church_id FOREIGN KEY(church_id) REFERENCES church_info(church_id)
+	last_modified_by int NOT NULL
 );
 
 
@@ -91,8 +88,8 @@ create table if not exists church_events(
 	event_name varchar(300) NOT NULL,
 	event_start_date timestamp,
 	event_end_date timestamp,
-	event_description varchar(300) NOT NULL,	
-	event_details varchar(1024) NOT NULL,
+	event_description varchar(300) NOT NULL,
+	event_details varchar(1024),	
 	is_active boolean NOT NULL,
 	church_id int NOT NULL,	
 	created_on timestamp NOT NULL,
@@ -129,6 +126,7 @@ create table bible_verses(
 create table church_updates(
 	id int PRIMARY KEY AUTO_INCREMENT,
 	name varchar(255),
+	date_time timestamp NOT NULL,
 	description varchar(255) NOT NULL,
 	details varchar(1024) NOT NULL,
 	church_id int NOT NULL,

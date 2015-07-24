@@ -18,7 +18,6 @@ import javax.persistence.Table;
 public class Church 
 {
 	@Id
-	@GeneratedValue
 	@Column(name="church_id")
 	private int id;
 	

@@ -41,9 +41,6 @@ public class User {
 	@OneToOne(fetch=FetchType.LAZY, targetEntity=Church.class)
 	@JoinColumn(name="church_id",nullable=true, referencedColumnName="church_id")
 	private Church church;
-	
-	@Column(name="church_is_set", nullable=false)
-	private boolean churchIsSet;
 		
 	@Column(name="is_active", nullable=false)
 	private boolean isActive;
@@ -93,14 +90,6 @@ public class User {
 
 	public void setPriest(Priest priest) {
 		this.priest = priest;
-	}
-
-	public boolean isChurchIsSet() {
-		return churchIsSet;
-	}
-
-	public void setChurchIsSet(boolean churchIsSet) {
-		this.churchIsSet = churchIsSet;
 	}
 
 	public boolean isActive() {

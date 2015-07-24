@@ -201,8 +201,23 @@ fieldset > label{
 	height : 200px;
 }
 /**priest panel ends**/
-#login-form{
-	width : 350px;	
+#login-box{
+	background-color : #fff;
+	color : #333;
+	border-radius : 0;
+	width : 400px;
+}
+#login-box .login-box-header{
+	background-color : #fcfcfc;
+}
+#login-box .login-form{
+	padding : 5px 15px;
+}
+#login-box .form-control{
+	border-radius : 0;
+}
+.black-bg{
+	background-color : #333;
 }
 .center{
 	margin : 0 auto;

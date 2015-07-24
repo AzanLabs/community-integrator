@@ -16,7 +16,6 @@ public class UserBean {
 	private String identifier;
 	private String password;
 	private Character userType;
-	private Boolean isChurchSet;
 	private Integer priestId;
 	private Integer churchId;
 	
@@ -38,7 +37,6 @@ public class UserBean {
 			this.setId(user.getId());
 			this.setIdentifier(user.getIdentifier());
 			this.setUserType(user.getType());
-			this.setIsChurchSet(user.isChurchIsSet());
 			this.setPriestId(user.getPriestId());
 			this.setChurchId(user.getChurchId());
 		}
@@ -56,7 +54,6 @@ public class UserBean {
 		user.setIdentifier(this.getIdentifier());
 		user.setPassword(this.getPassword());
 		user.setType(this.getUserType());
-		user.setChurchIsSet(this.isChurchSet);
 		
 		return user;
 	}
@@ -95,15 +92,7 @@ public class UserBean {
 	public void setUserType(Character userType) {
 		this.userType = userType;
 	}
-
-	public Boolean getIsChurchSet() {
-		return isChurchSet;
-	}
-
-	public void setIsChurchSet(Boolean isChurchSet) {
-		this.isChurchSet = isChurchSet;
-	}
-
+	
 	public Integer getPriestId() {
 		return priestId;
 	}

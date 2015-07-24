@@ -2,7 +2,19 @@
 <jsp:useBean id="churchBean" class="com.coop.parish.core.beans.ChurchBean">
 	<jsp:setProperty name="churchBean" property="*"></jsp:setProperty>
 </jsp:useBean>
-<div class="container-fluid">
+<c:if test="${empty session.user or empty session.user.identifier}">
+	<c:redirect url="./pageLogin"></c:redirect>
+</c:if>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Login</title>
+<jsp:include page="../includes/staticIncludes.jsp"></jsp:include>
+</head>
+<body>
+<div class="container">
 	<p class="info">All fields are mandatory unless specified otherwise</p>
 	<form id="church-form" name="church-form" method="POST"  action="./actionFStepsSaveChurch" class="form-horizontal">
 		<fieldset>
@@ -124,3 +136,5 @@
 		</fieldset>
 	</form>
 </div>
+</body>
+</html>

@@ -51,7 +51,7 @@ create table if not exists priest_info(
 	priest_email_id varchar(100) NOT NULL,
 	priest_diocese varchar(100) NOT NULL,
 	priest_additional_position varchar(255),
-	priest_image varchar(255),
+	priest_image_type varchar(10),
 	church_id int NOT NULL,
 	is_active boolean,
 	created_on timestamp NOT NULL,
@@ -74,14 +74,12 @@ create table user(
 	user_password varchar(250) NOT NULL,
 	user_type varchar(10) NOT NULL,
 	priest_id int,
-	church-id int,
-	church_is_set boolean NOT NULL,
+	church_id int,
 	is_active boolean NOT NULL,
 	created_on timestamp NOT NULL,
 	created_by int NOT NULL,
 	last_modified_on timestamp NOT NULL,
-	last_modified_by int NOT NULL,
-	CONSTRAINT fk_priest_id FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id)
+	last_modified_by int NOT NULL
 );
 
 
@@ -91,7 +89,6 @@ create table if not exists church_events(
 	event_start_date timestamp,
 	event_end_date timestamp,
 	event_description varchar(300) NOT NULL,	
-	event_details varchar(1024) NOT NULL,
 	is_active boolean NOT NULL,
 	church_id int NOT NULL,	
 	created_on timestamp NOT NULL,
@@ -128,6 +125,7 @@ create table bible_verses(
 create table church_updates(
 	id int PRIMARY KEY AUTO_INCREMENT,
 	name varchar(255),
+	date_time timestamp NOT NULL,
 	description varchar(255) NOT NULL,
 	details varchar(1024) NOT NULL,
 	church_id int NOT NULL,
