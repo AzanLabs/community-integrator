@@ -154,3 +154,5 @@ create table priest_mam(
 	last_modified_by int NOT NULL,
 	CONSTRAINT fk_priest_mam FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id)
 );
+
+insert into user values(1001, 'admin', 'admin' , 'P', 2001, 3001, true, now() , 0 ,now() , 0);
