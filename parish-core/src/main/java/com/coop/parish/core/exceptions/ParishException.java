@@ -32,7 +32,7 @@ public class ParishException extends Exception{
 	 * @see http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
 	 * @example new ParishException("Hello {0}, Welcome!", new String[1]{"user"})
 	 */
-	public ParishException(String message, String[] messageParams) {
+	public ParishException(String message, Object[] messageParams) {
 		super();
 		String msg = null;
 		if(!message.isEmpty()){

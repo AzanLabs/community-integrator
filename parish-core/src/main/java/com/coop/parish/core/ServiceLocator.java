@@ -3,6 +3,8 @@ package com.coop.parish.core;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import com.coop.parish.core.service.BibleVerseService;
+import com.coop.parish.core.service.BibleVerseServiceImpl;
 import com.coop.parish.core.service.ChurchService;
 import com.coop.parish.core.service.ChurchServiceImpl;
 import com.coop.parish.core.service.EventService;
@@ -90,6 +92,18 @@ public class ServiceLocator implements Locator{
 
 	public UserService getUserService(EntityManager em) {
 		return new UserServiceImpl(em);
+	}
+
+
+	public BibleVerseService getBibleVerseService() {
+		EntityManager em = emf.createEntityManager();
+		BibleVerseService service = new BibleVerseServiceImpl(em);
+		service = (BibleVerseService)ServiceProxy.newInstance(service);
+		return service;
+	}
+
+	public BibleVerseService getBibleVerseService(EntityManager em) {
+		return new BibleVerseServiceImpl(em);
 	}
 	
 	

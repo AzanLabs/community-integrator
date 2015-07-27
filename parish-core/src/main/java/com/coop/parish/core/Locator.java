@@ -2,6 +2,7 @@ package com.coop.parish.core;
 
 import javax.persistence.EntityManager;
 
+import com.coop.parish.core.service.BibleVerseService;
 import com.coop.parish.core.service.ChurchService;
 import com.coop.parish.core.service.EventService;
 import com.coop.parish.core.service.LoginService;
@@ -29,4 +30,8 @@ public interface Locator {
 	public UserService getUserService();
 	
 	public UserService getUserService(EntityManager em);
+	
+	public BibleVerseService getBibleVerseService();
+	
+	public BibleVerseService getBibleVerseService(EntityManager em);
 }

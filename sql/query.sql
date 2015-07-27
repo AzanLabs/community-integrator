@@ -1,4 +1,6 @@
-create database if not exists test;
+
+
+ create database if not exists test;
 use test;
 
 create table if not exists church_info(
@@ -88,8 +90,8 @@ create table if not exists church_events(
 	event_name varchar(300) NOT NULL,
 	event_start_date timestamp,
 	event_end_date timestamp,
-	event_description varchar(300) NOT NULL,
-	event_details varchar(1024),	
+	event_description varchar(300) NOT NULL,	
+	event_details varchar(1024) NOT NULL,
 	is_active boolean NOT NULL,
 	church_id int NOT NULL,	
 	created_on timestamp NOT NULL,
@@ -112,7 +114,7 @@ create table bible_verses(
 	verse_id int PRIMARY KEY AUTO_INCREMENT,
 	verse varchar(100) NOT NULL,
 	chapter varchar(100) NOT NULL,
-	words varchar(600) NOT NULL,
+	words TEXT NOT NULL,
 	type varchar(2) NOT NULL,
 	church_id int NOT NULL,
 	is_active boolean NOT NULL,
@@ -126,7 +128,6 @@ create table bible_verses(
 create table church_updates(
 	id int PRIMARY KEY AUTO_INCREMENT,
 	name varchar(255),
-	date_time timestamp NOT NULL,
 	description varchar(255) NOT NULL,
 	details varchar(1024) NOT NULL,
 	church_id int NOT NULL,
@@ -155,4 +156,4 @@ create table priest_mam(
 	CONSTRAINT fk_priest_mam FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id)
 );
 
-insert into user values(1001, 'admin', 'admin' , 'P', 2001, 3001, true, now() , 0 ,now() , 0);
+insert into user values(1001,'admin','admin','P',2001,3001,true,now(), 0, now(), 0);

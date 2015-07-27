@@ -32,4 +32,22 @@ public interface ChurchService extends BaseService{
 	 */
 	public boolean isChurchSet(Integer churchId);
 	
+	/**
+	 * Update the church Details excluding church additional info
+	 * @param churchBean 
+	 * @param user current session user
+	 * @return Updated values
+	 * @throws ParishException if the Entity doesn't exists
+	 */
+	public ChurchBean updateChurchDetails(ChurchBean churchBean, UserBean user) throws ParishException;
+	
+	/**
+	 * update the church additional info
+	 * @param churchBean
+	 * @param user current session user info
+	 * @return Updated value
+	 * @throws ParishException if the entity to update doesn't exists
+	 */
+	public ChurchBean updateChurchInfo(ChurchBean churchBean, UserBean user) throws ParishException;
+	
 }

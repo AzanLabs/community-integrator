@@ -170,4 +170,62 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		isSet = true;
 		return isSet;
 	}
+	
+
+	/**
+	 * Update the church Details excluding church additional info
+	 * @param churchBean 
+	 * @param user current session user
+	 * @return Updated values
+	 * @throws ParishException if the Entity doesn't exists
+	 */
+	public ChurchBean updateChurchDetails(ChurchBean churchBean, UserBean user)
+			throws ParishException {
+		//check for null params
+		if(churchBean == null || user == null || churchBean.getId() == null) {
+			throw new ParishException(Constants.PARAM_NULL_MSG);
+		}
+		
+		if(churchBean.getId() <= 0 || user.getChurchId() == null) {
+			throw new ParishException("Forbidden Request");
+		}
+		
+		Church church = null;
+		Church fromDB = null;
+		
+		Query q = em.createQuery("select ch from Church ch where ch.id = :id and ch.isActive = :isActive");
+		q.setParameter("id", churchBean.getId());
+		q.setParameter("isActive", true);
+		try {
+			fromDB = (Church) q.getSingleResult();
+		} catch(NoResultException e) {
+			throw new ParishException(Constants.NO_SUCH_OBJECT);
+		}
+		
+		church = churchBean.toBO();
+		
+		Audit audit = new Audit();
+		audit.setCreatedOn(fromDB.getAudit().getCreatedOn());
+		audit.setCreatedBy(fromDB.getAudit().getCreatedBy());
+		audit.setLastModifiedBy(user.getId());
+		audit.setLastModifiedOn(new Date());
+		church.setActive(true);
+		church.setAudit(audit);
+
+		em.merge(church);
+		return new ChurchBean(church);
+	}
+	
+	/**
+	 * update the church additional info
+	 * @param churchBean
+	 * @param user current session user info
+	 * @return Updated value
+	 * @throws ParishException if the entity to update doesn't exists
+	 */
+	public ChurchBean updateChurchInfo(ChurchBean churchBean, UserBean user)
+			throws ParishException {
+		
+		return null;
+	}
 }

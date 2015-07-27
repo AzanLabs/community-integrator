@@ -126,7 +126,7 @@
 				<label for="churchBean.additionalInfo" class="control-label col-sm-3 mandatory">Church History</label>
 				<div class="col-sm-9">
 					<textarea name="churchBean.additionalInfo" id="churchBean.additionalInfo" rows="10" class="form-control" required 
-					placeholder="Please Enter Church History" value="${churchBean.additionalInfo}"></textarea>
+					placeholder="Please Enter Church History">${churchBean.additionalInfo}</textarea>
 				</div>
 			</div>
 			<hr/>

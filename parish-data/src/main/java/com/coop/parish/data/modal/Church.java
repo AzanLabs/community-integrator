@@ -63,7 +63,7 @@ public class Church
 	@Column(name="is_active", nullable=false)
 	private boolean isActive;
 
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL, optional=false, mappedBy="church",targetEntity=ChurchAdditionalInfo.class)
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST, optional=false, mappedBy="church",targetEntity=ChurchAdditionalInfo.class)
 	private ChurchAdditionalInfo additionalInfo;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="church", targetEntity=Priest.class)

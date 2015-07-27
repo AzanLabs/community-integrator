@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -17,7 +18,7 @@ public class BibleVerses {
 	@Id
 	@GeneratedValue
 	@Column(name="verse_id")
-	private int id;
+	private Integer id;
 	
 	@Column(name="verse", nullable=false)
 	private String verse;
@@ -25,13 +26,14 @@ public class BibleVerses {
 	@Column(name="chapter", nullable=false)
 	private String chapter;
 	
-	@Column(name="words", nullable=false)
+	@Lob
+	@Column(name="words", columnDefinition="TEXT", nullable=false)
 	private String words;
 	
 	@Column(name="type", nullable=false)
 	private String type;
 	
-	@Column(name="churchId", insertable=false, updatable=false)
+	@Column(name="church_id", insertable=false, updatable=false)
 	private Integer churchId;
 
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -47,11 +49,11 @@ public class BibleVerses {
 	public BibleVerses(){
 		
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

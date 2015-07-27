@@ -34,7 +34,7 @@ public class TestChurchService {
 		churchBean.setMobileNo(123456789L);
 		churchBean.setTelephoneNo(123456789L);
 		churchBean.setEmailId("aaa@bbb.com");
-		churchBean.setDiocese("diocese");
+		churchBean.setDiocese("d");
 		churchBean.setAdditionalInfo("<p>Success</p>");
 		
 		user = new UserBean();
@@ -42,9 +42,17 @@ public class TestChurchService {
 		user.setChurchId(2001);
 	}
 	
-	@Test
+	@Test(enabled=false)
 	public void checkSaveChurch() throws ParishException{
 		ChurchBean cBean = service.saveChurchFirstSteps(churchBean, user);
 		Assert.assertNotNull(cBean.getId(), "should not be null");
+	}
+	
+	@Test
+	public void testUpdateChurchDetails() throws ParishException {
+		churchBean.setId(2001);
+		ChurchBean cBean = service.updateChurchDetails(churchBean, user);
+		System.out.println(cBean.getAdditionalInfo());
+		
 	}
 }
