@@ -13,7 +13,7 @@ import com.coop.parish.data.modal.Priest;
  */
 public class PriestBean {
 	
-	private int id;
+	private Integer id;
 	private String name;
 	private Date dob; //TODO : check the efficient way of converting to date 
 	private String birthPlace;
@@ -68,7 +68,7 @@ public class PriestBean {
 			this.setEmailId(priest.getEmailId());
 			this.setDiocese(priest.getDiocese());
 			this.setAdditionalPosition(priest.getAddditionalPosition());
-			this.setImage(priest.getId()+"."+priest.getImageType());
+			this.setImage(priest.getImageName());
 			if(priest.getAdditionalInfo() != null){//priest additional info will be small and can be eager fetched
 				this.setAdditionalInfo(new String(priest.getAdditionalInfo().getInfo()));
 			}
@@ -109,11 +109,11 @@ public class PriestBean {
 		return priest;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

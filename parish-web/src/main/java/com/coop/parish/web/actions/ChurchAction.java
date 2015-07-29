@@ -56,9 +56,9 @@ public class ChurchAction extends ActionSupport implements SessionAware {
 	@SkipValidation
 	public String getMyChurch(){
 		//gives back the church if found , input is church_id
-		try{
+		/*try{
 			service = ServiceLocator.instance().getChurchService();
-			churchBean = service.getChurchById(id);
+			//churchBean = service.getChurchById(id);
 		}catch(ParishException e){
 			e.printStackTrace();
 			logger.warn("caught Parish Exception "+e.getMessage());
@@ -68,7 +68,7 @@ public class ChurchAction extends ActionSupport implements SessionAware {
 			e.printStackTrace();
 			logger.error("Error during getting Church", e);
 			return Action.ERROR;
-		}
+		}*/
 		return Action.SUCCESS;
 	}
 	
@@ -92,7 +92,7 @@ public class ChurchAction extends ActionSupport implements SessionAware {
 	
 	@SkipValidation
 	public String disableChurch(){
-		try{
+		/*try{
 			service = ServiceLocator.instance().getChurchService();
 			id = service.deleteChurch(id);
 		}catch(ParishException e){
@@ -104,7 +104,7 @@ public class ChurchAction extends ActionSupport implements SessionAware {
 			e.printStackTrace();
 			logger.error("Error during deleting church", e);
 			return Action.ERROR;
-		}
+		}*/
 		return Action.SUCCESS;
 	}
 	//getters and setters method used by the struts to inject the params 

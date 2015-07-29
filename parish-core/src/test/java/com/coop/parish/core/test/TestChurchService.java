@@ -48,8 +48,8 @@ public class TestChurchService {
 		Assert.assertNotNull(cBean.getId(), "should not be null");
 	}
 	
-	@Test
-	public void testUpdateChurchDetails() throws ParishException {
+	@Test(enabled = true)
+	public void testUpdateChurchDetails() throws Exception {
 		churchBean.setId(2001);
 		ChurchBean cBean = service.updateChurchDetails(churchBean, user);
 		System.out.println(cBean.getAdditionalInfo());

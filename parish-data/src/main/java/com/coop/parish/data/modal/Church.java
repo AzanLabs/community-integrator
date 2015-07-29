@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -19,7 +18,7 @@ public class Church
 {
 	@Id
 	@Column(name="church_id")
-	private int id;
+	private Integer id;
 	
 	@Column(name="church_name", nullable=false, length=1024)
 	private String name;
@@ -63,7 +62,7 @@ public class Church
 	@Column(name="is_active", nullable=false)
 	private boolean isActive;
 
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST, optional=false, mappedBy="church",targetEntity=ChurchAdditionalInfo.class)
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST, mappedBy="church",targetEntity=ChurchAdditionalInfo.class)
 	private ChurchAdditionalInfo additionalInfo;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="church", targetEntity=Priest.class)
@@ -90,11 +89,11 @@ public class Church
 		this.id = churchId;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

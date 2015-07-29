@@ -20,8 +20,8 @@ public class ChurchAdditionalInfo
 	private int id;
 	
 	@Lob
-	@Column(name="church_info")
-	private byte[] info;
+	@Column(name="church_info", nullable=false, columnDefinition="TEXT")
+	private String info;
 	
 	@Column(name="church_id",insertable=false, updatable=false)
 	private Integer churchId;
@@ -38,11 +38,11 @@ public class ChurchAdditionalInfo
 		this.id = id;
 	}
 
-	public byte[] getInfo() {
+	public String getInfo() {
 		return info;
 	}
 
-	public void setInfo(byte[] info) {
+	public void setInfo(String info) {
 		this.info = info;
 	}
 

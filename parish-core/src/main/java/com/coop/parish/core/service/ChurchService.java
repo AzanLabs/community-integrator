@@ -1,20 +1,11 @@
 package com.coop.parish.core.service;
 
 import com.coop.parish.core.beans.ChurchBean;
-import com.coop.parish.core.beans.EChurchBean;
 import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.exceptions.ParishException;
 
 
 public interface ChurchService extends BaseService{
-	
-	public ChurchBean getChurchById(int id) throws Exception;
-	
-	public ChurchBean updateChurch(ChurchBean churchBean, UserBean userBean) throws Exception;
-	
-	public int deleteChurch(int id) throws Exception;
-	
-	public EChurchBean getEntireChurch(int id) throws Exception;
 	
 	/**
 	 * This Method Creates a new Church Instance
@@ -25,6 +16,7 @@ public interface ChurchService extends BaseService{
 	 */	
 	public ChurchBean saveChurchFirstSteps(ChurchBean churchBean, 
 			UserBean user) throws ParishException;
+	
 	/**
 	 * This method checks if the church profile is completed or not
 	 * @param churchId 
@@ -48,6 +40,15 @@ public interface ChurchService extends BaseService{
 	 * @return Updated value
 	 * @throws ParishException if the entity to update doesn't exists
 	 */
-	public ChurchBean updateChurchInfo(ChurchBean churchBean, UserBean user) throws ParishException;
+	public ChurchBean updateChurchAddInfo(ChurchBean churchBean, UserBean user) throws ParishException;
+	
+	/**
+	 * updates both churchDetails and additional info
+	 * @param churchBean
+	 * @param userBean current session user
+	 * @return updated churchBean
+	 * @throws parishException 
+	 */
+	public ChurchBean updateChurch(ChurchBean churchBean, UserBean userBean) throws ParishException;
 	
 }

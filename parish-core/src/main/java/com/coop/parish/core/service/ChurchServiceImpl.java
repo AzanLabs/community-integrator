@@ -1,6 +1,5 @@
 package com.coop.parish.core.service;
 
-import java.nio.charset.Charset;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -8,7 +7,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.coop.parish.core.beans.ChurchBean;
-import com.coop.parish.core.beans.EChurchBean;
 import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
@@ -22,95 +20,12 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		super(em);
 	}
 
-	public ChurchBean getChurchById(int id) throws Exception {
-		Church church = null;
-		if(id <= 0){
-			throw new ParishException(Constants.NO_SUCH_OBJECT);
-		}
-		String str = "Select c from Church as c where c.id=:id and c.isActive=:isActive";
-		Query query = em.createQuery(str);
-		query.setParameter("id", id);
-		query.setParameter("isActive", true);
-		try{
-			church =  (Church)query.getSingleResult();
-		}catch(NoResultException e){
-			throw new ParishException(Constants.NO_SUCH_OBJECT);
-		}
-		return new ChurchBean(church);
-	}
-
-	public ChurchBean updateChurch(ChurchBean churchBean, UserBean user) throws Exception {
-		Church church = null;
-		int id = 0;
-		if(churchBean == null){
-			throw new ParishException(Constants.PARAM_NULL_MSG);
-		}
-		id = churchBean.getId();
-		if(id <= 0){
-			throw new ParishException(Constants.PARAM_NULL_MSG);
-		}
-		Church fromDB = em.find(Church.class, id);
-		System.out.println("audit"+fromDB.getAudit().getCreatedOn());
-		if(fromDB != null){
-			church = churchBean.toBO();
-	
-			Audit audit = new Audit();
-			audit.setCreatedOn(fromDB.getAudit().getCreatedOn());
-			audit.setCreatedBy(fromDB.getAudit().getCreatedBy());
-			audit.setLastModifiedBy(user.getId());
-			audit.setLastModifiedOn(new Date());
-			
-			church.setActive(true);
-			church.setAudit(audit);
-			
-			fromDB.getAdditionalInfo().setInfo(church.getAdditionalInfo().getInfo());
-			church.setAdditionalInfo(fromDB.getAdditionalInfo());
-			em.merge(church);
-		}
-		return new ChurchBean(church);
+	public ChurchBean updateChurch(ChurchBean churchBean, UserBean user) throws ParishException {
+		this.updateChurchDetails(churchBean, user);
+		this.updateChurchAddInfo(churchBean, user);
+		return churchBean;
 	}
 	
-	public int deleteChurch(int id) throws Exception{
-		Church church = null;
-		if(id <= 0){
-			throw new ParishException(Constants.NO_SUCH_OBJECT);
-		}
-		church = em.find(Church.class, id);
-		if(church == null){
-			throw new ParishException(Constants.NO_SUCH_OBJECT);
-		}
-		church.setActive(false);
-		em.merge(church);
-		return church.getId();
-	}
-	
-	private boolean isInDB(int id) throws ParishException{
-		Query q = em.createQuery("select id from Church c where c.id=:id");
-		q.setParameter("id", id);
-		try{
-			q.getSingleResult();
-		}catch(NoResultException e){
-			throw new ParishException(Constants.NO_SUCH_OBJECT);
-		}
-		return true;
-	}
-
-	public EChurchBean getEntireChurch(int id) throws Exception {
-		Church church = null;
-		if(id <= 0){
-			throw new ParishException(Constants.NO_SUCH_OBJECT);
-		}
-		String str = "Select c from Church as c where c.id=:id and c.isActive=:isActive";
-		Query query = em.createQuery(str);
-		query.setParameter("id", id);
-		query.setParameter("isActive", true);
-		Object obj =  query.getSingleResult();
-		if(obj == null){
-			throw new ParishException(Constants.NO_SUCH_OBJECT);
-		}
-		church = (Church)obj;
-		return new EChurchBean(church);
-	}
 	
 	/**
 	 * This Method Creates a new Church Instance, and modifies the status
@@ -131,10 +46,10 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 		Church church = churchBean.toBO();
 		
 		//touch and complete BO
-		church.setId(user.getChurchId());
+		church.setId(user.getChurchId()); //id for church is predefined
 		church.setActive(true);
 		ChurchAdditionalInfo addInfo = new ChurchAdditionalInfo();
-		addInfo.setInfo(churchBean.getAdditionalInfo().getBytes(Charset.forName("UTF-8")));
+		addInfo.setInfo(churchBean.getAdditionalInfo());
 		church.setAdditionalInfo(addInfo);
 		
 		Audit audit = new Audit();
@@ -190,30 +105,41 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 			throw new ParishException("Forbidden Request");
 		}
 		
-		Church church = null;
-		Church fromDB = null;
+		//TODO : direct queries are Typo Error Prone and difficult to maintain, But fast and decrease the number of queries executed 
+		StringBuilder builder = new StringBuilder("update Church c set c.name = :name, c.doorNo = :doorNo, c.street = :street, c.village = :village, c.taluk = :taluk, c.district  = :district, ");
+		builder.append("c.state = :state, c.country = :country, c.pincode = :pincode, ");
+		builder.append("c.telephoneNo = :telephoneNo, c.mobileNo = :mobileNo, c.emailId = :emailId, c.diocese = :diocese, ");
+		builder.append("c.audit.lastModifiedBy = :lastModifiedBy, c.audit.lastModifiedOn = :lastModifiedOn ");
+		builder.append("where c.id = :id and c.isActive = :isActive");
 		
-		Query q = em.createQuery("select ch from Church ch where ch.id = :id and ch.isActive = :isActive");
+		Query q = em.createQuery(builder.toString());
+		q.setParameter("name", churchBean.getName());	
+		
+		q.setParameter("doorNo", churchBean.getDoorNo());
+		q.setParameter("street", churchBean.getStreet());
+		q.setParameter("village", churchBean.getVillage());
+		q.setParameter("taluk", churchBean.getTaluk());
+		q.setParameter("district", churchBean.getDistrict());
+		q.setParameter("state", churchBean.getState());
+		q.setParameter("country", churchBean.getCountry());
+		q.setParameter("pincode", churchBean.getPincode());
+		
+		q.setParameter("telephoneNo", churchBean.getTelephoneNo());
+		q.setParameter("mobileNo", churchBean.getMobileNo());
+		q.setParameter("emailId", churchBean.getEmailId());
+		q.setParameter("diocese", churchBean.getDiocese());
+		
+		q.setParameter("lastModifiedOn", new Date());
+		q.setParameter("lastModifiedBy", user.getId());
+		
 		q.setParameter("id", churchBean.getId());
 		q.setParameter("isActive", true);
-		try {
-			fromDB = (Church) q.getSingleResult();
-		} catch(NoResultException e) {
+		
+		int res = q.executeUpdate();
+		if(res <= 0) {
 			throw new ParishException(Constants.NO_SUCH_OBJECT);
 		}
-		
-		church = churchBean.toBO();
-		
-		Audit audit = new Audit();
-		audit.setCreatedOn(fromDB.getAudit().getCreatedOn());
-		audit.setCreatedBy(fromDB.getAudit().getCreatedBy());
-		audit.setLastModifiedBy(user.getId());
-		audit.setLastModifiedOn(new Date());
-		church.setActive(true);
-		church.setAudit(audit);
-
-		em.merge(church);
-		return new ChurchBean(church);
+		return churchBean;
 	}
 	
 	/**
@@ -223,9 +149,25 @@ public class ChurchServiceImpl extends BaseServiceImpl implements ChurchService{
 	 * @return Updated value
 	 * @throws ParishException if the entity to update doesn't exists
 	 */
-	public ChurchBean updateChurchInfo(ChurchBean churchBean, UserBean user)
+	public ChurchBean updateChurchAddInfo(ChurchBean churchBean, UserBean user)
 			throws ParishException {
+		//check for null params
+		if(churchBean == null || user == null || churchBean.getId() == null) {
+			throw new ParishException(Constants.PARAM_NULL_MSG);
+		}
+		if(churchBean.getId() <= 0 || user.getChurchId() == null || !this.isChurchSet(churchBean.getId())) {
+			throw new ParishException("Forbidden Request");
+		}
+	
+		StringBuilder builder = new StringBuilder("update ChurchAdditionalInfo ci set ci.info = :info where ci.churchId = :churchId");
+		Query query = em.createQuery(builder.toString());
+		query.setParameter("info", churchBean.getAdditionalInfo());
+		query.setParameter("churchId", churchBean.getId());
 		
-		return null;
+		int res = query.executeUpdate();
+		if(res <= 0) {
+			throw new ParishException(Constants.NO_SUCH_OBJECT);
+		}
+		return churchBean;
 	}
 }

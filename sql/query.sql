@@ -1,10 +1,8 @@
-
-
- create database if not exists test;
+create database if not exists test;
 use test;
 
 create table if not exists church_info(
-	church_id int PRIMARY KEY AUTO_INCREMENT,
+	church_id int PRIMARY KEY,
 	church_name varchar(255) NOT NULL,
 	church_door_no varchar(10) NOT NULL,
 	church_street varchar(255) NOT NULL,
@@ -28,12 +26,12 @@ create table if not exists church_info(
 create table if not exists church_add_info(		
 	id int PRIMARY KEY AUTO_INCREMENT,	
 	church_id int,
-	church_info varchar(1024),
+	church_info TEXT,
 	CONSTRAINT fk_church FOREIGN KEY(church_id) REFERENCES church_info(church_id)
 );
 
 create table if not exists priest_info(
-	priest_id int PRIMARY KEY AUTO_INCREMENT,
+	priest_id int PRIMARY KEY,
 	priest_name varchar(255) NOT NULL,
 	priest_dob date NOT NULL,
 	priest_birth_place varchar(200) NOT NULL,
@@ -53,7 +51,7 @@ create table if not exists priest_info(
 	priest_email_id varchar(100) NOT NULL,
 	priest_diocese varchar(100) NOT NULL,
 	priest_additional_position varchar(255),
-	priest_image_type varchar(10),
+	priest_image_name varchar(100),
 	church_id int NOT NULL,
 	is_active boolean,
 	created_on timestamp NOT NULL,
@@ -66,7 +64,7 @@ create table if not exists priest_info(
 create table if not exists priest_add_info(
 	id int PRIMARY KEY AUTO_INCREMENT,	
 	priest_id int NOT NULL,	
-	priest_info varchar(1024),
+	priest_info TEXT,
 	CONSTRAINT fk_priest FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id)
 );
 
@@ -116,13 +114,12 @@ create table bible_verses(
 	chapter varchar(100) NOT NULL,
 	words TEXT NOT NULL,
 	type varchar(2) NOT NULL,
-	church_id int NOT NULL,
+	church_id int,
 	is_active boolean NOT NULL,
 	created_on timestamp NOT NULL,
 	created_by int NOT NULL,
 	last_modified_on timestamp NOT NULL,
-	last_modified_by int NOT NULL,
-	CONSTRAINT fk_verse FOREIGN KEY(church_id) REFERENCES church_info(church_id)
+	last_modified_by int NOT NULL
 );
 
 create table church_updates(

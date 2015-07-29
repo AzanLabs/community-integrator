@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,7 +21,7 @@ public class Priest {
 	
 	@Id
 	@Column(name="priest_id")
-	private int id;
+	private Integer id;
 	
 	@Column(name="priest_name", nullable=false, length=255)
 	private String name;
@@ -81,8 +80,8 @@ public class Priest {
 	@Column(name="priest_additional_position", length=255)
 	private String addditionalPosition;
 	
-	@Column(name="priest_image_type")
-	private String imageType;
+	@Column(name="priest_image_name")
+	private String imageName;
 	
 	@Column(name="is_active")
 	private boolean isActive;
@@ -110,11 +109,11 @@ public class Priest {
 	public Priest(){
 		
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -270,12 +269,12 @@ public class Priest {
 		this.addditionalPosition = addditionalPosition;
 	}
 
-	public String getImageType() {
-		return imageType;
+	public String getImageName() {
+		return imageName;
 	}
 
-	public void setImageType(String imageType) {
-		this.imageType = imageType;
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	public boolean isActive() {

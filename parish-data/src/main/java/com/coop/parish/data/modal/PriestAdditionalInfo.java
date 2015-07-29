@@ -19,9 +19,9 @@ public class PriestAdditionalInfo {
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="priest_info")
 	@Lob
-	private byte[] info;
+	@Column(name="priest_info", nullable=false, columnDefinition="TEXT")
+	private String info;
 	
 	@Column(name="priest_id", insertable=false, updatable=false)
 	private Integer priestId;
@@ -38,11 +38,11 @@ public class PriestAdditionalInfo {
 		this.id = id;
 	}
 
-	public byte[] getInfo() {
+	public String getInfo() {
 		return info;
 	}
 
-	public void setInfo(byte[] info) {
+	public void setInfo(String info) {
 		this.info = info;
 	}
 

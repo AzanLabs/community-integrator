@@ -27,7 +27,7 @@ public class TestBibleVerses {
 		verses = new ArrayList<VerseBean>(20);
 		service = ServiceLocator.instance().getBibleVerseService();
 		int i = 0;
-		while(++i <= 21) {
+		while(++i <= 20) {
 			VerseBean verse = new VerseBean();
 			verse.setVerse("12");
 			verse.setChapter("jacob");
@@ -66,7 +66,7 @@ public class TestBibleVerses {
 		service.disableBibleVerses(ids);
 	}
 	
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testGetVerseByChurch() {
 		List<VerseBean> v =service.getVerseByChurch(2001);
 		System.out.println(v);

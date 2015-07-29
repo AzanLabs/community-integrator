@@ -1,5 +1,6 @@
 package com.coop.parish.core.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.coop.parish.core.beans.FileBean;
@@ -22,6 +23,13 @@ public interface PriestService extends BaseService{
 	
 	public PriestBean getPriestById(int id) throws Exception;
 	
+	/**
+	 * This method updates the priest profile (general info + additional Info), other than profile image
+	 * @param priestBean
+	 * @param user
+	 * @return priestBean
+	 * @throws Exception
+	 */
 	public PriestBean updatePriest(PriestBean priestBean, UserBean user) throws Exception;
 	
 	public int deletePriest(int id) throws Exception;
@@ -29,5 +37,32 @@ public interface PriestService extends BaseService{
 	public List<PriestBean> getAllPriest(int churchId) throws ParishException;
 	
 	public boolean isPriestSet(Integer priestId);
+
+	/**
+	 * This method uploads the priest profile image and changes the corresponding entry in db
+	 * @Param priestId the priest profile to which the image belongs to
+	 * @param fileBean new profile image
+	 * @param user current session user
+	 * @return void
+	 */
+	public void updatePriestAvathar(Integer priestId, FileBean fileBean, UserBean user) throws ParishException, IOException;
+	
+	/**
+	 * This method updates general priest profile information other than priest info
+	 * @param priestBean 
+	 * @param user current session user
+	 * @return updated info
+	 * @throws ParishException if the Entity doesn't exists
+	 */
+	public PriestBean UpdatePriestDetails(PriestBean priestBean, UserBean user) throws ParishException;
+	
+	/**
+	 * This method updates the priest Additional Info
+	 * @param priestBean
+	 * @param user current session user info
+	 * @return priest Bean 
+	 * @throws ParishException if the Entity doesn't exists
+	 */
+	public PriestBean updatePriestAddInfo(PriestBean priestBean, UserBean user) throws ParishException;
 	
 }
