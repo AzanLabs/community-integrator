@@ -59,7 +59,7 @@ public class PriestServiceImpl extends BaseServiceImpl implements PriestService{
 		if(fileBean != null) { //profile image exists
 			priest.setImageName(new StringBuilder(user.getPriestId()).append(".").append(fileBean.getFileType()).toString());
 		}
-		priest.setChurch(new Church(user.getChurchId()));
+		priest.setChurchId(user.getChurchId());
 		
 		PriestAdditionalInfo addInfo = new PriestAdditionalInfo();
 		addInfo.setInfo(priestBean.getAdditionalInfo());

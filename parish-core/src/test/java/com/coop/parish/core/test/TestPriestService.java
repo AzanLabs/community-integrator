@@ -49,7 +49,8 @@ public class TestPriestService {
 		 
 		 user = new UserBean();
 		 user.setId(1001);
-		 user.setChurchId(1);
+		 user.setChurchId(2001);
+		 user.setPriestId(3001);
 		 
 		 fileBean = new FileBean();
 		 fileBean.setFile(new File("H:/santhome/CSC_0454.jpg"));
@@ -57,7 +58,7 @@ public class TestPriestService {
 		 fileBean.setFileType("jpg");
 	}
 	
-	@Test
+	@Test(enabled=true)
 	public void testSavePriest() throws Exception {
 		PriestBean pBean = service.savePriest(priestBean, user, fileBean);
 		Assert.assertNotNull(pBean.getId());

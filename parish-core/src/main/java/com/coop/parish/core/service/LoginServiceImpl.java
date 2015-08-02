@@ -4,9 +4,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import com.coop.parish.core.ServiceLocator;
 import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.constants.Constants;
 import com.coop.parish.core.exceptions.ParishException;
+import com.coop.parish.core.service.EmailService.EmailType;
+import com.coop.parish.core.utils.Utils;
+import com.coop.parish.data.modal.Email;
 import com.coop.parish.data.modal.User;
 
 public class LoginServiceImpl extends BaseServiceImpl implements LoginService{
@@ -70,4 +74,33 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService{
 		}
 	}
 	
+	/**
+	 * This method resets the password and sends mail to the user
+	 * @param identifier email id of user
+	 * @return sent email identifier, used for re-sending email
+	 * @throws ParishException 
+	 */
+	public Integer resetPassword(String identifier) throws ParishException {
+		if(identifier == null || identifier.isEmpty()) {
+			throw new NullPointerException(Constants.PARAM_NULL_MSG);
+		}
+		String generatedPwd = null;
+		User user = this.authenticate(identifier);
+		
+		//generate the pwd
+		generatedPwd = Utils.generateRandomKey();
+		
+		//reset the password
+		user.setPassword(generatedPwd);
+		user.setDefaultPwd(true);
+		em.merge(user);
+		
+		//generate and send the mail
+		EmailService service = ServiceLocator.instance().getEmailService(em);
+		Email email = service.sendAndSaveEmail(user, user.getIdentifier(), EmailType.PASSWORDRESET);
+		return email.getId();
+	}
+	
+	
+		
 }

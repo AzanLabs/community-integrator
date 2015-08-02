@@ -7,8 +7,12 @@ import com.coop.parish.core.service.BibleVerseService;
 import com.coop.parish.core.service.BibleVerseServiceImpl;
 import com.coop.parish.core.service.ChurchService;
 import com.coop.parish.core.service.ChurchServiceImpl;
+import com.coop.parish.core.service.EmailService;
+import com.coop.parish.core.service.EmailServiceImpl;
 import com.coop.parish.core.service.EventService;
 import com.coop.parish.core.service.EventServiceImpl;
+import com.coop.parish.core.service.FacilitiesService;
+import com.coop.parish.core.service.FacilitiesServiceImpl;
 import com.coop.parish.core.service.LoginService;
 import com.coop.parish.core.service.LoginServiceImpl;
 import com.coop.parish.core.service.PriestService;
@@ -104,6 +108,32 @@ public class ServiceLocator implements Locator{
 
 	public BibleVerseService getBibleVerseService(EntityManager em) {
 		return new BibleVerseServiceImpl(em);
+	}
+
+
+	public FacilitiesService getFacilitiesService() {
+		EntityManager em = emf.createEntityManager();
+		FacilitiesService service = new FacilitiesServiceImpl(em);
+		service = (FacilitiesService)ServiceProxy.newInstance(service);
+		return service;
+	}
+
+
+	public FacilitiesService getFacilitiesService(EntityManager em) {
+		return new FacilitiesServiceImpl(em);
+	}
+
+
+	public EmailService getEmailService() {
+		EntityManager em = emf.createEntityManager();
+		EmailService service = new EmailServiceImpl(em);
+		service = (EmailService)ServiceProxy.newInstance(em);
+		return service;
+	}
+
+
+	public EmailService getEmailService(EntityManager em) {
+		return new EmailServiceImpl(em);
 	}
 	
 	

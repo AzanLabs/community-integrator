@@ -4,7 +4,9 @@ import javax.persistence.EntityManager;
 
 import com.coop.parish.core.service.BibleVerseService;
 import com.coop.parish.core.service.ChurchService;
+import com.coop.parish.core.service.EmailService;
 import com.coop.parish.core.service.EventService;
+import com.coop.parish.core.service.FacilitiesService;
 import com.coop.parish.core.service.LoginService;
 import com.coop.parish.core.service.PriestService;
 import com.coop.parish.core.service.UserService;
@@ -34,4 +36,12 @@ public interface Locator {
 	public BibleVerseService getBibleVerseService();
 	
 	public BibleVerseService getBibleVerseService(EntityManager em);
+	
+	public FacilitiesService getFacilitiesService();
+	
+	public FacilitiesService getFacilitiesService(EntityManager em);
+	
+	public EmailService getEmailService();
+	
+	public EmailService getEmailService(EntityManager em);
 }

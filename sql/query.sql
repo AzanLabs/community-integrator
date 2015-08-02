@@ -75,6 +75,7 @@ create table user(
 	user_type varchar(10) NOT NULL,
 	priest_id int,
 	church_id int,
+	is_default_pwd boolean NOT NULL,
 	is_active boolean NOT NULL,
 	created_on timestamp NOT NULL,
 	created_by int NOT NULL,
@@ -153,4 +154,46 @@ create table priest_mam(
 	CONSTRAINT fk_priest_mam FOREIGN KEY(priest_id) REFERENCES priest_info(priest_id)
 );
 
-insert into user values(1001,'admin','admin','P',2001,3001,true,now(), 0, now(), 0);
+create table church_facilities (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	name varchar(255) NOT NULL,
+	used_for varchar(1024) NOT NULL,
+	features varchar(1024),
+	can_be_booked boolean NOT NULL,
+	is_active boolean NOT NULL,
+	image_group_id int UNIQUE NOT NULL,
+	church_id int NOT NULL,
+	created_on timestamp NOT NULL,
+	created_by int NOT NULL,
+	last_modified_on timestamp NOT NULL,
+	last_modified_by int NOT NULL,
+	CONSTRAINT fk_church_facility FOREIGN KEY(church_id) REFERENCES church_info(church_id)
+);
+
+create table church_images(
+	image_id int PRIMARY KEY AUTO_INCREMENT,
+	image_name varchar(255) NOT NULL,
+	image_type varchar(10) NOT NULL,
+	entity varchar(100) NOT NULL,
+	image_size int,
+	is_active boolean NOT NULL,
+	image_group_id int NOT NULL,
+	created_on timestamp NOT NULL,
+	created_by int NOT NULL,
+	last_modified_on timestamp NOT NULL,
+	last_modified_by int NOT NULL
+);
+
+create table email_archive(
+	email_id int PRIMARY KEY AUTO_INCREMENT,
+	send_to varchar(100) NOT NULL,
+	subject varchar(255) NOT NULL,
+	message varchar(1024) NOT NULL,
+	email_status varchar(10) NOT NULL,
+	is_active boolean NOT NULL,
+	created_on timestamp NOT NULL,
+	user_id int NOT NULL,
+	CONSTRAINT fk_user_email FOREIGN KEY(user_id) REFERENCES user(user_id)
+);
+
+insert into user values(1001,'admin','admin','P',2001,3001,true,true,now(), 0, now(), 0);

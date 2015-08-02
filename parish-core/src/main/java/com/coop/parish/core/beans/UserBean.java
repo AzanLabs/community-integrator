@@ -18,6 +18,7 @@ public class UserBean {
 	private Character userType;
 	private Integer priestId;
 	private Integer churchId;
+	private boolean isDefaultPwd;
 	
 	public UserBean(){}
 	
@@ -39,6 +40,7 @@ public class UserBean {
 			this.setUserType(user.getType());
 			this.setPriestId(user.getPriestId());
 			this.setChurchId(user.getChurchId());
+			this.setDefaultPwd(user.isDefaultPwd());
 		}
 	}
 	
@@ -107,5 +109,13 @@ public class UserBean {
 
 	public void setChurchId(Integer churchId) {
 		this.churchId = churchId;
+	}
+	
+	public boolean isDefaultPwd() {
+		return isDefaultPwd;
+	}
+
+	public void setDefaultPwd(boolean isDefaultPwd) {
+		this.isDefaultPwd = isDefaultPwd;
 	}
 }

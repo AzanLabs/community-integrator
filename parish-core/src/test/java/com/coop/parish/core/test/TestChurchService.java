@@ -9,6 +9,7 @@ import com.coop.parish.core.beans.ChurchBean;
 import com.coop.parish.core.beans.UserBean;
 import com.coop.parish.core.exceptions.ParishException;
 import com.coop.parish.core.service.ChurchService;
+import com.coop.parish.core.service.FacilitiesService;
 
 public class TestChurchService {
 	
@@ -48,11 +49,17 @@ public class TestChurchService {
 		Assert.assertNotNull(cBean.getId(), "should not be null");
 	}
 	
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testUpdateChurchDetails() throws Exception {
 		churchBean.setId(2001);
 		ChurchBean cBean = service.updateChurchDetails(churchBean, user);
 		System.out.println(cBean.getAdditionalInfo());
 		
+	}
+	
+	@Test(enabled=false)
+	public void testsaveF(){
+		FacilitiesService service = ServiceLocator.instance().getFacilitiesService();
+		service.saveFacility();
 	}
 }

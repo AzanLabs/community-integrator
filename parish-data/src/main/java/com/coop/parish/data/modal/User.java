@@ -1,5 +1,8 @@
 package com.coop.parish.data.modal;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -7,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,11 +29,17 @@ public class User {
 	@Column(name="user_password", nullable=false, length=50)
 	private String password;
 	
+	@Column(name="is_default_pwd", nullable=false)
+	private boolean isDefaultPwd;
+	
 	@Column(name="user_type", nullable=false)
 	private Character type;
 	
 	@Column(name="priest_id", insertable=false, updatable=false)
 	private Integer priestId;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="user", targetEntity=Email.class)
+	private List<Email> emails;
 	
 	@Column(name="church_id", insertable=false, updatable=false)
 	private Integer churchId;
@@ -131,5 +141,20 @@ public class User {
 	public void setChurch(Church church) {
 		this.church = church;
 	}
+	
+	public List<Email> getEmails() {
+		return emails;
+	}
 
+	public void setEmails(List<Email> emails) {
+		this.emails = emails;
+	}
+	
+	public boolean isDefaultPwd() {
+		return isDefaultPwd;
+	}
+
+	public void setDefaultPwd(boolean isDefaultPwd) {
+		this.isDefaultPwd = isDefaultPwd;
+	}
 }

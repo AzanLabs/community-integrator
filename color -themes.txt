@@ -1,0 +1,4 @@
+http://www.colourlovers.com/palette/78333/Cloud_9
+B0C9D6 , B4D6E9, C4E3F3, DBF3FF, EBF6FA
+background-gradient : B0C9D6 - DBF3FF 
+welcome txt : 003333

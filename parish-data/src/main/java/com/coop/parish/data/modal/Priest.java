@@ -86,11 +86,11 @@ public class Priest {
 	@Column(name="is_active")
 	private boolean isActive;
 	
-	@Column(name="church_id",updatable=false,insertable=false)
+	@Column(name="church_id",nullable=false)
 	private Integer churchId;
 	
 	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Church.class)
-	@JoinColumn(name="church_id")
+	@JoinColumn(name="church_id",updatable=false, insertable=false)
 	private Church church;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="priest", targetEntity=PriestMAM.class)

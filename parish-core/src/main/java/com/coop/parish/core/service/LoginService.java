@@ -13,4 +13,12 @@ public interface LoginService extends BaseService{
 	 * @throws ParishException  If the corresponding user is not Present or the Password does not match
 	 */
 	public UserBean validateLogin(String identifier, String pasword) throws ParishException;
+	
+	/**
+	 * This method resets the password and sends mail to the user
+	 * @param identifier email id of user
+	 * @return sent email identifier, used for resending email
+	 * @throws ParishException if the user does not exists
+	 */
+	public Integer resetPassword(String identifier) throws ParishException;
 }
